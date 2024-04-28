@@ -45,7 +45,7 @@ export const FullWidth: Story = {
 export const AsLink: Story = {
   args: {
     as: 'a',
-    children: 'Link that looks like a button',
+    children: 'Link that looks like a Button',
     variant: 'primary',
   },
 }
