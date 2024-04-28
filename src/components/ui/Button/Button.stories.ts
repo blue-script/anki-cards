@@ -11,7 +11,7 @@ const meta = {
   },
   component: Button,
   tags: ['autodocs'],
-  title: 'Components/Button',
+  title: 'Components/Buttons',
 } satisfies Meta<typeof Button>
 
 export default meta
@@ -19,7 +19,7 @@ type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
   args: {
-    children: 'Primary Button',
+    children: 'Primary Typography',
     disabled: false,
     variant: 'primary',
   },
@@ -27,7 +27,7 @@ export const Primary: Story = {
 
 export const Secondary: Story = {
   args: {
-    children: 'Secondary Button',
+    children: 'Secondary Typography',
     disabled: false,
     variant: 'secondary',
   },
@@ -35,7 +35,7 @@ export const Secondary: Story = {
 
 export const FullWidth: Story = {
   args: {
-    children: 'Full Width Primary Button',
+    children: 'Full Width Primary Typography',
     disabled: false,
     fullWidth: true,
     variant: 'primary',
@@ -45,7 +45,7 @@ export const FullWidth: Story = {
 export const AsLink: Story = {
   args: {
     as: 'a',
-    children: 'Link that looks like a Button',
+    children: 'Link that looks like a Typography',
     href: 'https://www.google.com/',
     variant: 'primary',
   },
