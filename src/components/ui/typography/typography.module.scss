@@ -1,0 +1,74 @@
+@mixin text-style($size, $weight, $line) {
+  font-size: var(--font-size-#{$size});
+  font-weight: var(--font-weight-#{$weight});
+  line-height: var(--line-height-#{$line});
+}
+
+/* Headings */
+.h1 {
+  @include text-style(xxl, bold, l);
+}
+
+.h2 {
+  @include text-style(xl, bold, l);
+}
+
+.h3 {
+  @include text-style(l, bold, s);
+}
+
+.h4 {
+  @include text-style(m, bold, s);
+}
+
+/* Body text */
+.body1 {
+  @include text-style(m, regular, s);
+}
+
+.body2 {
+  @include text-style(s, regular, s);
+}
+
+/* Subtitles */
+.subtitle1 {
+  @include text-style(m, bold, s);
+}
+
+.subtitle2 {
+  @include text-style(s, bold, s);
+}
+
+/* Caption */
+.caption {
+  @include text-style(xs, regular, xs);
+}
+
+/* Overline */
+.overline {
+  @include text-style(xs, bold, xs);
+}
+
+/* Links */
+a.link1 {
+  @include text-style(s, regular, s);
+
+  cursor: pointer;
+  color: var(--color-info-500);
+}
+
+a.link2 {
+  @include text-style(xs, regular, xs);
+
+  cursor: pointer;
+  color: var(--color-info-500);
+}
+
+/* Main Colors */
+.light {
+  color: var(--color-light-100);
+}
+
+.dark {
+  color: var(--color-dark-900);
+}
