@@ -10,7 +10,12 @@
     "lint": "eslint src --ext .jsx,.js,.tsx,.ts  --no-error-on-unmatched-pattern --fix && stylelint --fix src/{,*/}*.{scss,css} --allow-empty-input",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "rename-icons": "node scripts/rename-icons.cjs",
+    "replace-color-icons": "node scripts/replace-colors.cjs",
+    "replace-imports-icons": "node scripts/replace-imports.cjs",
+    "replace-n-icons": "node scripts/replace-n.cjs",
+    "generate-icons-for-windows": "pnpm run rename-icons && npx @svgr/cli --out-dir src/assets/icons/components --jsx-runtime automatic --typescript --ref --memo -- ./src/assets/icons/svg"
   },
   "dependencies": {
     "@fontsource/roboto": "^5.0.13",
