@@ -1,6 +1,5 @@
 import { Ref, SVGProps, forwardRef, memo } from 'react'
 
-
 const SvgArrowBackOutline = (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
   <svg
     fill={'none'}

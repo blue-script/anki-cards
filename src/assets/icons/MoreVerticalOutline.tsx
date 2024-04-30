@@ -9,8 +9,8 @@ const SvgMoreVerticalOutline = (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGE
     xmlns={'http://www.w3.org/2000/svg'}
     {...props}
   >
-    <circle cx={12} cy={12} r={8.5} stroke={'#000'} />
-    <g clipPath={'url(#more-vertical-outline_svg__a)'} fill={'#000'}>
+    <circle cx={12} cy={12} r={8.5} stroke={'#fff'} />
+    <g clipPath={'url(#more-vertical-outline_svg__a)'} fill={'#fff'}>
       <path
         d={
           'M12 13a1 1 0 1 0 0-2 1 1 0 0 0 0 2M12 9.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2M12 16.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2'
