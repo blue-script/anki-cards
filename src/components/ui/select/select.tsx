@@ -29,41 +29,25 @@ export const Select = ({ placeholder = 'Select-box' }: SelectProps) => {
         </RadixSelect.Trigger>
         <RadixSelect.Portal>
           <RadixSelect.Content className={s.SelectContent}>
-            {/*<RadixSelect.ScrollUpButton className={s.SelectScrollButton}>*/}
-            {/*  <ChevronUpIcon />*/}
-            {/*</RadixSelect.ScrollUpButton>*/}
             <RadixSelect.Viewport className={'SelectViewport'}>
-              <RadixSelect.Group>
-                <RadixSelect.Label className={'SelectLabel'}>Fruits</RadixSelect.Label>
-                <SelectItem value={'apple'}>Apple</SelectItem>
-                <SelectItem value={'banana'}>Banana</SelectItem>
-                <SelectItem value={'blueberry'}>Blueberry</SelectItem>
-                <SelectItem value={'grapes'}>Grapes</SelectItem>
-                <SelectItem value={'pineapple'}>Pineapple</SelectItem>
-              </RadixSelect.Group>
-
-              <RadixSelect.Separator className={'SelectSeparator'} />
-
-              <RadixSelect.Group>
-                <RadixSelect.Label className={'SelectLabel'}>Vegetables</RadixSelect.Label>
-                <SelectItem value={'aubergine'}>Aubergine</SelectItem>
-                <SelectItem value={'broccoli'}>Broccoli</SelectItem>
-                <SelectItem disabled value={'carrot'}>
-                  Carrot
+              <RadixSelect.Group style={{ width: '210px' }}>
+                <SelectItem className={s.SelectItem} value={'apple'}>
+                  Apple
                 </SelectItem>
-                <SelectItem value={'courgette'}>Courgette</SelectItem>
-                <SelectItem value={'leek'}>Leek</SelectItem>
+                <SelectItem className={s.SelectItem} value={'banana'}>
+                  Banana
+                </SelectItem>
+                <SelectItem className={s.SelectItem} value={'blueberry'}>
+                  Blueberry
+                </SelectItem>
+                <SelectItem className={s.SelectItem} value={'grapes'}>
+                  Grapes
+                </SelectItem>
+                <SelectItem className={s.SelectItem} value={'pineapple'}>
+                  Pineapple
+                </SelectItem>
               </RadixSelect.Group>
-
               <RadixSelect.Separator className={'SelectSeparator'} />
-
-              <RadixSelect.Group>
-                <RadixSelect.Label className={'SelectLabel'}>Meat</RadixSelect.Label>
-                <SelectItem value={'beef'}>Beef</SelectItem>
-                <SelectItem value={'chicken'}>Chicken</SelectItem>
-                <SelectItem value={'lamb'}>Lamb</SelectItem>
-                <SelectItem value={'pork'}>Pork</SelectItem>
-              </RadixSelect.Group>
             </RadixSelect.Viewport>
             <RadixSelect.ScrollDownButton className={'SelectScrollButton'}>
               <ChevronDownIcon />

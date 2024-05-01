@@ -20,6 +20,12 @@
   background-color: transparent;
   border: 1px var(--color-dark-300) solid;
   border-radius: 2px;
+
+  &:hover {
+    color: var(--color-light-100);
+    background-color: var(--color-dark-500);
+    border: 1px var(--color-dark-100) solid;
+  }
 }
 
 .SelectIcon {
@@ -27,9 +33,18 @@
 }
 
 .SelectContent {
-  width: 100%;
   background-color: transparent;
   border: 1px var(--color-dark-300) solid;
+}
+
+.SelectItem {
+  padding-left: 12px;
+
+  &:hover {
+    color: var(--color-dark-100);
+    background-color: var(--color-accent-900);
+    border: 1px var(--color-dark-100) solid;
+  }
 }
 
 .SelectScrollButton {
