@@ -26,6 +26,12 @@
     background-color: var(--color-dark-500);
     border: 1px var(--color-dark-100) solid;
   }
+
+  &:focus,
+  &:focus-visible {
+    border: 2px solid var(--color-info-700);
+    outline: none;
+  }
 }
 
 .SelectIcon {
