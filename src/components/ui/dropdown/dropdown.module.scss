@@ -1,0 +1,92 @@
+.trigger {
+  all: unset;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.dropdownMenuArrow {
+  paint-order: stroke;
+  fill: var(--color-dark-700);
+  stroke: var(--color-dark-500);
+  stroke-width: 4px;
+}
+
+.content {
+  position: relative;
+
+  padding: 0.75rem;
+
+  background-color: var(--color-dark-700);
+  border: 1px solid var(--color-dark-500);
+  border-radius: 4px;
+
+  &[data-state='open'] {
+    animation: open 300ms linear;
+  }
+
+  &[data-state='closed'] {
+    animation: closed 300ms linear;
+  }
+}
+
+.item {
+  cursor: pointer;
+  user-select: none;
+
+  position: relative;
+
+  display: flex;
+  gap: 6px;
+  align-items: center;
+
+  transition-timing-function: linear;
+  transition-duration: 200ms;
+  transition-property: background-color;
+
+  &[data-highlighted] {
+    background-color: var(--color-dark-300);
+    outline: none;
+  }
+
+  &[data-disabled] {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}
+
+.label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding-right: 28px;
+}
+
+.separator {
+  width: 100%;
+  height: 1px;
+  margin: 12px 0;
+  background-color: var(--color-dark-500);
+}
+
+@keyframes open {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes closed {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
