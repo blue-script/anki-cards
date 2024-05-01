@@ -1,0 +1,17 @@
+.SelectTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 210px;
+  height: 36px;
+  padding-left: 10px;
+
+  background-color: transparent;
+  border: 1px var(--color-dark-300) solid;
+  border-radius: 2px;
+}
+
+.SelectIcon {
+  padding-right: 4px;
+}
