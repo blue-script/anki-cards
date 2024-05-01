@@ -1,9 +1,19 @@
+.SelectTypo {
+  margin: 1px 0;
+  color: var(--color-dark-100);
+}
+
+.SelectWrapper {
+  width: 210px;
+  height: 60px;
+}
+
 .SelectTrigger {
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  width: 210px;
+  width: 100%;
   height: 36px;
   padding-left: 10px;
 
@@ -14,4 +24,14 @@
 
 .SelectIcon {
   padding-right: 4px;
+}
+
+.SelectContent {
+  width: 100%;
+  background-color: transparent;
+  border: 1px var(--color-dark-300) solid;
+}
+
+.SelectScrollButton {
+  color: red;
 }
