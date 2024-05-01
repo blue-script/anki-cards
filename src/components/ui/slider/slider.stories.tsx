@@ -21,13 +21,19 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
-  render: () => {
-    const [values, setValues] = useState([8, 23])
+  args: {
+    max: 30,
+    min: 7,
+    value: [8, 23],
+  },
+  render: args => {
+    const [values, setValues] = useState(args.value)
     const valueChangeHandler = (value: number[]) => {
-      console.log('New Slider Values:', value)
       setValues(value)
     }
 
-    return <Slider max={30} min={7} onValueChange={valueChangeHandler} value={values} />
+    return (
+      <Slider max={args.max} min={args.min} onValueChange={valueChangeHandler} value={values} />
+    )
   },
 }
