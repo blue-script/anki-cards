@@ -17,6 +17,7 @@ const availableOptions = ['apple', 'banana', 'blueberry', 'grapes', 'pineapple']
 
 export const Select = ({ disabled = false, placeholder = 'Select-box' }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false)
+
   const iconColor = disabled ? '#4c4c4c' : '#fff'
 
   return (
