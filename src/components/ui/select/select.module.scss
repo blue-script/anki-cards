@@ -1,10 +1,18 @@
+:root {
+  --select-width: 210px;
+}
+
 .SelectTypo {
   margin: 1px 0;
   color: var(--color-dark-100);
+
+  &.disabled {
+    color: var(--color-dark-300);
+  }
 }
 
 .SelectWrapper {
-  width: 210px;
+  width: var(--select-width);
   height: 60px;
 }
 
@@ -18,19 +26,23 @@
   padding-left: 10px;
 
   background-color: transparent;
-  border: 1px var(--color-dark-300) solid;
+  border: 1px solid var(--color-dark-300);
   border-radius: 2px;
 
   &:hover {
     color: var(--color-light-100);
     background-color: var(--color-dark-500);
-    border: 1px var(--color-dark-100) solid;
+    border-color: var(--color-dark-100);
   }
 
   &:focus,
   &:focus-visible {
     border: 2px solid var(--color-info-700);
     outline: none;
+  }
+
+  &.disabled {
+    color: var(--color-dark-300);
   }
 }
 
@@ -40,7 +52,11 @@
 
 .SelectContent {
   background-color: transparent;
-  border: 1px var(--color-dark-300) solid;
+  border: 1px solid var(--color-dark-300);
+}
+
+.SelectGroup {
+  width: var(--select-width);
 }
 
 .SelectItem {
@@ -49,7 +65,7 @@
   &:hover {
     color: var(--color-dark-100);
     background-color: var(--color-accent-900);
-    border: 1px var(--color-dark-100) solid;
+    border-color: var(--color-dark-100);
   }
 }
 
