@@ -63,7 +63,7 @@ export const Profile = () => (
     <Dropdown.Trigger asChild>
       <img alt={'profile image'} src={profileImage} />
     </Dropdown.Trigger>
-    <Dropdown.Content align={'end'}>
+    <Dropdown.Content align={'end'} sideOffset={3}>
       <Dropdown.Label>
         <img alt={'profile image'} src={profileImage} />
         <div style={{ display: 'flex', flexDirection: 'column' }}>
