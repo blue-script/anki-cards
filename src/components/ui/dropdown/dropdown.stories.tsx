@@ -1,4 +1,4 @@
-import type { Meta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import {
   Edit2,
@@ -28,67 +28,73 @@ const meta: Meta<typeof Dropdown.Root> = {
 
 export default meta
 
-export const Default = () => (
-  <Dropdown.Root>
-    <Dropdown.Trigger asChild>
-      <MoreVerticalOutline />
-    </Dropdown.Trigger>
-    <Dropdown.Content align={'end'}>
-      <Dropdown.Item>
-        <PlayCircleOutline />
-        <Typography as={'span'} color={'light'} option={'caption'}>
-          Learn
-        </Typography>
-      </Dropdown.Item>
-      <Dropdown.Separator />
-      <Dropdown.Item>
-        <Edit2 />
-        <Typography as={'span'} color={'light'} option={'caption'}>
-          Edit
-        </Typography>
-      </Dropdown.Item>
-      <Dropdown.Separator />
-      <Dropdown.Item>
-        <Trash />
-        <Typography as={'span'} color={'light'} option={'caption'}>
-          Delete
-        </Typography>
-      </Dropdown.Item>
-    </Dropdown.Content>
-  </Dropdown.Root>
-)
+type Story = StoryObj<typeof meta>
 
-export const Profile = () => (
-  <Dropdown.Root>
-    <Dropdown.Trigger asChild>
-      <img alt={'profile image'} src={profileImage} />
-    </Dropdown.Trigger>
-    <Dropdown.Content align={'end'} sideOffset={3}>
-      <Dropdown.Label>
+export const Default: Story = {
+  render: () => (
+    <Dropdown.Root>
+      <Dropdown.Trigger asChild>
+        <MoreVerticalOutline />
+      </Dropdown.Trigger>
+      <Dropdown.Content align={'end'}>
+        <Dropdown.Item>
+          <PlayCircleOutline />
+          <Typography as={'span'} color={'light'} option={'caption'}>
+            Learn
+          </Typography>
+        </Dropdown.Item>
+        <Dropdown.Separator />
+        <Dropdown.Item>
+          <Edit2 />
+          <Typography as={'span'} color={'light'} option={'caption'}>
+            Edit
+          </Typography>
+        </Dropdown.Item>
+        <Dropdown.Separator />
+        <Dropdown.Item>
+          <Trash />
+          <Typography as={'span'} color={'light'} option={'caption'}>
+            Delete
+          </Typography>
+        </Dropdown.Item>
+      </Dropdown.Content>
+    </Dropdown.Root>
+  ),
+}
+
+export const Profile: Story = {
+  render: () => (
+    <Dropdown.Root>
+      <Dropdown.Trigger asChild>
         <img alt={'profile image'} src={profileImage} />
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+      </Dropdown.Trigger>
+      <Dropdown.Content align={'end'} sideOffset={3}>
+        <Dropdown.Label>
+          <img alt={'profile image'} src={profileImage} />
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <Typography as={'span'} color={'light'} option={'caption'}>
+              Name
+            </Typography>
+            <Typography as={'span'} color={'light'} option={'caption'}>
+              email@example.com
+            </Typography>
+          </div>
+        </Dropdown.Label>
+        <Dropdown.Separator />
+        <Dropdown.Item>
+          <PersonOutline />
           <Typography as={'span'} color={'light'} option={'caption'}>
-            Name
+            My Profile
           </Typography>
+        </Dropdown.Item>
+        <Dropdown.Separator />
+        <Dropdown.Item>
+          <LogOut />
           <Typography as={'span'} color={'light'} option={'caption'}>
-            email@example.com
+            Sign Out
           </Typography>
-        </div>
-      </Dropdown.Label>
-      <Dropdown.Separator />
-      <Dropdown.Item>
-        <PersonOutline />
-        <Typography as={'span'} color={'light'} option={'caption'}>
-          My Profile
-        </Typography>
-      </Dropdown.Item>
-      <Dropdown.Separator />
-      <Dropdown.Item>
-        <LogOut />
-        <Typography as={'span'} color={'light'} option={'caption'}>
-          Sign Out
-        </Typography>
-      </Dropdown.Item>
-    </Dropdown.Content>
-  </Dropdown.Root>
-)
+        </Dropdown.Item>
+      </Dropdown.Content>
+    </Dropdown.Root>
+  ),
+}
