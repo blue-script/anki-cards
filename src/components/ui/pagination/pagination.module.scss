@@ -1,0 +1,115 @@
+.navigationAndSelect {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.navigation {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.button {
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0;
+
+  background: none;
+  border: none;
+}
+
+.buttonNavigation {
+  border-radius: 2px;
+
+  & svg {
+    fill: var(--color-light-100);
+  }
+
+  &:disabled {
+    cursor: default;
+
+    & svg {
+      fill: var(--color-dark-100);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-info-900);
+  }
+
+  &:hover:not(&:disabled) {
+    opacity: 0.9;
+  }
+}
+
+@mixin text() {
+  font-family: var(--font-family-primary), sans-serif;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-m);
+}
+
+.paginationButtonItem {
+  @include text;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 24px;
+  height: 24px;
+  margin: 0;
+
+  border-radius: 2px;
+
+  &:hover {
+    background-color: var(--color-dark-500);
+  }
+
+  &.selected {
+    color: var(--color-dark-900);
+    background-color: var(--color-light-100);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-info-900);
+  }
+}
+
+.dot {
+  width: 24px;
+  height: 24px;
+  text-align: center;
+  background-color: inherit;
+}
+
+.selectContainer {
+  display: flex;
+  align-items: center;
+}
+
+.select {
+  @include text;
+
+  cursor: pointer;
+
+  height: 24px;
+  margin: 0 9px 0 6px;
+  padding-left: 2px;
+
+  font-size: 16px;
+
+  background-color: var(--color-dark-700);
+  border: 1px solid var(--color-dark-500);
+  border-radius: 2px;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-info-900);
+  }
+}
