@@ -17,6 +17,8 @@
 }
 
 .SelectTrigger {
+  cursor: pointer;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -51,21 +53,19 @@
 }
 
 .SelectContent {
+  width: var(--select-width);
   background-color: transparent;
   border: 1px solid var(--color-dark-300);
 }
 
-.SelectGroup {
-  width: var(--select-width);
-}
-
 .SelectItem {
+  cursor: pointer;
   padding-left: 12px;
+  outline: none;
 
   &:hover {
     color: var(--color-dark-100);
     background-color: var(--color-accent-900);
-    border-color: var(--color-dark-100);
   }
 }
 
