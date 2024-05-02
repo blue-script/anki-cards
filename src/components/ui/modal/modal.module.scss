@@ -1,0 +1,68 @@
+@mixin font($family, $size, $weight, $height, $color: var(--color-light-100)) {
+  font-family: var($family), sans-serif;
+  font-size: var($size);
+  font-weight: var($weight);
+  line-height: var($height);
+  color: var($color);
+}
+
+.content {
+  @include font(--font-family-title, --font-size-m, --font-weight-normal, --line-height-m);
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 100%;
+  max-width: 542px;
+
+  background-color: var(--color-dark-700);
+  border: 1px solid var(--color-dark-500);
+}
+
+.overlay[data-state='open'] {
+  position: fixed;
+  inset: 0;
+
+  opacity: 0.6;
+  background-color: var(--color-dark-500);
+
+  animation: overlay-show 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.header {
+  @include font(--font-family-title, --font-size-m, --font-weight-normal, --line-height-m);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin: 0;
+  padding: 24px;
+
+  background-color: var(--color-dark-700);
+  border-bottom: 1px solid var(--color-dark-500);
+
+  h2 {
+    margin: 0;
+  }
+
+  & > svg {
+    cursor: pointer;
+  }
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+@keyframes overlay-show {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
