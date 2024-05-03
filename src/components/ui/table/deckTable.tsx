@@ -1,8 +1,67 @@
-import Edit2Outline from '@/assets/icons/Edit2Outline'
-import PlayCircleOutline from '@/assets/icons/PlayCircleOutline'
-import Star from '@/assets/icons/Star'
-import TrashOutline from '@/assets/icons/TrashOutline'
+import { Edit2Outline, PlayCircleOutline, Star, TrashOutline } from '@/assets/icons'
 import { Table } from '@/components/ui/table/table'
+
+type Deck = {
+  actions: string
+  cardsCount: number
+  createdBy: string
+  id: string
+  name: string
+  rating: number
+  updated: Date
+}
+
+type DeckTableProps = {
+  decks: Deck[]
+}
+const DeckRow = ({ deck }: { deck: Deck }) => (
+  <Table.TRow key={deck.id}>
+    <Table.Td className={'withWrapper'}>
+      <div>
+        <img alt={'Default'} src={'./src/assets/img/default-img.jpg'} />
+        {deck.name}
+      </div>
+    </Table.Td>
+    <Table.Td>{deck.updated.toLocaleDateString('en-GB')}</Table.Td>
+    <Table.Td>{deck.cardsCount}</Table.Td>
+    <Table.Td>{deck.createdBy}</Table.Td>
+    <Table.Td className={'centeredTd'}>
+      {[...Array(5)].map((_, i) => (
+        <Star
+          color={i < deck.rating ? '#e5ac39' : '#000'}
+          key={i}
+          stroke={i === 4 ? '#e5ac39' : undefined}
+          strokeWidth={i === 4 ? 1 : undefined}
+        />
+      ))}
+    </Table.Td>
+    <Table.Td>
+      <PlayCircleOutline />
+      <Edit2Outline />
+      <TrashOutline />
+    </Table.Td>
+  </Table.TRow>
+)
+
+export const DeckTable = ({ decks }: DeckTableProps) => (
+  <Table.TRoot>
+    <Table.THead>
+      <Table.TRow>
+        <Table.Th>Name</Table.Th>
+        <Table.Th>Last Updated</Table.Th>
+        <Table.Th>Cards</Table.Th>
+        <Table.Th>Created By</Table.Th>
+        <Table.Th>Rating</Table.Th>
+        <Table.Th>Actions</Table.Th>
+      </Table.TRow>
+    </Table.THead>
+    <Table.TBody>
+      {decks.map(deck => (
+        <DeckRow deck={deck} key={deck.id} />
+      ))}
+    </Table.TBody>
+  </Table.TRoot>
+)
 
 export const dataForDeckTable = [
   {
@@ -33,59 +92,3 @@ export const dataForDeckTable = [
     updated: new Date(),
   },
 ]
-
-type Deck = {
-  actions: string
-  cardsCount: number
-  createdBy: string
-  id: string
-  name: string
-  rating: number
-  updated: Date
-}
-type DeckTableProps = {
-  decks: Deck[]
-}
-
-export const DeckTable = (props: DeckTableProps) => {
-  const { decks } = props
-
-  return (
-    <Table.TRoot>
-      <Table.THead>
-        <Table.TRow>
-          <Table.Th>Name</Table.Th>
-          <Table.Th>Last Updated</Table.Th>
-          <Table.Th>Cards</Table.Th>
-          <Table.Th>Created By</Table.Th>
-          <Table.Th>Rating</Table.Th>
-          <Table.Th>Icons</Table.Th>
-        </Table.TRow>
-      </Table.THead>
-      <Table.TBody>
-        {decks.map(deck => {
-          return (
-            <Table.TRow key={deck.id}>
-              <Table.Td>{deck.name}</Table.Td>
-              <Table.Td>{new Date(deck.updated).toLocaleDateString('en-GB')}</Table.Td>
-              <Table.Td>{deck.cardsCount}</Table.Td>
-              <Table.Td>{deck.createdBy}</Table.Td>
-              <Table.Td className={'centeredTd'}>
-                <Star color={'#e5ac39'} />
-                <Star color={'#e5ac39'} />
-                <Star color={'#e5ac39'} />
-                <Star color={'#e5ac39'} />
-                <Star color={'#000'} stroke={'#e5ac39'} strokeWidth={1} />
-              </Table.Td>
-              <Table.Td className={'centeredTd'}>
-                <PlayCircleOutline color={'#fff'} />
-                <Edit2Outline color={'#fff'} />
-                <TrashOutline color={'#fff'} />
-              </Table.Td>
-            </Table.TRow>
-          )
-        })}
-      </Table.TBody>
-    </Table.TRoot>
-  )
-}
