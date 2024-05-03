@@ -32,7 +32,7 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: () => (
-    <Dropdown.Root>
+    <Dropdown.Root modal={false}>
       <Dropdown.Trigger asChild>
         <MoreVerticalOutline />
       </Dropdown.Trigger>
@@ -64,7 +64,7 @@ export const Default: Story = {
 
 export const Profile: Story = {
   render: () => (
-    <Dropdown.Root>
+    <Dropdown.Root modal={false}>
       <Dropdown.Trigger asChild>
         <img alt={'profile image'} src={profileImage} />
       </Dropdown.Trigger>
