@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react'
 
 import { useState } from 'react'
 
+import { CountButton } from '@/components/ui/modal/footer/footer'
 import { Modal } from '@/components/ui/modal/modal'
-import { CounButton, ModalFooter } from '@/components/ui/modal/modalFooter/modalFooter'
 import { action } from '@storybook/addon-actions'
 
 const meta = {
@@ -78,8 +78,8 @@ export const ModalWithFooterOneButton: Story = {
           title={args.title}
         >
           Lorem ipsum dolor sit amet{' '}
-          <ModalFooter
-            countButton={CounButton.One}
+          <Modal.Footer
+            countButton={CountButton.One}
             firstButtonHandler={action1}
             firstButtonName={'firstButtonName'}
           />
@@ -110,8 +110,8 @@ export const ModalWithFooterTwoButton: Story = {
           title={args.title}
         >
           Lorem ipsum dolor sit amet{' '}
-          <ModalFooter
-            countButton={CounButton.Two}
+          <Modal.Footer
+            countButton={CountButton.Two}
             firstButtonHandler={action1}
             firstButtonName={'firstButtonName'}
             secondButtonHandler={action2}
