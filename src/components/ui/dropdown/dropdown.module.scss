@@ -7,11 +7,28 @@
   }
 }
 
-.dropdownMenuArrow {
-  paint-order: stroke;
-  fill: var(--color-dark-700);
-  stroke: var(--color-dark-500);
-  stroke-width: 4px;
+.upArrow {
+  width: 0;
+  height: 0;
+
+  border-color: var(--color-dark-500) transparent transparent transparent;
+  border-style: solid;
+  border-width: 6px 6px 0;
+}
+
+.upArrow::before {
+  content: '';
+
+  position: relative;
+  top: -4px;
+  left: -5px;
+
+  width: 0;
+  height: 0;
+
+  border-color: var(--color-dark-700) transparent transparent transparent;
+  border-style: solid;
+  border-width: 5px 5px 0;
 }
 
 .content {
