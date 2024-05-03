@@ -27,7 +27,9 @@ const Content = forwardRef<
     <DropdownMenu.Portal>
       <DropdownMenu.Content className={clsx(s.content, className)} ref={ref} {...rest}>
         {children}
-        <DropdownMenu.Arrow className={s.dropdownMenuArrow} />
+        <DropdownMenu.Arrow asChild>
+          <div className={s.upArrow}></div>
+        </DropdownMenu.Arrow>
       </DropdownMenu.Content>
     </DropdownMenu.Portal>
   )
