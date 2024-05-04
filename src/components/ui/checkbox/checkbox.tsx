@@ -10,6 +10,7 @@ import s from './checkbox.module.scss'
 type CheckboxProps = {
   disabled?: boolean
   label?: string
+  /// pt2
 }
 
 export const Checkbox = forwardRef<ElementRef<'form'>, CheckboxProps>(
