@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { ElementRef, forwardRef, useState } from 'react'
 
 import { Typography } from '@/components/ui/typography'
 import * as RadixCheckbox from '@radix-ui/react-checkbox'
@@ -12,32 +12,34 @@ type CheckboxProps = {
   label?: string
 }
 
-export const Checkbox = ({ disabled = false, label }: CheckboxProps) => {
-  const [isSelected, setIsSelected] = useState<boolean>(true)
+export const Checkbox = forwardRef<ElementRef<'form'>, CheckboxProps>(
+  ({ disabled = false, label }, ref) => {
+    const [isSelected, setIsSelected] = useState<boolean>(true)
 
-  const checkboxHandler = () => {
-    if (!disabled) {
-      setIsSelected(!isSelected)
+    const checkboxHandler = () => {
+      if (!disabled) {
+        setIsSelected(!isSelected)
+      }
     }
-  }
 
-  return (
-    <form className={s.wrapper}>
-      <RadixCheckbox.Root
-        checked={isSelected}
-        className={clsx(s.CheckboxRoot, { [s.selected]: isSelected }, { [s.disabled]: disabled })}
-        disabled={disabled}
-        onCheckedChange={checkboxHandler}
-      >
-        <RadixCheckbox.Indicator className={s.CheckboxIndicator}>
-          <CheckIcon className={s.CheckIcon} />
-        </RadixCheckbox.Indicator>
-      </RadixCheckbox.Root>
-      {label && (
-        <Typography as={'p'} className={s.marginLeft} color={'light'} option={'body2'}>
-          {label}
-        </Typography>
-      )}
-    </form>
-  )
-}
+    return (
+      <form className={s.wrapper} ref={ref}>
+        <RadixCheckbox.Root
+          checked={isSelected}
+          className={clsx(s.CheckboxRoot, { [s.selected]: isSelected }, { [s.disabled]: disabled })}
+          disabled={disabled}
+          onCheckedChange={checkboxHandler}
+        >
+          <RadixCheckbox.Indicator className={s.CheckboxIndicator}>
+            <CheckIcon className={s.CheckIcon} />
+          </RadixCheckbox.Indicator>
+        </RadixCheckbox.Root>
+        {label && (
+          <Typography as={'p'} className={s.marginLeft} color={'light'} option={'body2'}>
+            {label}
+          </Typography>
+        )}
+      </form>
+    )
+  }
+)
