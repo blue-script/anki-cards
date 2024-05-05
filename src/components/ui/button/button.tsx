@@ -7,7 +7,6 @@ import {
   forwardRef,
 } from 'react'
 
-import SvgLayers from '@/assets/icons/Layers'
 import clsx from 'clsx'
 
 import s from './button.module.scss'
@@ -36,15 +35,9 @@ export const ButtonPolymorph = <T extends ElementType = 'button'>(
   } = props
 
   const finalClassName = clsx(s.button, s[variant], fullWidth && s.fullWidth, className)
-  const color = variant === 'tertiary' ? '#8C61FF' : '#FFFFFF'
 
   return (
     <Component className={finalClassName} {...rest} ref={ref}>
-      {icon && (
-        <span className={s.icon}>
-          <SvgLayers color={color} />
-        </span>
-      )}
       {children}
     </Component>
   )
