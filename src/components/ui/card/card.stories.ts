@@ -18,8 +18,9 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
+export const CardAsDiv: Story = {
   args: {
+    as: 'div',
     children: 'Default Card',
     style: {
       height: '200px',
