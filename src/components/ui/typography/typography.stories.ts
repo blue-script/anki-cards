@@ -4,6 +4,12 @@ import { Typography } from './'
 
 const meta = {
   component: Typography,
+  parameters: {
+    backgrounds: {
+      default: 'dark',
+      values: [{ name: 'dark', value: '#000000' }],
+    },
+  },
   tags: ['autodocs'],
   title: 'Components/Typography',
 } satisfies Meta<typeof Typography>
@@ -25,6 +31,7 @@ export const H3: Story = {
     as: 'h3',
     children: 'H3 Typography',
     color: 'light',
+    disabled: true,
     option: 'h3',
   },
 }
@@ -43,6 +50,7 @@ export const Subtitle1: Story = {
     as: 'p',
     children: 'Subtitle1 Typography',
     color: 'light',
+    disabled: true,
     option: 'subtitle1',
   },
 }

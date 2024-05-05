@@ -8,21 +8,21 @@ import clsx from 'clsx'
 import s from './checkbox.module.scss'
 
 type CheckboxProps = {
-  checked: boolean
   className?: string
   disabled?: boolean
   id?: string
+  isChecked: boolean
   label?: string
-  onChange: (checked: boolean) => void
+  onChange: (isChecked: boolean) => void
 }
 
 export const Checkbox = forwardRef<ElementRef<'form'>, CheckboxProps>(
-  ({ checked = false, disabled = false, label, onChange }, ref) => {
+  ({ disabled = false, isChecked = false, label, onChange }, ref) => {
     return (
       <form className={s.wrapper} ref={ref}>
         <RadixCheckbox.Root
-          checked={checked}
-          className={clsx(s.CheckboxRoot, { [s.selected]: checked }, { [s.disabled]: disabled })}
+          checked={isChecked}
+          className={clsx(s.CheckboxRoot, { [s.selected]: isChecked }, { [s.disabled]: disabled })}
           disabled={disabled}
           onCheckedChange={onChange}
         >
