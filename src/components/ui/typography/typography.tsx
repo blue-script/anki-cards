@@ -24,11 +24,24 @@ export type OptionType = (typeof availableOptions)[number]
 export type TypographyProps<T extends ElementType = 'p'> = {
   as?: T
   color: 'dark' | 'light'
+  disabled?: boolean
   option: OptionType
 } & ComponentPropsWithoutRef<T>
 
 export const Typography = <T extends ElementType = 'p'>(props: TypographyProps<T>) => {
-  const { as: Component = 'p', color = 'light', option = 'body1', ...rest } = props
+  const {
+    as: Component = 'p',
+    className,
+    color = 'light',
+    disabled,
+    option = 'body1',
+    ...rest
+  } = props
 
-  return <Component className={clsx(s[color], s[option])} {...rest} />
+  return (
+    <Component
+      className={clsx(s[color], { [s.disabled]: disabled }, [s[option], className])}
+      {...rest}
+    />
+  )
 }
