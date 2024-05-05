@@ -1,58 +1,125 @@
-import { useState } from 'react'
+import { ComponentPropsWithoutRef, ElementRef, forwardRef, useState } from 'react'
 
 import { ArrowIosDownOutline, ArrowIosUp } from '@/assets/icons'
+import { Option } from '@/components/ui/select/select.stories'
 import { Typography } from '@/components/ui/typography'
 import * as RadixSelect from '@radix-ui/react-select'
-import { SelectItem } from '@radix-ui/react-select'
 import clsx from 'clsx'
 
 import s from './select.module.scss'
 
 type SelectProps = {
+  className?: string
   disabled?: boolean
+  label?: string
+  onValueChange?: (value: string) => void
+  options: Option[]
   placeholder?: string
+  required?: boolean
+  small?: boolean
+  value?: string
 }
 
-const availableOptions = ['apple', 'banana', 'blueberry', 'grapes', 'pineapple']
+const SelectRoot = forwardRef<
+  ElementRef<typeof RadixSelect.Root>,
+  ComponentPropsWithoutRef<typeof RadixSelect.Root>
+>(props => <RadixSelect.Root {...props} />)
 
-export const Select = ({ disabled = false, placeholder = 'Select-box' }: SelectProps) => {
+const SelectTrigger = forwardRef<
+  ElementRef<typeof RadixSelect.Trigger>,
+  ComponentPropsWithoutRef<typeof RadixSelect.Trigger>
+>((props, ref) => <RadixSelect.Trigger {...props} ref={ref} />)
+
+const SelectPortal = forwardRef<
+  ElementRef<typeof RadixSelect.Portal>,
+  ComponentPropsWithoutRef<typeof RadixSelect.Portal>
+>(props => <RadixSelect.Portal {...props} />)
+
+const SelectContent = forwardRef<
+  ElementRef<typeof RadixSelect.Content>,
+  ComponentPropsWithoutRef<typeof RadixSelect.Content>
+>((props, ref) => <RadixSelect.Content {...props} ref={ref} />)
+
+const SelectViewport = forwardRef<
+  ElementRef<typeof RadixSelect.Viewport>,
+  ComponentPropsWithoutRef<typeof RadixSelect.Viewport>
+>((props, ref) => <RadixSelect.Viewport {...props} ref={ref} />)
+
+const SelectGroup = forwardRef<
+  ElementRef<typeof RadixSelect.Group>,
+  ComponentPropsWithoutRef<typeof RadixSelect.Group>
+>((props, ref) => <RadixSelect.Group {...props} ref={ref} />)
+
+const SelectValue = forwardRef<
+  ElementRef<typeof RadixSelect.Value>,
+  ComponentPropsWithoutRef<typeof RadixSelect.Value>
+>((props, ref) => <RadixSelect.Value {...props} ref={ref} />)
+
+const SelectIcon = forwardRef<
+  ElementRef<typeof RadixSelect.Icon>,
+  ComponentPropsWithoutRef<typeof RadixSelect.Icon>
+>((props, ref) => <RadixSelect.Icon {...props} ref={ref} />)
+
+export const Select = ({
+  disabled = false,
+  onValueChange,
+  options,
+  placeholder = 'Select-box',
+}: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false)
-
   const iconColor = disabled ? '#4c4c4c' : '#fff'
 
   return (
-    <RadixSelect.Root disabled={disabled} onOpenChange={setIsOpen}>
-      <div className={s.SelectWrapper}>
+    <SelectRoot disabled={disabled} onOpenChange={setIsOpen} onValueChange={onValueChange}>
+      <div className={s.selectWrapper}>
         <Typography
-          className={clsx(s.SelectTypo, { [s.disabled]: disabled })}
+          className={clsx(s.selectTypo)}
           color={'light'}
+          disabled={disabled}
           option={'body2'}
         >
           {placeholder}
         </Typography>
-        <RadixSelect.Trigger
+        <SelectTrigger
           aria-label={'Options'}
-          className={clsx(s.SelectTrigger, { [s.disabled]: disabled })}
+          className={clsx(s.selectTrigger, { [s.disabled]: disabled })}
         >
-          <RadixSelect.Value placeholder={placeholder} />
-          <RadixSelect.Icon asChild className={s.SelectIcon}>
+          <SelectValue placeholder={`${placeholder} ...`} />
+          <SelectIcon asChild className={s.selectIcon}>
             {isOpen ? <ArrowIosUp color={iconColor} /> : <ArrowIosDownOutline color={iconColor} />}
-          </RadixSelect.Icon>
-        </RadixSelect.Trigger>
-        <RadixSelect.Portal>
-          <RadixSelect.Content className={s.SelectContent}>
-            <RadixSelect.Viewport>
-              <RadixSelect.Group className={s.SelectGroup}>
-                {availableOptions.map(option => (
-                  <SelectItem className={s.SelectItem} key={option} value={option}>
-                    {option.charAt(0).toUpperCase() + option.slice(1)}
+          </SelectIcon>
+        </SelectTrigger>
+        <SelectPortal>
+          <SelectContent className={s.selectContent} position={'popper'} side={'bottom'}>
+            <SelectViewport className={s.selectViewPort}>
+              <SelectGroup className={s.selectGroup}>
+                {options.map((opt, idx) => (
+                  <SelectItem key={idx} value={opt}>
+                    <Typography color={'light'} option={'body1'}>
+                      {opt}
+                    </Typography>
                   </SelectItem>
                 ))}
-              </RadixSelect.Group>
-            </RadixSelect.Viewport>
-          </RadixSelect.Content>
-        </RadixSelect.Portal>
+              </SelectGroup>
+            </SelectViewport>
+          </SelectContent>
+        </SelectPortal>
       </div>
-    </RadixSelect.Root>
+    </SelectRoot>
   )
 }
+
+type RadixItemProps = ComponentPropsWithoutRef<typeof RadixSelect.Item>
+type SelectItemProps = {
+  className?: string
+} & RadixItemProps
+
+const SelectItem = forwardRef<ElementRef<'div'>, SelectItemProps>(
+  ({ children, className, ...props }, forwardedRef) => {
+    return (
+      <RadixSelect.Item className={clsx(s.selectItem, className)} {...props} ref={forwardedRef}>
+        <RadixSelect.ItemText>{children}</RadixSelect.ItemText>
+      </RadixSelect.Item>
+    )
+  }
+)

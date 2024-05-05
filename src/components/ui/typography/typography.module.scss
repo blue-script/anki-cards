@@ -72,3 +72,9 @@ a.link2 {
 .dark {
   color: var(--color-dark-900);
 }
+
+.disabled {
+  cursor: not-allowed;
+  color: var(--color-dark-100);
+  opacity: 0.5;
+}
