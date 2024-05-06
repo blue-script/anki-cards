@@ -3,97 +3,134 @@
   flex-direction: column;
   align-items: start;
 }
+
 .textAboveInput {
-  color: var(--color-dark-100);
-  line-height: var(--line-height-m);
   font-size: var(--font-size-s);
   font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-m);
+  color: var(--color-dark-100);
+}
+
+.inputContainer {
+  position: relative;
+  display: inline-block;
 }
 
 .input {
+  top: 24px;
+
   min-width: 284px;
   height: 36px;
-  top: 24px;
-  border-radius: 2px;
-  border: 1px solid var(--color-dark-300);
-  background-color: var(--color-dark-900);
-  padding-bottom: 6px;
   padding-top: 6px;
+  padding-bottom: 6px;
   padding-left: 12px;
-  &:active {
-    color: var(--color-light-100);
-  }
-  &:hover {
-    cursor: pointer;
-    background-color: var(--color-dark-700);
-  }
-  &:focus {
-    border-color: var(--color-info-700);
-  }
+
+  background-color: var(--color-dark-900);
+  border: 1px solid var(--color-dark-300);
+  border-radius: 2px;
+
   &::placeholder {
     color: var(--color-dark-100);
   }
+
+  &:active {
+    color: var(--color-light-100);
+  }
+
+  &:hover {
+    background-color: var(--color-dark-700);
+  }
+
+  &:focus {
+    border-color: var(--color-info-700);
+  }
 }
+
 .input.inputSearch {
+  padding-right: 34px;
   padding-left: 41px;
 }
+
 .error {
-  border-color: var(--color-danger-300);
   color: var(--color-danger-300);
+  border-color: var(--color-danger-300);
+
   &::placeholder {
     color: var(--color-danger-300);
   }
 }
+
 .textError {
-  color: var(--color-danger-300);
-  line-height: var(--line-height-m);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-m);
+  color: var(--color-danger-300);
 }
+
 .disabled {
-  color: var(--color-dark-300);
   pointer-events: none;
+  color: var(--color-dark-300);
+
   &::placeholder {
     color: var(--color-dark-300);
   }
+
   svg {
     path {
       fill: var(--color-dark-300);
     }
   }
 }
+
 .fullWidth {
   width: 100%;
 }
-.inputContainer {
-  position: relative;
-  display: inline-block;
-}
+
 .positionIconPassword {
-  width: 20px;
-  height: 20px;
   position: absolute;
   top: 50%;
   right: 12px;
   transform: translateY(-50%);
-  &:disabled {
-    opacity: 30%;
-    visibility: hidden;
-  }
-}
-.positionLeftIconSearch {
+
   width: 20px;
   height: 20px;
+
+  &.disabled {
+    path {
+      fill: var(--color-dark-300);
+    }
+  }
+}
+
+.iconSearch {
   position: absolute;
   top: 50%;
   left: 12px;
   transform: translateY(-50%);
-}
-.positionRightIconSearch {
+
   width: 20px;
   height: 20px;
+
+  fill: var(--color-light-100);
+
+  &.disabled {
+    path {
+      fill: var(--color-dark-300);
+    }
+  }
+}
+
+.positionRightIconSearch {
   position: absolute;
   top: 50%;
   right: 12px;
   transform: translateY(-50%);
+
+  width: 20px;
+  height: 20px;
+}
+
+.button {
+  all: unset;
+  cursor: pointer;
 }
