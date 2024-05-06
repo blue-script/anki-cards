@@ -14,12 +14,11 @@ type CheckboxProps = {
 }
 
 export const Checkbox = ({ checked, className, disabled, id, label, onChange }: CheckboxProps) => (
-  <form>
+  <form style={{ padding: '10px' }}>
     <div style={{ alignItems: 'center', display: 'flex' }}>
       <RadixCheckbox.Root
         checked={checked}
         className={clsx(s.CheckboxRoot, { [s.disabled]: disabled }, className)}
-        defaultChecked={false}
         id={id}
         onCheckedChange={onChange}
       >

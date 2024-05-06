@@ -18,6 +18,7 @@ button {
   border-radius: 50%;
 }
 
+
 .CheckboxRoot {
   cursor: pointer;
 
@@ -40,6 +41,10 @@ button {
     opacity: 0.6;
   }
 
+  &[data-state] {
+
+  }
+
   &:not(.disabled) {
     &:hover::before,
     &:active::before {
@@ -52,6 +57,7 @@ button {
       outline: none;
     }
   }
+
 }
 
 .CheckboxIndicator {
