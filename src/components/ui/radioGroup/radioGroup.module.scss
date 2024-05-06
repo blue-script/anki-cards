@@ -1,0 +1,117 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+  column-gap: 0;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  .error {
+    color: var(--color-danger-300);
+  }
+
+  .item {
+    display: flex;
+    flex-direction: row;
+    row-gap: 0;
+    column-gap: 12px;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+
+    &.disabled {
+      cursor: auto;
+      color: var(--color-light-900);
+    }
+
+    .indicator {
+      position: relative;
+      z-index: 10;
+
+      width: 8px;
+      height: 8px;
+
+      background-color: var(--color-accent-500);
+      border-radius: 50%;
+    }
+
+    .radio {
+      &::before,
+      &::after {
+        transform: translate(-50%, -50%) scale(0);
+        background-color: var(transparent);
+        content: '';
+        position: absolute;
+        z-index: 1;
+        top: 50%;
+        left: 50%;
+        display: block;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        transition: 0.3s;
+      }
+
+      &:focus-visible::before {
+        transform: translate(-50%, -50%) scale(1);
+        background-color: var(--color-dark-500);
+      }
+
+      &:hover::before {
+        transform: translate(-50%, -50%) scale(1);
+        background-color: var(--color-dark-500);
+      }
+
+      &:active::after {
+        transform: translate(-50%, -50%) scale(1);
+        background-color: var(--color-accent-900);
+
+        transition: 0s;
+      }
+
+      &:disabled::before,
+      &:disabled::after {
+        transform: translate(-50%, -50%) scale(0);
+        background-color: var(transparent);
+      }
+
+      all: unset;
+
+      position: relative;
+
+      display: grid;
+      place-items: center;
+
+      box-sizing: border-box;
+      width: 16px;
+      height: 16px;
+
+      .frame {
+        position: absolute;
+        z-index: 5;
+        inset: 0;
+
+        box-sizing: border-box;
+
+        border: 2px solid var(--color-accent-500);
+        border-radius: 50%;
+      }
+
+      &:disabled {
+        &::before,
+        &::after {
+          transform: translate(-50%, -50%) scale(0);
+          background-color: var(transparent);
+        }
+
+        .frame {
+          border-color: var(--color-accent-900);
+        }
+
+        .indicator {
+          background-color: var(--color-accent-900);
+        }
+      }
+    }
+  }
+}
