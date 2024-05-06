@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
+import SvgLayers from '@/assets/icons/Layers'
+
 import { Button } from './'
 
 const meta = {
@@ -26,7 +28,12 @@ export const Primary: Story = {
 }
 export const PrimaryWithIcon: Story = {
   args: {
-    children: 'Button primary',
+    children: (
+      <>
+        <SvgLayers />
+        Button primary
+      </>
+    ),
     disabled: false,
     icon: true,
     variant: 'primary',
@@ -34,7 +41,12 @@ export const PrimaryWithIcon: Story = {
 }
 export const PrimaryWithIconDisabled: Story = {
   args: {
-    children: 'Button primary',
+    children: (
+      <>
+        <SvgLayers />
+        Button primary
+      </>
+    ),
     disabled: true,
     icon: true,
     variant: 'primary',
@@ -49,7 +61,11 @@ export const Secondary: Story = {
 }
 export const SecondaryWithIcon: Story = {
   args: {
-    children: 'Button secondary',
+    children: (
+      <>
+        <SvgLayers /> Button secondary
+      </>
+    ),
     disabled: false,
     icon: true,
     variant: 'secondary',
@@ -57,7 +73,11 @@ export const SecondaryWithIcon: Story = {
 }
 export const SecondaryWithIconDisabled: Story = {
   args: {
-    children: 'Button secondary',
+    children: (
+      <>
+        <SvgLayers /> Button secondary
+      </>
+    ),
     disabled: true,
     icon: true,
     variant: 'secondary',
@@ -72,7 +92,11 @@ export const Tertiary: Story = {
 }
 export const TertiaryWithIcon: Story = {
   args: {
-    children: 'Tertiary',
+    children: (
+      <>
+        <SvgLayers /> Tertiary
+      </>
+    ),
     disabled: false,
     icon: true,
     variant: 'tertiary',
@@ -80,7 +104,11 @@ export const TertiaryWithIcon: Story = {
 }
 export const TertiaryWithIconDisabled: Story = {
   args: {
-    children: 'Tertiary',
+    children: (
+      <>
+        <SvgLayers /> Tertiary
+      </>
+    ),
     disabled: true,
     icon: true,
     variant: 'tertiary',
