@@ -13,24 +13,29 @@ type CheckboxProps = {
   onChange?: (checked: boolean) => void
 }
 
-export const Checkbox = ({ checked, className, disabled, id, label, onChange }: CheckboxProps) => (
-  <form style={{ padding: '10px' }}>
-    <div style={{ alignItems: 'center', display: 'flex' }}>
-      <RadixCheckbox.Root
-        checked={checked}
-        className={clsx(s.CheckboxRoot, { [s.disabled]: disabled }, className)}
-        id={id}
-        onCheckedChange={onChange}
-      >
-        <RadixCheckbox.Indicator className={clsx(s.CheckboxIndicator, { [s.checked]: checked })}>
-          <CheckIcon />
-        </RadixCheckbox.Indicator>
-      </RadixCheckbox.Root>
-      {label && (
-        <label className={`${s.Label}`} htmlFor={id}>
-          {label}
-        </label>
-      )}
-    </div>
-  </form>
-)
+export const Checkbox = ({ checked, className, disabled, id, label, onChange }: CheckboxProps) => {
+  const specialTextClass = disabled ? `${s['text-disabled']}` : ''
+
+  return (
+    <form style={{ padding: '10px' }}>
+      <div style={{ alignItems: 'center', display: 'flex' }}>
+        <RadixCheckbox.Root
+          checked={checked}
+          className={clsx(s.CheckboxRoot, { [s.disabled]: disabled }, className)}
+          disabled={disabled}
+          id={id}
+          onCheckedChange={onChange}
+        >
+          <RadixCheckbox.Indicator className={`${s.CheckboxIndicator}`}>
+            <CheckIcon className={`${s.CheckIcon}`} />
+          </RadixCheckbox.Indicator>
+        </RadixCheckbox.Root>
+        {label && (
+          <label className={`${s.Label} ${specialTextClass}`} htmlFor={id}>
+            {label}
+          </label>
+        )}
+      </div>
+    </form>
+  )
+}
