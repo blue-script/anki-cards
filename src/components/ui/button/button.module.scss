@@ -41,6 +41,12 @@
     justify-content: center;
     width: 100%;
   }
+
+  svg {
+    path {
+      fill: var(--color-light-100);
+    }
+  }
 }
 
 .primary {
@@ -86,6 +92,12 @@
   &:active:enabled {
     background-color: var(--color-accent-900);
   }
+
+  svg {
+    path {
+      fill: var(--color-accent-500);
+    }
+  }
 }
 
 .link {
@@ -97,15 +109,4 @@
   line-height: var(--line-height-m);
   color: var(--color-accent-500);
   text-decoration-line: underline;
-}
-.buttonText {
-  display: inline-flex;
-  flex-shrink: 0;
-  gap: 0.625rem;
-  align-items: center;
-  justify-content: center;
-}
-.icon {
-  height: 20px;
-  text-align: center;
 }

@@ -20,20 +20,18 @@ type SelectProps = {
   value?: string
 }
 
-const SelectRoot = forwardRef<
-  ElementRef<typeof RadixSelect.Root>,
-  ComponentPropsWithoutRef<typeof RadixSelect.Root>
->(props => <RadixSelect.Root {...props} />)
+const SelectRoot = (props: ComponentPropsWithoutRef<typeof RadixSelect.Root>) => (
+  <RadixSelect.Root {...props} />
+)
 
 const SelectTrigger = forwardRef<
   ElementRef<typeof RadixSelect.Trigger>,
   ComponentPropsWithoutRef<typeof RadixSelect.Trigger>
 >((props, ref) => <RadixSelect.Trigger {...props} ref={ref} />)
 
-const SelectPortal = forwardRef<
-  ElementRef<typeof RadixSelect.Portal>,
-  ComponentPropsWithoutRef<typeof RadixSelect.Portal>
->(props => <RadixSelect.Portal {...props} />)
+const SelectPortal = (props: ComponentPropsWithoutRef<typeof RadixSelect.Portal>) => (
+  <RadixSelect.Portal {...props} />
+)
 
 const SelectContent = forwardRef<
   ElementRef<typeof RadixSelect.Content>,
