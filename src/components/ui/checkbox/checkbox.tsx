@@ -11,9 +11,9 @@ type CheckboxProps = {
   className?: string
   disabled?: boolean
   id?: string
-  isChecked: boolean
+  isChecked?: boolean
   label?: string
-  onChange: (isChecked: boolean) => void
+  onChange?: (isChecked: boolean) => void
 }
 
 export const Checkbox = forwardRef<ElementRef<'form'>, CheckboxProps>(
