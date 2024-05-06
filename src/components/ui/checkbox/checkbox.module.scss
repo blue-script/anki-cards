@@ -1,7 +1,5 @@
-@mixin flex-container($align: center, $justify: center) {
-  display: flex;
-  align-items: $align;
-  justify-content: $justify;
+button {
+  all: unset;
 }
 
 @mixin state-indicator($bg-color) {
@@ -20,22 +18,20 @@
   border-radius: 50%;
 }
 
-.wrapper {
-  @include flex-container;
-}
-
 .CheckboxRoot {
-  @include flex-container;
-
   cursor: pointer;
 
   position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   width: 18px;
   height: 18px;
 
   background-color: transparent;
-  border: 2px solid var(--color-light-100);
+  border: 1px solid var(--color-light-100);
   border-radius: 4px;
   box-shadow: 0 2px 10px black;
 
@@ -59,33 +55,27 @@
 }
 
 .CheckboxIndicator {
-  display: none;
-  color: var(--color-dark-900);
+  width: 100%;
+  color: (var(--color-dark-900));
 
   & svg {
     position: relative;
-    top: 2px;
+    left: 1px;
   }
 }
 
-.selected {
+.checked {
+  max-width: 101%;
+  max-height: 101%;
+
   background-color: var(--color-light-100);
   border: none;
-
-  .CheckboxIndicator {
-    display: block;
-  }
+  border-radius: 2px;
 }
 
-.disabled {
-  background-color: var(--color-dark-100);
-}
-
-.CheckboxIcon {
-  width: 16px;
-  height: 16px;
-}
-
-.marginLeft {
-  margin-left: 11px;
+.Label {
+  padding-left: 15px;
+  font-size: 15px;
+  line-height: 1;
+  color: white;
 }
