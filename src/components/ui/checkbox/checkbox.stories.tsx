@@ -42,7 +42,7 @@ export const Checkbox1: Story = {
   render: () => {
     const { handleChange, isChecked } = useCheckboxState()
 
-    return <Checkbox isChecked={isChecked} onChange={handleChange} />
+    return <Checkbox checked={isChecked} onChange={handleChange} />
   },
 }
 
@@ -50,7 +50,7 @@ export const CheckboxWithLabel: Story = {
   render: () => {
     const { handleChange, isChecked } = useCheckboxState(false, 'Check-box with label')
 
-    return <Checkbox isChecked={isChecked} label={'Check-box with label'} onChange={handleChange} />
+    return <Checkbox checked={isChecked} label={'Check-box with label'} onChange={handleChange} />
   },
 }
 
@@ -58,7 +58,7 @@ export const DisabledCheckbox: Story = {
   render: () => {
     const { handleChange, isChecked } = useCheckboxState(true)
 
-    return <Checkbox disabled isChecked={isChecked} onChange={handleChange} />
+    return <Checkbox checked={isChecked} disabled onChange={handleChange} />
   },
 }
 
@@ -68,8 +68,8 @@ export const DisabledCheckboxWithLabel: Story = {
 
     return (
       <Checkbox
+        checked={isChecked}
         disabled
-        isChecked={isChecked}
         label={'Check-box with label'}
         onChange={handleChange}
       />
