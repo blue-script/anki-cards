@@ -1,3 +1,5 @@
+import { ElementRef, forwardRef } from 'react'
+
 import * as RadixCheckbox from '@radix-ui/react-checkbox'
 import { CheckIcon } from '@radix-ui/react-icons'
 import clsx from 'clsx'
@@ -13,18 +15,19 @@ type CheckboxProps = {
   onChange?: (checked: boolean) => void
 }
 
-export const Checkbox = ({ checked, className, disabled, id, label, onChange }: CheckboxProps) => {
-  const specialTextClass = disabled ? `${s['text-disabled']}` : ''
+export const Checkbox = forwardRef<ElementRef<typeof RadixCheckbox.Root>, CheckboxProps>(
+  ({ checked, className, disabled, id, label, onChange }, ref) => {
+    const specialTextClass = disabled ? `${s['text-disabled']}` : ''
 
-  return (
-    <form style={{ padding: '10px' }}>
-      <div style={{ alignItems: 'center', display: 'flex' }}>
+    return (
+      <div style={{ alignItems: 'center', display: 'flex', margin: '10px 2px' }}>
         <RadixCheckbox.Root
           checked={checked}
           className={clsx(s.CheckboxRoot, { [s.disabled]: disabled }, className)}
           disabled={disabled}
           id={id}
           onCheckedChange={onChange}
+          ref={ref}
         >
           <RadixCheckbox.Indicator className={`${s.CheckboxIndicator}`}>
             <CheckIcon className={`${s.CheckIcon}`} />
@@ -36,6 +39,6 @@ export const Checkbox = ({ checked, className, disabled, id, label, onChange }: 
           </label>
         )}
       </div>
-    </form>
-  )
-}
+    )
+  }
+)
