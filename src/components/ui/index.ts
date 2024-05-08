@@ -1,7 +1,6 @@
 export * from './button'
 export * from './card'
 export * from './checkbox'
-export * from './controlled'
 export * from './dropdown'
 export * from './modal'
 export * from './pagination'

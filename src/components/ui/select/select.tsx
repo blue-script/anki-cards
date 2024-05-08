@@ -8,7 +8,7 @@ import clsx from 'clsx'
 
 import s from './select.module.scss'
 
-type SelectProps = {
+export type SelectProps = {
   className?: string
   disabled?: boolean
   label?: string
