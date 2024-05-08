@@ -23,9 +23,6 @@ const loginSchema = z.object({
   selectedValue: z.string().default(''),
 })
 
-// const emailRegex =
-//   /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/
-
 export type FormValues = z.infer<typeof loginSchema>
 
 type Props = {
@@ -33,14 +30,7 @@ type Props = {
 }
 
 export const LoginForm = ({ onSubmit }: Props) => {
-  const {
-    control,
-    // call formState to find errors
-    //formState: { errors },
-    handleSubmit,
-    //register,
-    // here insert zod scheme to useForm
-  } = useForm<FormValues>({
+  const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       TOS: false,
       email: '',
@@ -50,22 +40,6 @@ export const LoginForm = ({ onSubmit }: Props) => {
     },
     resolver: zodResolver(loginSchema),
   })
-
-  // const {
-  //   // useController - wrapper for useState
-  //   // const [value, onChange] = useState
-  //
-  //   // const changeHandler = () => onChange(!value)
-  //   //return {field: {value, name, onChange, ...field}}
-  //   field: { onChange, value, ...field },
-  // } = useController({
-  //   control,
-  //   name: 'rememberMe',
-  // })
-
-  // const onSubmit = (data: FormValues) => {
-  //   console.log(data)
-  // }
 
   return (
     <>
@@ -78,33 +52,7 @@ export const LoginForm = ({ onSubmit }: Props) => {
           label={'email'}
           name={'email'}
         />
-        <FormTextField
-          control={control}
-          //errorMessage={errors.password?.message}
-          label={'password'}
-          name={'password'}
-        />
-        {
-          /*
-        <TextField
-          {...register('email')}
-          /*{...register('email', {*/
-          /*  pattern: { message: 'Invalid email', value: emailRegex },*/
-          /*  required: 'Email is required',*/
-          /*})}*/
-          // errorMessage={errors.email?.message}
-          //label={'email'}
-          // />
-          //<TextField
-          // {...register('password')}
-          /*{...register('password', {*/
-          /*  minLength: { message: 'Password has to be at least 3 characters long', value: 3 },*/
-          /*  required: 'Password is required',*/
-          /*})}
-          errorMessage={errors.password?.message}
-          label={'password'}
-        />*/
-        }
+        <FormTextField control={control} label={'password'} name={'password'} />
         <FormCheckbox control={control} label={'Remember me'} name={'rememberMe'} />
         <FormCheckbox control={control} label={'Accept terms of service'} name={'TOS'} />
 
