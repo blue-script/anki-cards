@@ -57,7 +57,7 @@
 
   overflow: hidden;
 
-  width: var(--select-width);
+  width: calc(var(--select-width) + 12px);
 
   background-color: transparent;
   border: 1px solid var(--color-dark-300);
