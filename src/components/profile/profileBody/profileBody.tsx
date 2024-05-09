@@ -77,7 +77,7 @@ export const ProfileBody = ({
         label={'Nickmame'}
         name={'nickname'}
       />
-      <Button fullWidth type={'submit'} variant={'primary'}>
+      <Button as={'a'} fullWidth type={'submit'} variant={'primary'}>
         Save Changes
       </Button>
     </form>
