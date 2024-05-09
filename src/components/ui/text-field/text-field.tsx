@@ -24,7 +24,8 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       disabled,
       errorMessage,
       fullWidth,
-      placeholder,
+      label = '',
+      placeholder = '',
       variant = 'input',
       ...rest
     }: TextFieldProps,
@@ -41,7 +42,6 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     )
     const finalAboveInput = clsx(s.textAboveInput, disabled && s.disabled)
     const finalInputContainer = clsx(s.inputContainer, fullWidth && s.fullWidth)
-    let placeholderText = placeholder ?? 'input'
 
     const displayClearButton = variant === 'search' && clear // && rest.value
 
@@ -51,20 +51,16 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       setShowPassword(show => !show)
     }
 
-    if (errorMessage) {
-      placeholderText = errorMessage
-    }
-
     return (
       <div className={s.inputWrapper}>
-        <span className={finalAboveInput}>{rest.label}</span>
+        <span className={finalAboveInput}>{label}</span>
         <div className={finalInputContainer}>
           {variant === 'search' && (
             <SearchOutline className={clsx(s.iconSearch, disabled && s.disabled)} />
           )}
           <input
             className={finalInputClassName}
-            placeholder={placeholderText}
+            placeholder={placeholder}
             ref={ref}
             type={variant === 'password' && !showPassword ? 'password' : 'text'}
             {...rest}
