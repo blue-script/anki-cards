@@ -10,6 +10,7 @@ import s from './select.module.scss'
 
 export type SelectProps = {
   className?: string
+  defaultValue?: string
   disabled?: boolean
   label?: string
   onValueChange?: (value: string) => void
@@ -59,6 +60,7 @@ const SelectIcon = forwardRef<
 >((props, ref) => <RadixSelect.Icon {...props} ref={ref} />)
 
 export const Select = ({
+  defaultValue,
   disabled = false,
   onValueChange,
   options,
@@ -68,41 +70,45 @@ export const Select = ({
   const iconColor = disabled ? '#4c4c4c' : '#fff'
 
   return (
-    <SelectRoot disabled={disabled} onOpenChange={setIsOpen} onValueChange={onValueChange}>
-      <div className={s.selectWrapper}>
-        <Typography
-          className={clsx(s.selectTypo)}
-          color={'light'}
-          disabled={disabled}
-          option={'body2'}
-        >
-          {placeholder}
-        </Typography>
-        <SelectTrigger
-          aria-label={'Options'}
-          className={clsx(s.selectTrigger, { [s.disabled]: disabled })}
-        >
-          <SelectValue placeholder={`${placeholder} ...`} />
-          <SelectIcon asChild className={s.selectIcon}>
-            {isOpen ? <ArrowIosUp color={iconColor} /> : <ArrowIosDownOutline color={iconColor} />}
-          </SelectIcon>
-        </SelectTrigger>
-        <SelectPortal>
-          <SelectContent className={s.selectContent} position={'popper'} side={'bottom'}>
-            <SelectViewport className={s.selectViewPort}>
-              <SelectGroup className={s.selectGroup}>
-                {options.map((opt, idx) => (
-                  <SelectItem key={idx} value={opt}>
-                    <Typography color={'light'} option={'body1'}>
-                      {opt}
-                    </Typography>
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectViewport>
-          </SelectContent>
-        </SelectPortal>
-      </div>
+    <SelectRoot
+      defaultValue={defaultValue}
+      disabled={disabled}
+      onOpenChange={setIsOpen}
+      onValueChange={onValueChange}
+    >
+      <Typography
+        className={clsx(s.selectTypo)}
+        color={'light'}
+        disabled={disabled}
+        option={'body2'}
+      >
+        {placeholder}
+      </Typography>
+      <SelectTrigger
+        aria-label={'select'}
+        className={clsx(s.selectTrigger, { [s.disabled]: disabled })}
+      >
+        <SelectValue placeholder={`${placeholder} ...`} />
+        <SelectIcon asChild className={s.selectIcon}>
+          {isOpen ? <ArrowIosUp color={iconColor} /> : <ArrowIosDownOutline color={iconColor} />}
+        </SelectIcon>
+      </SelectTrigger>
+      <SelectPortal>
+        <SelectContent className={s.selectContent} position={'popper'} side={'bottom'}>
+          <SelectViewport className={s.selectViewPort}>
+            <SelectGroup className={s.selectGroup}>
+              {options.map((opt, idx) => (
+                <SelectItem key={idx} value={opt}>
+                  <Typography color={'light'} option={'body1'}>
+                    {opt}
+                  </Typography>
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectViewport>
+        </SelectContent>
+      </SelectPortal>
+      {/*</div>*/}
     </SelectRoot>
   )
 }
