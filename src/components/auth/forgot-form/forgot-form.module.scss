@@ -26,18 +26,19 @@
   background-color: var(--color-dark-700);
 }
 
-.headerText, .linkBtn {
+.headerText,
+.linkBtn {
   margin-bottom: var(--margin-large);
 }
 
 .emailText {
-  margin-top: 19px; /* Specific value suggests it should not be changed */
+  margin-top: 19px;
   color: var(--color-dark-300);
 }
 
 .sendBtn {
   height: 36px;
-  margin-top: 50px; /* Consider making this a variable if used elsewhere */
+  margin-top: 50px;
 }
 
 .rememberText {

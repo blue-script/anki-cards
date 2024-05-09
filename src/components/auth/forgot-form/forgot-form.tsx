@@ -59,7 +59,13 @@ export const ForgotForm = ({ className, onSubmit, style }: Props) => {
         <Typography as={'h1'} className={s.headerText} color={'light'} option={'h1'}>
           {'Forgot your password?'}
         </Typography>
-        <FormTextField className={s.emailField} control={control} label={'Email'} name={'email'} />
+        <FormTextField
+          className={s.emailField}
+          control={control}
+          fullWidth
+          label={'Email'}
+          name={'email'}
+        />
         <Typography className={s.emailText} color={'light'} option={'body2'}>
           {'Enter your email address and we will send you further instructions'}
         </Typography>
