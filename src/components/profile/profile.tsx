@@ -23,7 +23,7 @@ export const Profile = ({ avatar, email, name, onAvatarChange, onLogout, onNameC
 
   return (
     <Card className={s.card}>
-      <Typography as={'h1'} className={s.title} color={'light'} option={'h1'}>
+      <Typography as={'h1'} className={s.title} option={'h1'}>
         Personal Information
       </Typography>
 

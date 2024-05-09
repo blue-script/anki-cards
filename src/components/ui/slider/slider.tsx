@@ -18,7 +18,7 @@ export const Slider = forwardRef<ElementRef<typeof SliderPrimitive.Root>, Props>
 
   return (
     <div className={s.wrapper}>
-      <Typography as={'span'} color={'light'} option={'body2'}>
+      <Typography as={'span'} option={'body2'}>
         {label}
       </Typography>
       <div className={s.container}>
