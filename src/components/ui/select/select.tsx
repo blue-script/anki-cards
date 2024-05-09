@@ -70,7 +70,12 @@ export const Select = ({
   const iconColor = disabled ? '#4c4c4c' : '#fff'
 
   return (
-    <SelectRoot defaultValue={defaultValue} disabled={disabled} onOpenChange={setIsOpen} onValueChange={onValueChange}>
+    <SelectRoot
+      defaultValue={defaultValue}
+      disabled={disabled}
+      onOpenChange={setIsOpen}
+      onValueChange={onValueChange}
+    >
       <div className={s.selectWrapper}>
         <Typography className={clsx(s.selectTypo)} disabled={disabled} option={'body2'}>
           {placeholder}
@@ -86,7 +91,7 @@ export const Select = ({
         </SelectTrigger>
         <SelectPortal>
           <SelectContent className={s.selectContent} position={'popper'} side={'bottom'}>
-            <SelectViewport className={s.selectViewPort}>
+            <SelectViewport>
               <SelectGroup className={s.selectGroup}>
                 {options.map((opt, idx) => (
                   <SelectItem key={idx} value={opt}>

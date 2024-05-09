@@ -26,7 +26,7 @@
   border-radius: 2px;
 
   &[data-state='open'] {
-    border-bottom: none;
+    border-radius: 2px 2px 0 0;
   }
 
   &:focus-visible,
@@ -36,7 +36,6 @@
     border-color: var(--color-dark-100);
   }
 
-  &:focus,
   &:focus-visible {
     outline: 2px solid var(--color-info-700);
   }
@@ -62,11 +61,8 @@
 
   &[data-state='open'] {
     border-top: none;
+    border-radius: 0 0 2px 2px;
   }
-}
-
-.selectViewPort {
-  padding: 5px;
 }
 
 .selectItem {
@@ -84,9 +80,9 @@
   &:hover {
     color: var(--color-dark-100);
     background-color: var(--color-accent-900);
+    outline: none;
   }
 
-  &:focus,
   &:focus-visible {
     outline: 2px solid var(--color-info-700);
   }
