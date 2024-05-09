@@ -16,7 +16,7 @@ export type CheckboxProps = {
 }
 
 export const Checkbox = forwardRef<ElementRef<typeof RadixCheckbox.Root>, CheckboxProps>(
-  ({ checked, className, disabled, id, label, onChange }, ref) => {
+  ({ checked, className, disabled, label, onChange }, ref) => {
     const specialTextClass = disabled ? `${s['text-disabled']}` : ''
 
     return (
@@ -25,7 +25,7 @@ export const Checkbox = forwardRef<ElementRef<typeof RadixCheckbox.Root>, Checkb
           checked={checked}
           className={clsx(s.CheckboxRoot, { [s.disabled]: disabled }, className)}
           disabled={disabled}
-          id={id}
+          id={label}
           onCheckedChange={onChange}
           ref={ref}
         >
@@ -34,7 +34,7 @@ export const Checkbox = forwardRef<ElementRef<typeof RadixCheckbox.Root>, Checkb
           </RadixCheckbox.Indicator>
         </RadixCheckbox.Root>
         {label && (
-          <label className={`${s.Label} ${specialTextClass}`} htmlFor={id}>
+          <label className={`${s.Label} ${specialTextClass}`} htmlFor={label}>
             {label}
           </label>
         )}
