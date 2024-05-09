@@ -46,12 +46,7 @@ export const LoginForm = ({ onSubmit }: Props) => {
       {import.meta.env.DEV && <DevTool control={control} />}
 
       <form onSubmit={handleSubmit(onSubmit)} style={{ padding: '7px 15px' }}>
-        <FormTextField
-          control={control}
-          //errorMessage={errors.email?.message}
-          label={'email'}
-          name={'email'}
-        />
+        <FormTextField control={control} label={'email'} name={'email'} />
         <FormTextField control={control} label={'password'} name={'password'} />
         <FormCheckbox control={control} label={'Remember me'} name={'rememberMe'} />
         <FormCheckbox control={control} label={'Accept terms of service'} name={'TOS'} />
