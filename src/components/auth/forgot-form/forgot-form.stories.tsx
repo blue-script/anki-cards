@@ -5,7 +5,7 @@ import { Meta, StoryObj } from '@storybook/react'
 const meta: Meta<typeof ForgotForm> = {
   component: ForgotForm,
   tags: ['autodocs'],
-  title: 'Auth/ForgotForm',
+  title: 'Auth/CheckEmail',
 }
 
 export default meta

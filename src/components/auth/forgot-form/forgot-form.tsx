@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 
 import { Button, Typography } from '@/components'
 import { FormTextField } from '@/components/ui/form/form-textfield'
+import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { clsx } from 'clsx'
 import { z } from 'zod'
@@ -51,6 +52,8 @@ export const ForgotForm = ({ className, onSubmit, style }: Props) => {
 
   return (
     <>
+      {import.meta.env.DEV && <DevTool control={control} />}
+
       <form
         className={clsx(s.form, className)}
         onSubmit={handleSubmit(handleFormSubmit)}
