@@ -1,6 +1,7 @@
 import { ChangeEvent, useRef } from 'react'
 
 import { Edit2 } from '@/assets/icons'
+import { Button } from '@/components'
 
 import s from '@/components/profile/profileAvatar/profileAvatar.module.scss'
 
@@ -18,15 +19,24 @@ export const ProfileAvatar = ({ avatar, editBodyStatus, onAvatarChange }: Props)
   }
 
   const uploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.length && e.target.files[0]
+    const file = e.target.files?.[0]
 
     if (file) {
+      console.log(file.type)
+      if (!file.type.match('image.*')) {
+        alert('Please select a valid image file.')
+
+        return
+      }
+
       const reader = new FileReader()
 
       reader.onload = e => {
         const newAvatar = e.target?.result as string
 
-        onAvatarChange(newAvatar)
+        if (newAvatar) {
+          onAvatarChange(newAvatar)
+        }
       }
       reader.readAsDataURL(file)
     }
@@ -37,9 +47,9 @@ export const ProfileAvatar = ({ avatar, editBodyStatus, onAvatarChange }: Props)
       <img alt={'avatar'} src={avatar} />
       {!editBodyStatus && (
         <>
-          <button className={s.editAvatarButton} onClick={selectFileHandler}>
+          <Button className={s.editAvatarButton} onClick={selectFileHandler}>
             <Edit2 />
-          </button>
+          </Button>
           <input
             accept={'image/*'}
             onChange={uploadHandler}

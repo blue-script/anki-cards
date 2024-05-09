@@ -30,7 +30,7 @@ type Props = {
 }
 
 export const LoginForm = ({ onSubmit }: Props) => {
-  const { control, handleSubmit } = useForm<FormValues>({
+  const { control, handleSubmit, reset } = useForm<FormValues>({
     defaultValues: {
       TOS: false,
       email: '',
@@ -41,11 +41,16 @@ export const LoginForm = ({ onSubmit }: Props) => {
     resolver: zodResolver(loginSchema),
   })
 
+  const handleOnSubmit = (data: FormValues) => {
+    onSubmit(data)
+    reset()
+  }
+
   return (
     <>
       {import.meta.env.DEV && <DevTool control={control} />}
 
-      <form onSubmit={handleSubmit(onSubmit)} style={{ padding: '7px 15px' }}>
+      <form onSubmit={handleSubmit(handleOnSubmit)} style={{ padding: '7px 15px' }}>
         <FormTextField control={control} label={'email'} name={'email'} />
         <FormTextField control={control} label={'password'} name={'password'} />
         <FormCheckbox control={control} label={'Remember me'} name={'rememberMe'} />

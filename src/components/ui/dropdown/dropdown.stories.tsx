@@ -39,21 +39,21 @@ export const Default: Story = {
       <Dropdown.Content align={'end'}>
         <Dropdown.Item>
           <PlayCircleOutline />
-          <Typography as={'span'} color={'light'} option={'caption'}>
+          <Typography as={'span'} option={'caption'}>
             Learn
           </Typography>
         </Dropdown.Item>
         <Dropdown.Separator />
         <Dropdown.Item>
           <Edit2 />
-          <Typography as={'span'} color={'light'} option={'caption'}>
+          <Typography as={'span'} option={'caption'}>
             Edit
           </Typography>
         </Dropdown.Item>
         <Dropdown.Separator />
         <Dropdown.Item>
           <Trash />
-          <Typography as={'span'} color={'light'} option={'caption'}>
+          <Typography as={'span'} option={'caption'}>
             Delete
           </Typography>
         </Dropdown.Item>
@@ -72,10 +72,10 @@ export const Profile: Story = {
         <Dropdown.Label>
           <img alt={'profile image'} src={profileImage} />
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <Typography as={'span'} color={'light'} option={'caption'}>
+            <Typography as={'span'} option={'caption'}>
               Name
             </Typography>
-            <Typography as={'span'} color={'light'} option={'caption'}>
+            <Typography as={'span'} option={'caption'}>
               email@example.com
             </Typography>
           </div>
@@ -83,14 +83,14 @@ export const Profile: Story = {
         <Dropdown.Separator />
         <Dropdown.Item>
           <PersonOutline />
-          <Typography as={'span'} color={'light'} option={'caption'}>
+          <Typography as={'span'} option={'caption'}>
             My Profile
           </Typography>
         </Dropdown.Item>
         <Dropdown.Separator />
         <Dropdown.Item>
           <LogOut />
-          <Typography as={'span'} color={'light'} option={'caption'}>
+          <Typography as={'span'} option={'caption'}>
             Sign Out
           </Typography>
         </Dropdown.Item>

@@ -9,8 +9,21 @@
 
   .editNameButton {
     all: unset;
+
     cursor: pointer;
-    line-height: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 24px;
+    height: 24px;
+
+    &:focus-visible,
+    &:hover {
+      background-color: var(--color-dark-300);
+      border-radius: 4px;
+    }
 
     &:focus-visible {
       outline: 2px solid var(--color-info-900);

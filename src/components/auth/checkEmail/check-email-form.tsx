@@ -14,7 +14,7 @@ type Props = {
 export const CheckEmailForm = ({ className, onSubmit, style }: Props) => {
   return (
     <form className={clsx(s.form, className)} onSubmit={onSubmit} style={style}>
-      <Typography as={'h1'} className={s.headerText} color={'light'} option={'h1'}>
+      <Typography as={'h1'} className={s.headerText} option={'h1'}>
         {'Check Email'}
       </Typography>
       <img
@@ -22,7 +22,7 @@ export const CheckEmailForm = ({ className, onSubmit, style }: Props) => {
         className={s.pic}
         src={'src/assets/img/check-email.png'}
       />
-      <Typography className={s.emailText} color={'light'} option={'body2'}>
+      <Typography className={s.emailText} option={'body2'}>
         {'We’ve sent an Email with instructions to example@mail.com'}
       </Typography>
       <Button
