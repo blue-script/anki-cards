@@ -16,9 +16,9 @@ export type Props = {
 }
 
 export const Profile = ({ avatar, email, name, onAvatarChange, onLogout, onNameChange }: Props) => {
-  const [editBodyStatus, setEditBodyStatus] = useState<boolean>(false)
-  const editBodyStatusHandler = () => {
-    setEditBodyStatus(prev => !prev)
+  const [bodyStatus, setBodyStatus] = useState<boolean>(false)
+  const setBodyStatusHandler = () => {
+    setBodyStatus(prev => !prev)
   }
 
   return (
@@ -27,19 +27,15 @@ export const Profile = ({ avatar, email, name, onAvatarChange, onLogout, onNameC
         Personal Information
       </Typography>
 
-      <ProfileAvatar
-        avatar={avatar}
-        editBodyStatus={editBodyStatus}
-        onAvatarChange={onAvatarChange}
-      />
+      <ProfileAvatar avatar={avatar} editBodyStatus={bodyStatus} onAvatarChange={onAvatarChange} />
 
       <ProfileBody
-        editBodyStatus={editBodyStatus}
-        editBodyStatusHandler={editBodyStatusHandler}
+        bodyStatus={bodyStatus}
         email={email}
         name={name}
         onLogout={onLogout}
         onNameChange={onNameChange}
+        setBodyStatusHandler={setBodyStatusHandler}
       />
     </Card>
   )

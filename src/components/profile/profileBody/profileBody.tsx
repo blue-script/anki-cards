@@ -1,44 +1,62 @@
+import { useForm } from 'react-hook-form'
+
 import { Edit2 } from '@/assets/icons'
 import SvgLayers from '@/assets/icons/Layers'
-import { Button, TextField, Typography } from '@/components'
+import { Button, Typography } from '@/components'
+import { FormTextField } from '@/components/ui/form/form-textfield'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 
 import s from '@/components/profile/profileBody/profileBody.module.scss'
 
 type Props = {
-  editBodyStatus: boolean
-  editBodyStatusHandler: () => void
+  bodyStatus: boolean
   email: string
   name: string
   onLogout: () => void
   onNameChange: (newName: string) => void
+  setBodyStatusHandler: () => void
 }
 
 export const ProfileBody = ({
-  editBodyStatus,
-  editBodyStatusHandler,
+  bodyStatus,
   email,
   name,
   onLogout,
   onNameChange,
+  setBodyStatusHandler,
 }: Props) => {
   const logoutHandler = () => {
     onLogout()
   }
-  const changeNameHandler = () => {
-    editBodyStatusHandler()
+  const changeBodyStatusHandler = () => {
+    setBodyStatusHandler()
   }
 
-  const saveNameHandler = () => {
+  const changeNameHandler = () => {
     onNameChange('name')
   }
 
-  return !editBodyStatus ? (
+  const nicknameSchema = z.object({
+    nickname: z.string().min(3, { message: 'Nickname must be at least 3 characters long' }),
+  })
+
+  type FormValues = z.infer<typeof nicknameSchema>
+
+  const { control, handleSubmit } = useForm<FormValues>({
+    defaultValues: {
+      nickname: '',
+    },
+    resolver: zodResolver(nicknameSchema),
+  })
+
+  return !bodyStatus ? (
     <>
       <div className={s.containerName}>
         <Typography as={'span'} className={s.name} color={'light'} option={'h2'}>
           {name}
         </Typography>
-        <button className={s.editNameButton} onClick={changeNameHandler}>
+        <button className={s.editNameButton} onClick={changeBodyStatusHandler}>
           <Edit2 />
         </button>
       </div>
@@ -51,11 +69,17 @@ export const ProfileBody = ({
       </Button>
     </>
   ) : (
-    <>
-      <TextField className={s.newName} fullWidth label={'Nickmame'} />
-      <Button fullWidth onClick={saveNameHandler} variant={'primary'}>
+    <form onSubmit={handleSubmit(changeNameHandler)}>
+      <FormTextField
+        className={s.newName}
+        control={control}
+        fullWidth
+        label={'Nickmame'}
+        name={'nickname'}
+      />
+      <Button fullWidth type={'submit'} variant={'primary'}>
         Save Changes
       </Button>
-    </>
+    </form>
   )
 }
