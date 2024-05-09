@@ -70,12 +70,7 @@ export const Select = ({
   return (
     <SelectRoot disabled={disabled} onOpenChange={setIsOpen} onValueChange={onValueChange}>
       <div className={s.selectWrapper}>
-        <Typography
-          className={clsx(s.selectTypo)}
-          color={'light'}
-          disabled={disabled}
-          option={'body2'}
-        >
+        <Typography className={clsx(s.selectTypo)} disabled={disabled} option={'body2'}>
           {placeholder}
         </Typography>
         <SelectTrigger
@@ -93,9 +88,7 @@ export const Select = ({
               <SelectGroup className={s.selectGroup}>
                 {options.map((opt, idx) => (
                   <SelectItem key={idx} value={opt}>
-                    <Typography color={'light'} option={'body1'}>
-                      {opt}
-                    </Typography>
+                    <Typography option={'body1'}>{opt}</Typography>
                   </SelectItem>
                 ))}
               </SelectGroup>
