@@ -37,16 +37,25 @@ const loginSchema = z.object({
 export type FormValuesFromForgot = z.infer<typeof loginSchema>
 
 export const ForgotForm = ({ className, onSubmit, style }: Props) => {
-  const { control, handleSubmit } = useForm<FormValuesFromForgot>({
+  const { control, handleSubmit, reset } = useForm<FormValuesFromForgot>({
     defaultValues: {
       email: '',
     },
     resolver: zodResolver(loginSchema),
   })
 
+  const handleFormSubmit = (data: FormValuesFromForgot) => {
+    onSubmit(data)
+    reset()
+  }
+
   return (
     <>
-      <form className={clsx(s.form, className)} onSubmit={handleSubmit(onSubmit)} style={style}>
+      <form
+        className={clsx(s.form, className)}
+        onSubmit={handleSubmit(handleFormSubmit)}
+        style={style}
+      >
         <Typography as={'h1'} className={s.headerText} color={'light'} option={'h1'}>
           {'Forgot your password?'}
         </Typography>
@@ -62,7 +71,12 @@ export const ForgotForm = ({ className, onSubmit, style }: Props) => {
         <Typography className={s.rememberText} color={'light'} option={'body2'}>
           {'Did you remember your password?'}
         </Typography>
-        <Button as={'a'} className={s.linkBtn} variant={'link'}>
+        <Button
+          as={'a'}
+          className={s.linkBtn}
+          href={'http://localhost:5173/checkEmail'}
+          variant={'link'}
+        >
           Try logging in
         </Button>
       </form>
