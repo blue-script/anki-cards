@@ -1,0 +1,38 @@
+.containerAvatar {
+  position: relative;
+  margin-bottom: 6px;
+
+  > img {
+    width: 96px;
+    height: 96px;
+
+    vertical-align: bottom;
+
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  > .editAvatarButton {
+    all: unset;
+
+    cursor: pointer;
+
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 24px;
+    height: 24px;
+
+    background-color: var(--color-dark-300);
+    border-radius: 4px;
+
+    &:focus-visible {
+      outline: 2px solid var(--color-info-900);
+    }
+  }
+}

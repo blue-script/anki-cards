@@ -1,0 +1,29 @@
+.containerName {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+
+  .name {
+    // on feature
+  }
+
+  .editNameButton {
+    all: unset;
+    cursor: pointer;
+    line-height: 0;
+
+    &:focus-visible {
+      outline: 2px solid var(--color-info-900);
+    }
+  }
+}
+
+.newName {
+  margin: 6px 0 36px;
+}
+
+.email {
+  margin-bottom: 13px;
+  line-height: var(--line-height-m);
+  color: var(--color-dark-100);
+}
