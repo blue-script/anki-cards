@@ -1,11 +1,8 @@
-import { useForm } from 'react-hook-form'
-
 import { Edit2 } from '@/assets/icons'
 import SvgLayers from '@/assets/icons/Layers'
 import { Button, Typography } from '@/components'
+import { FormValues, useProfileBody } from '@/components/profile/profileBody/useProfileBody'
 import { FormTextField } from '@/components/ui/form/form-textfield'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 
 import s from '@/components/profile/profileBody/profileBody.module.scss'
 
@@ -33,22 +30,11 @@ export const ProfileBody = ({
     setBodyStatusHandler()
   }
 
-  const changeNameHandler = () => {
-    onNameChange('name')
+  const changeNameHandler = (data: FormValues) => {
+    onNameChange(data.name)
   }
 
-  const nicknameSchema = z.object({
-    nickname: z.string().min(3, { message: 'Nickname must be at least 3 characters long' }),
-  })
-
-  type FormValues = z.infer<typeof nicknameSchema>
-
-  const { control, handleSubmit } = useForm<FormValues>({
-    defaultValues: {
-      nickname: '',
-    },
-    resolver: zodResolver(nicknameSchema),
-  })
+  const { control, handleSubmit } = useProfileBody({ name: name })
 
   return !bodyStatus ? (
     <>
@@ -56,9 +42,9 @@ export const ProfileBody = ({
         <Typography as={'span'} className={s.name} option={'h2'}>
           {name}
         </Typography>
-        <button className={s.editNameButton} onClick={changeBodyStatusHandler}>
+        <Button className={s.editNameButton} onClick={changeBodyStatusHandler}>
           <Edit2 />
-        </button>
+        </Button>
       </div>
 
       <Typography as={'span'} className={s.email} option={'body2'}>
@@ -75,9 +61,10 @@ export const ProfileBody = ({
         control={control}
         fullWidth
         label={'Nickmame'}
-        name={'nickname'}
+        name={'name'}
       />
-      <Button as={'a'} fullWidth type={'submit'} variant={'primary'}>
+
+      <Button fullWidth type={'submit'} variant={'primary'}>
         Save Changes
       </Button>
     </form>
