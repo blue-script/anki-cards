@@ -59,7 +59,7 @@ export const ForgotForm = ({ className, onSubmit, style }: Props) => {
         onSubmit={handleSubmit(handleFormSubmit)}
         style={style}
       >
-        <Typography as={'h1'} className={s.headerText} color={'light'} option={'h1'}>
+        <Typography as={'h1'} className={s.headerText} option={'h1'}>
           {'Forgot your password?'}
         </Typography>
         <FormTextField
@@ -69,15 +69,13 @@ export const ForgotForm = ({ className, onSubmit, style }: Props) => {
           label={'Email'}
           name={'email'}
         />
-        <Typography className={s.emailText} color={'light'} option={'body2'}>
+        <Typography className={s.emailText} option={'body2'}>
           {'Enter your email address and we will send you further instructions'}
         </Typography>
         <Button className={s.sendBtn} fullWidth>
-          <Typography color={'light'} option={'subtitle2'}>
-            Send Instructions
-          </Typography>
+          <Typography option={'subtitle2'}>Send Instructions</Typography>
         </Button>
-        <Typography className={s.rememberText} color={'light'} option={'body2'}>
+        <Typography className={s.rememberText} option={'body2'}>
           {'Did you remember your password?'}
         </Typography>
         <Button
