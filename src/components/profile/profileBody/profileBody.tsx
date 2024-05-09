@@ -53,7 +53,7 @@ export const ProfileBody = ({
   return !bodyStatus ? (
     <>
       <div className={s.containerName}>
-        <Typography as={'span'} className={s.name} color={'light'} option={'h2'}>
+        <Typography as={'span'} className={s.name} option={'h2'}>
           {name}
         </Typography>
         <button className={s.editNameButton} onClick={changeBodyStatusHandler}>
@@ -61,7 +61,7 @@ export const ProfileBody = ({
         </button>
       </div>
 
-      <Typography as={'span'} className={s.email} color={'light'} option={'body2'}>
+      <Typography as={'span'} className={s.email} option={'body2'}>
         {email}
       </Typography>
       <Button onClick={logoutHandler} variant={'secondary'}>
