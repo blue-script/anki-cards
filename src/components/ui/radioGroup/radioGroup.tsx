@@ -8,7 +8,7 @@ export type Option = {
   value: string
 }
 
-export type Props = {
+export type RadioGroupProps = {
   disabled?: boolean
   errorMessage?: string
   name?: string
@@ -17,7 +17,7 @@ export type Props = {
   value?: string
 }
 
-export const RadioGroup = ({ errorMessage, onValueChange, options, ...rest }: Props) => {
+export const RadioGroup = ({ errorMessage, onValueChange, options, ...rest }: RadioGroupProps) => {
   const labelClasses = clsx(s.item, rest.disabled && s.disabled)
 
   return (

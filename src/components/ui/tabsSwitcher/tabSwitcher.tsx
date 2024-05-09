@@ -9,7 +9,7 @@ export type Tab = {
   value: string
 }
 
-type Props = {
+export type TabSwitcherProps = {
   className?: string
   label?: string
   onValueChange: (value: string) => void
@@ -17,7 +17,7 @@ type Props = {
   value: string
 }
 
-export const TabSwitcher = ({ className, label, onValueChange, tabs, value }: Props) => {
+export const TabSwitcher = ({ className, label, onValueChange, tabs, value }: TabSwitcherProps) => {
   const classes = clsx(s.label, className)
 
   return (
