@@ -1,0 +1,40 @@
+:root {
+  --form-margin-vertical: 20px;
+  --form-margin-horizontal: auto;
+  --form-width: 420px;
+  --form-height: 408px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  box-sizing: border-box;
+  width: var(--form-width);
+  height: var(--form-height);
+  margin: var(--form-margin-vertical) var(--form-margin-horizontal);
+  padding: 36px;
+
+  text-align: center;
+
+  background-color: var(--color-dark-700);
+}
+
+.headerText {
+  margin-top: 0;
+}
+
+.pic {
+  margin-top: 27px;
+}
+
+.emailText {
+  margin-top: 19px;
+  color: var(--color-dark-300);
+}
+
+.linkBtn {
+  margin-top: 55px;
+  margin-bottom: var(--margin-large);
+}

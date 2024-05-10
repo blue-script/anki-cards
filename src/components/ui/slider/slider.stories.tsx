@@ -22,7 +22,8 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    max: 30,
+    label: 'Number of cards',
+    max: 20,
     min: 7,
     value: [8, 23],
   },
@@ -33,7 +34,13 @@ export const Default: Story = {
     }
 
     return (
-      <Slider max={args.max} min={args.min} onValueChange={valueChangeHandler} value={values} />
+      <Slider
+        label={args.label}
+        max={args.max}
+        min={args.min}
+        onValueChange={valueChangeHandler}
+        value={values}
+      />
     )
   },
 }

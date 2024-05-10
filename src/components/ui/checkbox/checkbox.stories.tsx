@@ -24,6 +24,7 @@ export const Unchecked: Story = {
 export const Checked: Story = {
   args: {
     checked: true,
+    id: 'c1',
     label: 'Click me',
   },
 }
@@ -47,6 +48,7 @@ export const DisabledUnchecked: Story = {
 export const Controlled: Story = {
   args: {
     checked: false,
+    id: 'c1',
     label: 'Click here',
   },
   render: args => {
