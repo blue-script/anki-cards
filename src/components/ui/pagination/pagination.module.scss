@@ -95,21 +95,5 @@
 }
 
 .select {
-  @include text;
-
-  cursor: pointer;
-
-  height: 24px;
-  margin: 0 9px 0 6px;
-  padding-left: 2px;
-
-  font-size: 16px;
-
-  background-color: var(--color-dark-700);
-  border: 1px solid var(--color-dark-500);
-  border-radius: 2px;
-
-  &:focus-visible {
-    outline: 2px solid var(--color-info-900);
-  }
+  // for feature
 }
