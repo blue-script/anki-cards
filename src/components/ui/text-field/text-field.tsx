@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, forwardRef, useState } from 'react'
+import React, { ComponentPropsWithoutRef, forwardRef, useState } from 'react'
 
 import { EyeOffOutline, EyeOutline, SearchOutline } from '@/assets/icons'
 import SvgCloseOutline from '@/assets/icons/CloseOutline'
@@ -47,7 +47,8 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
 
     const [showPassword, setShowPassword] = useState(false)
 
-    const showPasswordHandler = () => {
+    const showPasswordHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault()
       setShowPassword(show => !show)
     }
 
