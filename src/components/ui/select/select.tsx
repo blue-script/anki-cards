@@ -10,6 +10,7 @@ import s from './select.module.scss'
 
 export type SelectProps = {
   className?: string
+  defaultValue?: string
   disabled?: boolean
   label?: string
   onValueChange?: (value: string) => void
@@ -59,6 +60,7 @@ const SelectIcon = forwardRef<
 >((props, ref) => <RadixSelect.Icon {...props} ref={ref} />)
 
 export const Select = ({
+  defaultValue,
   disabled = false,
   onValueChange,
   options,
@@ -68,7 +70,12 @@ export const Select = ({
   const iconColor = disabled ? '#4c4c4c' : '#fff'
 
   return (
-    <SelectRoot disabled={disabled} onOpenChange={setIsOpen} onValueChange={onValueChange}>
+    <SelectRoot
+      defaultValue={defaultValue}
+      disabled={disabled}
+      onOpenChange={setIsOpen}
+      onValueChange={onValueChange}
+    >
       <div className={s.selectWrapper}>
         <Typography className={clsx(s.selectTypo)} disabled={disabled} option={'body2'}>
           {placeholder}
@@ -84,7 +91,7 @@ export const Select = ({
         </SelectTrigger>
         <SelectPortal>
           <SelectContent className={s.selectContent} position={'popper'} side={'bottom'}>
-            <SelectViewport className={s.selectViewPort}>
+            <SelectViewport>
               <SelectGroup className={s.selectGroup}>
                 {options.map((opt, idx) => (
                   <SelectItem key={idx} value={opt}>

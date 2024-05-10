@@ -1,10 +1,5 @@
 :root {
-  --select-width: 210px;
-}
-
-.selectWrapper {
-  width: var(--select-width);
-  height: 60px;
+  --width: 210px;
 }
 
 .selectTypo {
@@ -21,7 +16,8 @@
   align-items: center;
   justify-content: space-between;
 
-  width: 100%;
+  box-sizing: border-box;
+  width: var(--width);
   height: 36px;
   padding-left: 10px;
 
@@ -29,13 +25,17 @@
   border: 1px solid var(--color-dark-300);
   border-radius: 2px;
 
+  &[data-state='open'] {
+    border-radius: 2px 2px 0 0;
+  }
+
+  &:focus-visible,
   &:hover {
     color: var(--color-light-100);
     background-color: var(--color-dark-500);
     border-color: var(--color-dark-100);
   }
 
-  &:focus,
   &:focus-visible {
     outline: 2px solid var(--color-info-700);
   }
@@ -51,20 +51,18 @@
 }
 
 .selectContent {
-  position: absolute;
-  z-index: 5;
-
   overflow: hidden;
 
-  width: calc(var(--select-width) + 12px);
+  width: var(--width);
 
-  background-color: var(--color-dark-700);
+  background-color: var(--color-dark-900);
   border: 1px solid var(--color-dark-300);
   border-radius: 3px;
-}
 
-.selectViewPort {
-  padding: 5px;
+  &[data-state='open'] {
+    border-top: none;
+    border-radius: 0 0 2px 2px;
+  }
 }
 
 .selectItem {
@@ -78,12 +76,13 @@
 
   outline: none;
 
+  &:focus-visible,
   &:hover {
     color: var(--color-dark-100);
     background-color: var(--color-accent-900);
+    outline: none;
   }
 
-  &:focus,
   &:focus-visible {
     outline: 2px solid var(--color-info-700);
   }
