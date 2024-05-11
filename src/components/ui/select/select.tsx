@@ -62,12 +62,15 @@ const SelectIcon = forwardRef<
 export const Select = ({
   defaultValue,
   disabled = false,
+  label,
   onValueChange,
   options,
-  placeholder = 'Select-box',
+  placeholder = 'Select-item',
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const iconColor = disabled ? '#4c4c4c' : '#fff'
+  const longestOptionLength = Math.max(...options.map(option => option.length))
+  const dynamicWidth = longestOptionLength <= 3 ? '50px' : '120px'
 
   return (
     <SelectRoot
@@ -78,19 +81,25 @@ export const Select = ({
     >
       <div className={s.selectWrapper}>
         <Typography className={clsx(s.selectTypo)} disabled={disabled} option={'body2'}>
-          {placeholder}
+          {label}
         </Typography>
         <SelectTrigger
           aria-label={'Options'}
           className={clsx(s.selectTrigger, { [s.disabled]: disabled })}
+          style={{ width: dynamicWidth }}
         >
-          <SelectValue placeholder={`${placeholder} ...`} />
+          <SelectValue placeholder={`${placeholder}`} />
           <SelectIcon asChild className={s.selectIcon}>
             {isOpen ? <ArrowIosUp color={iconColor} /> : <ArrowIosDownOutline color={iconColor} />}
           </SelectIcon>
         </SelectTrigger>
         <SelectPortal>
-          <SelectContent className={s.selectContent} position={'popper'} side={'bottom'}>
+          <SelectContent
+            className={s.selectContent}
+            position={'popper'}
+            side={'bottom'}
+            style={{ width: dynamicWidth }}
+          >
             <SelectViewport>
               <SelectGroup className={s.selectGroup}>
                 {options.map((opt, idx) => (
@@ -121,3 +130,11 @@ const SelectItem = forwardRef<ElementRef<'div'>, SelectItemProps>(
     )
   }
 )
+
+//   const longestOptionLength = Math.max(...options.map(option => option.length))
+//   const dynamicWidth = longestOptionLength <= 3 ? '50px' : '120px'
+//         <SelectTrigger
+//           aria-label={'Options'}
+//           className={clsx(s.selectTrigger, { [s.disabled]: disabled })}
+//           defaultValue={defaultValue}
+//           style={{ width: dynamicWidth }}

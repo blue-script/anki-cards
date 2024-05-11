@@ -17,15 +17,17 @@ export type Option = (typeof availableOptions)[number]
 
 export const Select1: Story = {
   args: {
+    label: 'select-box',
     options: availableOptions,
-    placeholder: 'Select-box',
+    placeholder: 'Select-item',
   },
 }
 
 export const Select2: Story = {
   args: {
     disabled: true,
+    label: 'select-box',
     options: availableOptions,
-    placeholder: 'Select-box',
+    placeholder: 'Select-item',
   },
 }

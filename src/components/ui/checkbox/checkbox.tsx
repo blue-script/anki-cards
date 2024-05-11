@@ -1,4 +1,4 @@
-import { ElementRef, forwardRef } from 'react'
+import { ElementRef, forwardRef, useId } from 'react'
 
 import * as RadixCheckbox from '@radix-ui/react-checkbox'
 import { CheckIcon } from '@radix-ui/react-icons'
@@ -16,8 +16,10 @@ export type CheckboxProps = {
 }
 
 export const Checkbox = forwardRef<ElementRef<typeof RadixCheckbox.Root>, CheckboxProps>(
-  ({ checked, className, disabled, label, onChange }, ref) => {
+  ({ checked, className, disabled, id, label, onChange }, ref) => {
     const specialTextClass = disabled ? `${s['text-disabled']}` : ''
+    const randomId = useId()
+    const finalId = id ?? randomId
 
     return (
       <div style={{ alignItems: 'center', display: 'flex', margin: '10px 2px' }}>
@@ -25,7 +27,7 @@ export const Checkbox = forwardRef<ElementRef<typeof RadixCheckbox.Root>, Checkb
           checked={checked}
           className={clsx(s.CheckboxRoot, { [s.disabled]: disabled }, className)}
           disabled={disabled}
-          id={label}
+          id={finalId}
           onCheckedChange={onChange}
           ref={ref}
         >
@@ -34,7 +36,7 @@ export const Checkbox = forwardRef<ElementRef<typeof RadixCheckbox.Root>, Checkb
           </RadixCheckbox.Indicator>
         </RadixCheckbox.Root>
         {label && (
-          <label className={`${s.Label} ${specialTextClass}`} htmlFor={label}>
+          <label className={`${s.Label} ${specialTextClass}`} htmlFor={finalId}>
             {label}
           </label>
         )}
