@@ -39,6 +39,15 @@ export interface GetDecksArgs {
   orderBy?: string
 }
 
+export interface CreateDeckArgs {
+  cover?: string
+  isPrivate?: boolean
+  name: string
+}
+
+export type UpdateDeckArgs = { id: string } & Partial<CreateDeckArgs>
+export type DeleteDeckArgs = { id: string }
+
 // Error Message
 // export type ApiError = {
 //   data: DataErrorType

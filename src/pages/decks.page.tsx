@@ -1,11 +1,28 @@
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 
-import { Select, TextField } from '@/components'
+import { Button, Select, TextField } from '@/components'
+import { FormTextField } from '@/components/ui/form'
 import { DecksTable } from '@/services/decks/decks-table/decks-table'
-import { useGetDecksQuery } from '@/services/flashcards-api'
+import {
+  useCreateDeckMutation,
+  useDeleteDeckMutation,
+  useGetDecksQuery,
+  useUpdateDeckMutation,
+} from '@/services/flashcards-api'
 
 export function DecksPage() {
+  const [createDeck] = useCreateDeckMutation()
+  const [updateDeck] = useUpdateDeckMutation()
+  const [deleteDeck] = useDeleteDeckMutation()
+
+  const { control, handleSubmit } = useForm<{ name: string }>({
+    defaultValues: {
+      name: '',
+    },
+  })
+
   //const [search, setSearch] = useState('')
   const [searchParams, setSearchParams] = useSearchParams()
   const search = searchParams.get('search') ?? ''
@@ -21,19 +38,28 @@ export function DecksPage() {
 
   const [itemsPerPage, setItemsPerPage] = useState(10)
 
+  //const result = useGetDecksQuery()                                                                          // parameter For Pagination, Sort and etc.
+  const {
+    data: decks,
+    error,
+    isLoading,
+  } = useGetDecksQuery({ itemsPerPage, name: search || undefined })
+
   const handleItemsPerPage = (numOfItems: string) => {
     setItemsPerPage(+numOfItems)
   }
 
-  //const result = useGetDecksQuery()                                                                          // parameter For Pagination, Sort and etc.
-  const { data: decks, error, isLoading } = useGetDecksQuery({ itemsPerPage, name: search })
-  const tableHandlerDelete = (id: string) => {
-    console.log('decks-page delete', id)
-  }
+  const onSubmit = handleSubmit(data => {
+    createDeck(data)
+  })
 
-  const tableHandlerEdit = (id: string) => {
-    console.log('decks-page edit', id)
-  }
+  // const tableHandlerDelete = (id: string) => {
+  //   console.log('decks-page delete', id)
+  // }
+
+  // const tableHandlerEdit = (id: string) => {
+  //   console.log('decks-page edit', id)
+  // }
 
   //console.log(result)
 
@@ -65,10 +91,19 @@ export function DecksPage() {
         onValueChange={numOfItems => handleItemsPerPage(numOfItems)}
         options={['10', '20', '30', '50', '100']}
       />
+      <form onSubmit={onSubmit}>
+        <FormTextField control={control} label={'New deck name'} name={'name'} />
+        <Button>Create deck</Button>
+      </form>
       <DecksTable
+        currentUserId={'f2be95b9-4d07-4751-a775-bd612fc9553a'}
         decks={decks?.items}
-        onDeleteClick={tableHandlerDelete}
-        onEditClick={tableHandlerEdit}
+        onDeleteClick={id => {
+          deleteDeck({ id })
+        }}
+        onEditClick={id => {
+          updateDeck({ id, name: 'hotPeppers new deck' })
+        }}
       />
     </div>
 

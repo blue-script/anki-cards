@@ -6,12 +6,18 @@ import { Deck } from '@/services/decks/decks.types'
 import s from './decks-table.module.scss'
 
 type DecksTableProps = {
+  currentUserId?: string
   decks: Deck[] | undefined
   onDeleteClick: (id: string) => void
   onEditClick: (id: string) => void
 }
 
-export const DecksTable = ({ decks, onDeleteClick, onEditClick }: DecksTableProps) => {
+export const DecksTable = ({
+  currentUserId,
+  decks,
+  onDeleteClick,
+  onEditClick,
+}: DecksTableProps) => {
   const handleDeleteClick = (id: string) => {
     onDeleteClick(id)
   }
@@ -32,29 +38,37 @@ export const DecksTable = ({ decks, onDeleteClick, onEditClick }: DecksTableProp
         </Table.TRow>
       </Table.THead>
       <Table.TBody>
-        {decks?.map(deck => (
-          <Table.TRow key={deck.id}>
-            <Table.Td>
-              <Typography as={'a'} href={`decks/${deck.id}`} option={'body2'}>
-                {deck.name}
-              </Typography>
-            </Table.Td>
-            <Table.Td>{deck.cardsCount}</Table.Td>
-            <Table.Td>{new Date(deck.updated).toLocaleDateString('en-GB')}</Table.Td>
-            <Table.Td>{deck.author.name}</Table.Td>
-            <Table.Td className={s.withIcons}>
-              <Button as={'a'} className={s.button} href={`decks/${deck.id}/learn`}>
-                <PlayCircleOutline />
-              </Button>
-              <Button className={s.button}>
-                <Edit2Outline onClick={() => handleEditClick(deck.id)} />
-              </Button>
-              <Button className={s.button}>
-                <TrashOutline onClick={() => handleDeleteClick(deck.id)} />
-              </Button>
-            </Table.Td>
-          </Table.TRow>
-        ))}
+        {decks?.map(deck => {
+          const isCurrentUser = currentUserId === deck.userId
+
+          return (
+            <Table.TRow key={deck.id}>
+              <Table.Td>
+                <Typography as={'a'} href={`decks/${deck.id}`} option={'body2'}>
+                  {deck.name}
+                </Typography>
+              </Table.Td>
+              <Table.Td>{deck.cardsCount}</Table.Td>
+              <Table.Td>{new Date(deck.updated).toLocaleDateString('en-GB')}</Table.Td>
+              <Table.Td>{deck.author.name}</Table.Td>
+              <Table.Td className={s.withIcons}>
+                <Button as={'a'} className={s.button} href={`decks/${deck.id}/learn`}>
+                  <PlayCircleOutline />
+                </Button>
+                {isCurrentUser && (
+                  <>
+                    <Button className={s.button}>
+                      <Edit2Outline onClick={() => handleEditClick(deck.id)} />
+                    </Button>
+                    <Button className={s.button}>
+                      <TrashOutline onClick={() => handleDeleteClick(deck.id)} />
+                    </Button>
+                  </>
+                )}
+              </Table.Td>
+            </Table.TRow>
+          )
+        })}
       </Table.TBody>
     </Table.TRoot>
   )
