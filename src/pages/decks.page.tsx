@@ -4,13 +4,13 @@ import { useSearchParams } from 'react-router-dom'
 
 import { Button, Select, TextField } from '@/components'
 import { FormTextField } from '@/components/ui/form'
-import { DecksTable } from '@/services/decks/decks-table/decks-table'
 import {
   useCreateDeckMutation,
   useDeleteDeckMutation,
   useGetDecksQuery,
   useUpdateDeckMutation,
-} from '@/services/flashcards-api'
+} from '@/services/decks/decks.servise'
+import { DecksTable } from '@/services/decks/decks-table/decks-table'
 
 export function DecksPage() {
   const [createDeck] = useCreateDeckMutation()
