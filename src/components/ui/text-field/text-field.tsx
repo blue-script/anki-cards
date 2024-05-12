@@ -76,7 +76,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
             {...rest}
           />
           {variant === 'password' && (
-            <button className={s.button} onClick={showPasswordHandler}>
+            <button className={s.button} onClick={showPasswordHandler} type={'button'}>
               {showPassword ? (
                 <EyeOffOutline className={clsx(s.positionIconPassword, disabled && s.disabled)} />
               ) : (
