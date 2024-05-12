@@ -1,20 +1,11 @@
 import { Edit2Outline, PlayCircleOutline, Star, TrashOutline } from '@/assets/icons'
 import { Table } from '@/components/ui/table/table'
-
-type Deck = {
-  actions: string
-  cardsCount: number
-  createdBy: string
-  id: string
-  name: string
-  rating: number
-  updated: Date
-}
+import { Deck } from '@/services/decks/decks.types'
 
 type DeckTableProps = {
   decks: Deck[]
 }
-const DeckRow = ({ deck }: { deck: Deck }) => (
+export const DeckRow = ({ deck }: { deck: Deck }) => (
   <Table.TRow key={deck.id}>
     <Table.Td className={'withWrapper'}>
       <div>
@@ -22,13 +13,14 @@ const DeckRow = ({ deck }: { deck: Deck }) => (
         {deck.name}
       </div>
     </Table.Td>
-    <Table.Td>{deck.updated.toLocaleDateString('en-GB')}</Table.Td>
+    <Table.Td>{new Date(deck.updated).toLocaleDateString('en-GB')}</Table.Td>
     <Table.Td>{deck.cardsCount}</Table.Td>
-    <Table.Td>{deck.createdBy}</Table.Td>
+    <Table.Td>{deck.created}</Table.Td>
     <Table.Td className={'centeredTd'}>
       {[...Array(5)].map((_, i) => (
         <Star
-          color={i < deck.rating ? '#e5ac39' : '#000'}
+          // color={i < deck.rating ? '#e5ac39' : '#000'}
+          color={i < 4 ? '#e5ac39' : '#000'}
           key={i}
           stroke={i === 4 ? '#e5ac39' : undefined}
           strokeWidth={i === 4 ? 1 : undefined}

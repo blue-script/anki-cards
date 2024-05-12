@@ -65,7 +65,7 @@ export const Select = ({
   label,
   onValueChange,
   options,
-  placeholder = 'select-item',
+  placeholder = '10',
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const iconColor = disabled ? '#4c4c4c' : '#fff'

@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, forwardRef, useState } from 'react'
+import { ChangeEvent, ComponentPropsWithoutRef, forwardRef, useState } from 'react'
 
 import { EyeOffOutline, EyeOutline, SearchOutline } from '@/assets/icons'
 import SvgCloseOutline from '@/assets/icons/CloseOutline'
@@ -13,6 +13,7 @@ export type TextFieldProps = {
   errorMessage?: string
   fullWidth?: boolean
   label?: string
+  onValueChange?: (value: string) => void
   variant?: 'input' | 'password' | 'search'
 } & ComponentPropsWithoutRef<'input'>
 
@@ -25,6 +26,8 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       errorMessage,
       fullWidth,
       label = '',
+      onChange,
+      onValueChange,
       placeholder = '',
       variant = 'input',
       ...rest
@@ -47,6 +50,12 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
 
     const [showPassword, setShowPassword] = useState(false)
 
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+      onChange?.(e)
+      // weak point cause rerender on each symbol typing
+      onValueChange?.(e.target.value)
+    }
+
     const showPasswordHandler = () => {
       setShowPassword(show => !show)
     }
@@ -60,6 +69,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
           )}
           <input
             className={finalInputClassName}
+            onChange={handleChange}
             placeholder={placeholder}
             ref={ref}
             type={variant === 'password' && !showPassword ? 'password' : 'text'}
