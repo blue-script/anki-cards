@@ -1,5 +1,10 @@
 :root {
-  --width: 210px;
+  --min-width: 50px;
+  --max-width: 110px;
+}
+
+.selectWrapper {
+  margin: 0 8px;
 }
 
 .selectTypo {
@@ -12,14 +17,20 @@
 
   position: relative;
 
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
 
   box-sizing: border-box;
-  width: var(--width);
+
+  //width: var(--min-width);
+  width: var(--max-width);
+  min-width: 60px;
+  max-width: 400px;
   height: 36px;
-  padding-left: 10px;
+  padding: 0 2px;
+
+  white-space: nowrap;
 
   background-color: transparent;
   border: 1px solid var(--color-dark-300);
@@ -53,7 +64,10 @@
 .selectContent {
   overflow: hidden;
 
-  width: var(--width);
+  //width: var(--min-width);
+  width: var(--max-width);
+  min-width: 60px;
+  max-width: 400px;
 
   background-color: var(--color-dark-900);
   border: 1px solid var(--color-dark-300);
@@ -69,7 +83,8 @@
   cursor: pointer;
 
   display: flex;
-  place-items: center;
+  align-items: center;
+  justify-content: left;
 
   max-height: 30px;
   padding: 1px 12px;
