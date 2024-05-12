@@ -17,6 +17,7 @@ export const SelectCountPage = ({ setPageSize }: SelectCountPageProps) => {
         className={s.select}
         onValueChange={selectCountPageHandler}
         options={['10', '20', '30', '50', '100']}
+        placeholder={'10'}
         value={'10'}
       />
       на странице

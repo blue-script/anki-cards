@@ -65,7 +65,7 @@ export const Select = ({
   label,
   onValueChange,
   options,
-  placeholder = 'Select-item',
+  placeholder = 'select-item',
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const iconColor = disabled ? '#4c4c4c' : '#fff'
@@ -130,11 +130,3 @@ const SelectItem = forwardRef<ElementRef<'div'>, SelectItemProps>(
     )
   }
 )
-
-//   const longestOptionLength = Math.max(...options.map(option => option.length))
-//   const dynamicWidth = longestOptionLength <= 3 ? '50px' : '120px'
-//         <SelectTrigger
-//           aria-label={'Options'}
-//           className={clsx(s.selectTrigger, { [s.disabled]: disabled })}
-//           defaultValue={defaultValue}
-//           style={{ width: dynamicWidth }}
