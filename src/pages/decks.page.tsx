@@ -30,10 +30,10 @@ export function DecksPage() {
   const handleSearchChange = (value: string) => {
     if (value.length) {
       searchParams.set('search', value)
-      setSearchParams(searchParams)
     } else {
       searchParams.delete('search')
     }
+    setSearchParams(searchParams)
   }
 
   const [itemsPerPage, setItemsPerPage] = useState(10)
