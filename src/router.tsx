@@ -21,6 +21,7 @@ import {
   createBrowserRouter,
 } from 'react-router-dom'
 
+import { Layout } from '@/components/ui/layout/layout'
 import { DecksPage } from '@/pages/decks.page'
 
 const publicRoutes: RouteObject[] = [
@@ -51,6 +52,10 @@ const privateRoutes: RouteObject[] = [
   {
     element: <div>inside privateRoutes / News Here</div>,
     path: '/news',
+  },
+  {
+    element: <Layout />,
+    path: 'layout',
   },
 ]
 
