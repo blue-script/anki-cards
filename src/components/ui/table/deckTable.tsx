@@ -55,32 +55,15 @@ export const DeckTable = ({ decks }: DeckTableProps) => (
   </Table.TRoot>
 )
 
-export const dataForDeckTable = [
+export const dataForDeckTable: Deck[] = [
   {
-    actions: 'icons 1',
-    cardsCount: 15,
-    createdBy: 'User 1',
-    id: '1',
-    name: 'Games',
-    rating: 4,
-    updated: new Date(),
-  },
-  {
-    actions: 'icons 3',
-    cardsCount: 25,
-    createdBy: 'User 2',
-    id: '2',
-    name: 'Books',
-    rating: 4,
-    updated: new Date(),
-  },
-  {
-    actions: 'icons 3',
-    cardsCount: 35,
-    createdBy: 'User 3',
-    id: '3',
-    name: 'English',
-    rating: 4,
-    updated: new Date(),
+    author: { id: 'test', name: 'Author' },
+    cardsCount: 1,
+    created: '',
+    id: 'string',
+    isPrivate: false,
+    name: 'string',
+    updated: 'string',
+    userId: 'string',
   },
 ]
