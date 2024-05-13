@@ -1,20 +1,11 @@
 import { Edit2Outline, PlayCircleOutline, Star, TrashOutline } from '@/assets/icons'
 import { Table } from '@/components/ui/table/table'
-
-type Deck = {
-  actions: string
-  cardsCount: number
-  createdBy: string
-  id: string
-  name: string
-  rating: number
-  updated: Date
-}
+import { Deck } from '@/services/decks/decks.types'
 
 type DeckTableProps = {
   decks: Deck[]
 }
-const DeckRow = ({ deck }: { deck: Deck }) => (
+export const DeckRow = ({ deck }: { deck: Deck }) => (
   <Table.TRow key={deck.id}>
     <Table.Td className={'withWrapper'}>
       <div>
@@ -22,13 +13,14 @@ const DeckRow = ({ deck }: { deck: Deck }) => (
         {deck.name}
       </div>
     </Table.Td>
-    <Table.Td>{deck.updated.toLocaleDateString('en-GB')}</Table.Td>
+    <Table.Td>{new Date(deck.updated).toLocaleDateString('en-GB')}</Table.Td>
     <Table.Td>{deck.cardsCount}</Table.Td>
-    <Table.Td>{deck.createdBy}</Table.Td>
+    <Table.Td>{deck.created}</Table.Td>
     <Table.Td className={'centeredTd'}>
       {[...Array(5)].map((_, i) => (
         <Star
-          color={i < deck.rating ? '#e5ac39' : '#000'}
+          // color={i < deck.rating ? '#e5ac39' : '#000'}
+          color={i < 4 ? '#e5ac39' : '#000'}
           key={i}
           stroke={i === 4 ? '#e5ac39' : undefined}
           strokeWidth={i === 4 ? 1 : undefined}
@@ -63,32 +55,15 @@ export const DeckTable = ({ decks }: DeckTableProps) => (
   </Table.TRoot>
 )
 
-export const dataForDeckTable = [
+export const dataForDeckTable: Deck[] = [
   {
-    actions: 'icons 1',
-    cardsCount: 15,
-    createdBy: 'User 1',
-    id: '1',
-    name: 'Games',
-    rating: 4,
-    updated: new Date(),
-  },
-  {
-    actions: 'icons 3',
-    cardsCount: 25,
-    createdBy: 'User 2',
-    id: '2',
-    name: 'Books',
-    rating: 4,
-    updated: new Date(),
-  },
-  {
-    actions: 'icons 3',
-    cardsCount: 35,
-    createdBy: 'User 3',
-    id: '3',
-    name: 'English',
-    rating: 4,
-    updated: new Date(),
+    author: { id: 'test', name: 'Author' },
+    cardsCount: 1,
+    created: '',
+    id: 'string',
+    isPrivate: false,
+    name: 'string',
+    updated: 'string',
+    userId: 'string',
   },
 ]
