@@ -1,8 +1,9 @@
-import { Edit2Outline, TrashOutline } from '@/assets/icons'
+import { Edit2Outline, Star, TrashOutline } from '@/assets/icons'
+import { CardTextOrImage } from '@/entities/cards/ui/cardTextOrImage/сardTextOrImage'
 import { Card } from '@/services/cards/cards.types'
 import { Button, Table } from '@/shared'
 
-import s from '@/entities/decks/ui/decksTable.module.scss'
+import s from './cardsTable.module.scss'
 
 type CardsTableProps = {
   cards: Card[] | undefined
@@ -27,7 +28,7 @@ export const CardsTable = ({
           <Table.Th>Question</Table.Th>
           <Table.Th>Answer</Table.Th>
           <Table.Th>
-            Last Updated <button>arrow</button>
+            Last Updated <Button>arrow</Button>
           </Table.Th>
           <Table.Th>Grade</Table.Th>
           <Table.Th></Table.Th>
@@ -39,10 +40,24 @@ export const CardsTable = ({
 
           return (
             <Table.TRow key={card.id}>
-              <Table.Td>{card.question || card.questionImg || card.questionVideo}</Table.Td>
-              <Table.Td>{card.answer || card.answerImg || card.answerVideo}</Table.Td>
+              <Table.Td>
+                <CardTextOrImage img={card.questionImg} text={card.question} />
+              </Table.Td>
+              <Table.Td>
+                <CardTextOrImage img={card.answerImg} text={card.answer} />
+              </Table.Td>
               <Table.Td>{new Date(card.updated).toLocaleDateString('ru-ru')}</Table.Td>
-              <Table.Td></Table.Td>
+              <Table.Td className={s.starWrapper}>
+                {[...Array(5)].reduce((acc, _, idx) => {
+                  if (idx < card.grade) {
+                    acc[idx] = <Star className={s.shaded} />
+                  } else {
+                    acc[idx] = <Star className={s.hollow} />
+                  }
+
+                  return acc
+                }, [])}
+              </Table.Td>
               <Table.Td>
                 {isOwner && (
                   <>

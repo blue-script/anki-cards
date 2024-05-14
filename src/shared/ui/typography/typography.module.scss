@@ -23,11 +23,15 @@
 
 /* Body text */
 .body1 {
-  @include text-style(m, regular, s);
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-m);
 }
 
 .body2 {
-  @include text-style(s, regular, s);
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-m);
 }
 
 /* Subtitles */
