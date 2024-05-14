@@ -1,0 +1,54 @@
+.card {
+  width: 100%;
+  max-width: 420px;
+  padding: 33px 36px 25px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.checkbox {
+}
+
+.title {
+  margin: 0;
+  text-align: center;
+}
+
+.recoverPasswordLink,
+.recoverPasswordLink:visited {
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
+
+  width: 100%;
+  margin-bottom: 66px;
+
+  color: inherit;
+  text-align: right;
+  text-decoration: none;
+}
+
+.button {
+  margin-bottom: 20px;
+  margin-top: 35px;
+}
+
+.caption {
+  margin: 0;
+  color: var(--color-light-900);
+  text-align: center;
+}
+
+.signUpLink {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-accent-500);
+}

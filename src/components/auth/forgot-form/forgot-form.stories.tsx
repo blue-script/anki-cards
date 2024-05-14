@@ -1,11 +1,10 @@
 import { ForgotForm, FormValuesFromForgot } from '@/components/auth/forgot-form/forgot-form'
 import { Meta, StoryObj } from '@storybook/react'
 
-// Define meta with proper type annotation
 const meta: Meta<typeof ForgotForm> = {
   component: ForgotForm,
   tags: ['autodocs'],
-  title: 'Auth/CheckEmail',
+  title: 'Auth/ForgotPasswordForm',
 }
 
 export default meta

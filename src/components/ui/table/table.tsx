@@ -18,7 +18,7 @@ const TRoot = forwardRef<ElementRef<'table'>, TableProps>(({ className, ...rest 
 })
 
 const TRow = forwardRef<ElementRef<'tr'>, TableRowProps>(({ className, ...rest }, ref) => {
-  const computedClass = clsx(className)
+  const computedClass = clsx(s.trow, className)
 
   return <tr className={computedClass} ref={ref} {...rest} />
 })

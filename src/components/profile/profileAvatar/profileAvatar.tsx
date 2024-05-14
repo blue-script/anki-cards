@@ -22,7 +22,6 @@ export const ProfileAvatar = ({ avatar, editBodyStatus, onAvatarChange }: Props)
     const file = e.target.files?.[0]
 
     if (file) {
-      console.log(file.type)
       if (!file.type.match('image.*')) {
         alert('Please select a valid image file.')
 
