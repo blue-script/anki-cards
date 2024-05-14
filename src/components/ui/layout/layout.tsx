@@ -1,7 +1,6 @@
 import { CSSProperties, ComponentPropsWithoutRef, ElementRef, forwardRef } from 'react'
 
 import { Header } from '@/components/ui/header/header'
-import { Page } from '@/components/ui/page/page'
 import clsx from 'clsx'
 
 import s from './layout.module.scss'
@@ -17,10 +16,7 @@ export const Layout = forwardRef<ElementRef<'div'>, Props>(
     return (
       <div className={classes} ref={ref} {...rest}>
         <Header />
-        {/*<main className={s.main}>{children}</main>*/}
-        <main className={s.main}>
-          <Page>Dack</Page>
-        </main>
+        <main className={s.main}>{children}</main>
       </div>
     )
   }
