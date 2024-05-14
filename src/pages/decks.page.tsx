@@ -2,15 +2,15 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 
-import { Button, Select, TextField } from '@/components'
-import { FormTextField } from '@/components/ui/form'
+import { DecksTable } from '@/entities/decks/ui/decksTable'
 import {
   useCreateDeckMutation,
   useDeleteDeckMutation,
   useGetDecksQuery,
   useUpdateDeckMutation,
-} from '@/services/decks/decks.servise'
-import { DecksTable } from '@/services/decks/decks-table/decks-table'
+} from '@/services/decks/decks.service'
+import { Button, Select, TextField } from '@/shared'
+import { FormTextField } from '@/shared/ui/form'
 
 export function DecksPage() {
   const [createDeck] = useCreateDeckMutation()
@@ -23,7 +23,6 @@ export function DecksPage() {
     },
   })
 
-  //const [search, setSearch] = useState('')
   const [searchParams, setSearchParams] = useSearchParams()
   const search = searchParams.get('search') ?? ''
 
@@ -38,7 +37,6 @@ export function DecksPage() {
 
   const [itemsPerPage, setItemsPerPage] = useState(10)
 
-  //const result = useGetDecksQuery()                                                                          // parameter For Pagination, Sort and etc.
   const { data: decks, error, isLoading } = useGetDecksQuery({ itemsPerPage, name: search })
 
   const handleItemsPerPage = (numOfItems: string) => {
@@ -49,26 +47,12 @@ export function DecksPage() {
     createDeck(data)
   })
 
-  // const tableHandlerDelete = (id: string) => {
-  //   console.log('decks-page delete', id)
-  // }
-
-  // const tableHandlerEdit = (id: string) => {
-  //   console.log('decks-page edit', id)
-  // }
-
-  //console.log(result)
-
   if (isLoading) {
     return <div>Loading... Spinner</div>
   }
 
   if (error) {
     return <div>{`Error ${error}`}</div>
-    // <>
-    //   <div>Error happened :</div>
-    //   <div>{`Error code => ${error.data.message} with status : ${error.status}`}</div>
-    // </>
   }
 
   return (
@@ -81,7 +65,6 @@ export function DecksPage() {
         width: '1024px',
       }}
     >
-      {/*<TextField label={'Search'} onChange={e => setSearch(e.currentTarget.value)} value={search} />*/}
       <TextField label={'Search'} onValueChange={handleSearchChange} />
       <Select
         onValueChange={numOfItems => handleItemsPerPage(numOfItems)}
@@ -102,30 +85,5 @@ export function DecksPage() {
         }}
       />
     </div>
-
-    // <table>
-    //   <thead>
-    //     <tr>
-    //       <th>Name</th>
-    //       <th>Cards</th>
-    //       <th>Last Updated</th>
-    //       <th>Created By</th>
-    //     </tr>
-    //   </thead>
-    //   <tbody>
-    //     {decks?.items.map(deck => {
-    //       const updatedAt = new Date(deck.updated).toLocaleDateString('en-US')
-    //
-    //       return (
-    //         <tr key={deck.id}>
-    //           <td>{deck.name}</td>
-    //           <td>{deck.cardsCount}</td>
-    //           <td>{updatedAt}</td>
-    //           <td>{deck.author.name}</td>
-    //         </tr>
-    //       )
-    //     })}
-    //   </tbody>
-    // </table>
   )
 }
