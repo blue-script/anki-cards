@@ -10,6 +10,7 @@ export const flashcardsApi = createApi({
     },
   }),
   endpoints: () => ({}),
+  keepUnusedDataFor: 1,
   reducerPath: 'flashcardsApi',
   tagTypes: ['Decks', 'Cards'],
 })

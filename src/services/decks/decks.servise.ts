@@ -33,6 +33,7 @@ export const decksServise = flashcardsApi.injectEndpoints({
           method: 'GET',
           params: args ?? undefined,
           url: `v2/decks`,
+
           //url for error => url: `v2/decks/x1`,
         }),
       }),
