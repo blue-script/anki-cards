@@ -4,7 +4,7 @@ import { EyeOffOutline, EyeOutline, SearchOutline } from '@/assets/icons'
 import SvgCloseOutline from '@/assets/icons/CloseOutline'
 import clsx from 'clsx'
 
-import s from './text-field.module.scss'
+import s from './textField.module.scss'
 
 export type TextFieldProps = {
   className?: string

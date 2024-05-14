@@ -3,7 +3,7 @@ import { Button, Typography } from '@/components'
 import { Table } from '@/components/ui/table/table'
 import { Deck } from '@/services/decks/decks.types'
 
-import s from './decks-table.module.scss'
+import s from './decksTable.module.scss'
 
 type DecksTableProps = {
   currentUserId?: string

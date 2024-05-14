@@ -1,7 +1,7 @@
 import {
   CreatePasswordForm,
   FormValuesFromCreate,
-} from '@/components/auth/createPassword/create-password'
+} from '@/components/auth/createPassword/createPasswordForm'
 import { Meta, StoryObj } from '@storybook/react'
 
 const meta: Meta<typeof CreatePasswordForm> = {

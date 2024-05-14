@@ -1,1 +1,1 @@
-export * from './check-email-form'
+export * from './checkEmailForm'

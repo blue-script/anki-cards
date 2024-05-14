@@ -1,4 +1,4 @@
-import { FormValues, LoginForm } from '@/components/auth/login-form/login-form'
+import { FormValues, LoginForm } from '@/components/auth/loginForm/loginForm'
 import { Meta, StoryObj } from '@storybook/react'
 
 // Define meta with proper type annotation

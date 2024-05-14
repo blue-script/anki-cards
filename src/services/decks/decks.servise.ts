@@ -6,7 +6,7 @@ import {
   GetDecksArgs,
   UpdateDeckArgs,
 } from '@/services/decks/decks.types'
-import { flashcardsApi } from '@/services/flashcards-api'
+import { flashcardsApi } from '@/services/flashcardsApi'
 
 export const decksServise = flashcardsApi.injectEndpoints({
   endpoints: builder => {

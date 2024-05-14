@@ -3,7 +3,7 @@ import { CSSProperties } from 'react'
 import { Button, Typography } from '@/components'
 import { clsx } from 'clsx'
 
-import s from './check-email.module.scss'
+import s from './checkEmailForm.module.scss'
 
 type Props = {
   className?: string

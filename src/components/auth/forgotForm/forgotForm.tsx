@@ -2,13 +2,13 @@ import { CSSProperties } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { Button, Typography } from '@/components'
-import { FormTextField } from '@/components/ui/form/form-textfield'
+import { FormTextfield } from '@/components/ui/form/formTextfield'
 import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { clsx } from 'clsx'
 import { z } from 'zod'
 
-import s from './forgot-form.module.scss'
+import s from './forgotForm.module.scss'
 
 type Props = {
   className?: string
@@ -62,7 +62,7 @@ export const ForgotForm = ({ className, onSubmit, style }: Props) => {
         <Typography as={'h1'} className={s.headerText} option={'h1'}>
           {'Forgot your password?'}
         </Typography>
-        <FormTextField
+        <FormTextfield
           className={s.emailField}
           control={control}
           fullWidth

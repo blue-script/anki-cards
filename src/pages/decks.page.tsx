@@ -3,14 +3,14 @@ import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 
 import { Button, Select, TextField } from '@/components'
-import { FormTextField } from '@/components/ui/form'
+import { FormTextfield } from '@/components/ui/form'
 import {
   useCreateDeckMutation,
   useDeleteDeckMutation,
   useGetDecksQuery,
   useUpdateDeckMutation,
 } from '@/services/decks/decks.servise'
-import { DecksTable } from '@/services/decks/decks-table/decks-table'
+import { DecksTable } from '@/services/decks/decks-table/decksTable'
 
 export function DecksPage() {
   const [createDeck] = useCreateDeckMutation()
@@ -88,7 +88,7 @@ export function DecksPage() {
         options={['10', '20', '30', '50', '100']}
       />
       <form onSubmit={onSubmit}>
-        <FormTextField control={control} label={'New deck name'} name={'name'} />
+        <FormTextfield control={control} label={'New deck name'} name={'name'} />
         <Button>Create deck</Button>
       </form>
       <DecksTable

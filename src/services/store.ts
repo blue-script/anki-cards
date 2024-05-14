@@ -1,4 +1,4 @@
-import { flashcardsApi } from '@/services/flashcards-api'
+import { flashcardsApi } from '@/services/flashcardsApi'
 import { configureStore } from '@reduxjs/toolkit'
 
 export const store = configureStore({
