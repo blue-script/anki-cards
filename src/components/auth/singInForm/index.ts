@@ -1,1 +1,1 @@
-export * from './sing-in'
+export * from './singIn'

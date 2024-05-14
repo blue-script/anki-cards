@@ -1,12 +1,11 @@
 import { useForm } from 'react-hook-form'
-// import { Link } from 'react-router-dom'
 
-import { FormCheckbox, FormTextField } from '@/components/ui/form'
+import { FormTextfield } from '@/components/ui/form'
 import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
-import s from './sing-in.module.scss'
+import s from './singUp.module.scss'
 
 import { Button, Card, Typography } from '../../ui'
 
@@ -47,7 +46,7 @@ type Props = {
   onSubmit: (data: FormType) => void
 }
 
-export const SignIn = ({ onSubmit }: Props) => {
+export const SignUp = ({ onSubmit }: Props) => {
   const { control, handleSubmit } = useForm<FormType>({
     defaultValues: {
       email: '',
@@ -65,18 +64,18 @@ export const SignIn = ({ onSubmit }: Props) => {
       <DevTool control={control} />
       <Card className={s.card}>
         <Typography className={s.title} option={'h1'}>
-          Sign In
+          Sign Up
         </Typography>
         <form onSubmit={handleFormSubmitted}>
           <div className={s.form}>
-            <FormTextField
+            <FormTextfield
               control={control}
               fullWidth
               label={'Email'}
               name={'email'}
               placeholder={'Enter email'}
             />
-            <FormTextField
+            <FormTextfield
               control={control}
               fullWidth
               label={'Password'}
@@ -84,35 +83,24 @@ export const SignIn = ({ onSubmit }: Props) => {
               placeholder={'Enter password'}
               variant={'password'}
             />
+            <FormTextfield
+              control={control}
+              fullWidth
+              label={'Confirm Password'}
+              name={'password'}
+              placeholder={'Enter confirm password'}
+              variant={'password'}
+            />
           </div>
-          <FormCheckbox
-            className={s.checkbox}
-            control={control}
-            label={'Remember me'}
-            name={'rememberMe'}
-          />
-          <Typography
-            // as={Link}
-            className={s.recoverPasswordLink}
-            // to={'/recover-password'}
-            option={'link2'}
-          >
-            Forgot Password?
-          </Typography>
           <Button className={s.button} fullWidth type={'submit'}>
-            Sign In
+            Sign Up
           </Button>
         </form>
         <Typography className={s.caption} option={'body2'}>
-          {`Don't have an account?`}
+          {`Already have an account?`}
         </Typography>
-        <Typography
-          // as={Link}
-          className={s.signUpLink}
-          // to={'/sign-up'}
-          option={'link1'}
-        >
-          Sign Up
+        <Typography className={s.signUpLink} option={'link1'}>
+          Sign In
         </Typography>
       </Card>
     </>

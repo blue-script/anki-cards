@@ -1,4 +1,4 @@
-import { CheckEmailForm } from '@/components/auth/checkEmail/check-email-form'
+import { CheckEmailForm } from '@/components/auth/checkEmail/checkEmailForm'
 import { action } from '@storybook/addon-actions'
 import { Meta, StoryObj } from '@storybook/react'
 

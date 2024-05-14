@@ -2,7 +2,7 @@ import { Edit2 } from '@/assets/icons'
 import SvgLayers from '@/assets/icons/Layers'
 import { Button, Typography } from '@/components'
 import { FormValues, useProfileBody } from '@/components/profile/profileBody/useProfileBody'
-import { FormTextField } from '@/components/ui/form/form-textfield'
+import { FormTextfield } from '@/components/ui/form/formTextfield'
 
 import s from '@/components/profile/profileBody/profileBody.module.scss'
 
@@ -56,7 +56,7 @@ export const ProfileBody = ({
     </>
   ) : (
     <form onSubmit={handleSubmit(changeNameHandler)}>
-      <FormTextField
+      <FormTextfield
         className={s.newName}
         control={control}
         fullWidth
