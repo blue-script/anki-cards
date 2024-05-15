@@ -6,12 +6,6 @@ import { Slider } from '@/shared/ui/slider/slider'
 
 const meta = {
   component: Slider,
-  parameters: {
-    backgrounds: {
-      default: 'dark',
-      values: [{ name: 'dark', value: '#000000' }],
-    },
-  },
   tags: ['autodocs'],
   title: 'Components/Slider',
 } satisfies Meta<typeof Slider>
