@@ -6,7 +6,7 @@ const meta = {
   component: Grade,
   parameters: {},
   tags: ['autodocs'],
-  title: 'Components/Stars',
+  title: 'Components/Grade',
 } satisfies Meta<typeof Grade>
 
 export default meta

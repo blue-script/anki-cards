@@ -27,7 +27,7 @@ const privateRoutes: RouteObject[] = [
   },
   {
     element: <CardsPage />,
-    path: '/decks/:id',
+    path: '/decks/:deckId',
   },
   {
     element: <div>inside privateRoutes / News Here</div>,

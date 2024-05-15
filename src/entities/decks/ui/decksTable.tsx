@@ -57,11 +57,11 @@ export const DecksTable = ({
                 </Button>
                 {isCurrentUser && (
                   <>
-                    <Button className={s.button}>
-                      <Edit2Outline onClick={() => handleEditClick(deck.id)} />
+                    <Button className={s.button} onClick={() => handleEditClick(deck.id)}>
+                      <Edit2Outline />
                     </Button>
-                    <Button className={s.button}>
-                      <TrashOutline onClick={() => handleDeleteClick(deck.id)} />
+                    <Button className={s.button} onClick={() => handleDeleteClick(deck.id)}>
+                      <TrashOutline />
                     </Button>
                   </>
                 )}

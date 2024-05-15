@@ -11,7 +11,7 @@ import s from './cardsPage.module.scss'
 
 export const CardsPage = () => {
   const navigate = useNavigate()
-  const { id } = useParams<{ id: string }>()
+  const { deckId } = useParams<{ deckId: string }>()
 
   const [searchParams, setSearchParams] = useSearchParams()
   const search = searchParams.get('search') ?? ''
@@ -20,11 +20,11 @@ export const CardsPage = () => {
     data: deckData,
     error: deckError,
     isLoading: deckIsLoading,
-  } = useGetDeckByIdQuery({ id: id ?? '' })
+  } = useGetDeckByIdQuery({ id: deckId ?? '' })
   const { data, error, isLoading } = useGetCardsQuery(
     // desc or asc ???? not work
-    { currentPage: 1, id: id ?? '', itemsPerPage: 5, orderBy: '', question: search },
-    { skip: !id }
+    { currentPage: 1, id: deckId ?? '', itemsPerPage: 5, orderBy: '', question: search },
+    { skip: !deckId }
   )
 
   const handleSearchChange = (value: string) => {
@@ -36,7 +36,7 @@ export const CardsPage = () => {
     setSearchParams(searchParams)
   }
 
-  if (!id) {
+  if (!deckId) {
     return <div>Invalid card ID</div>
   }
 
