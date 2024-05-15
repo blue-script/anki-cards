@@ -1,13 +1,21 @@
+import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
+import { ArrowBackOutline } from '@/assets/icons'
+import deckImg from '@/assets/img/mask.png'
 import { CardsTable } from '@/entities/cards'
+import { DropDownDeck } from '@/entities/dropDownDeck/dropDownDeck'
 import { useGetCardsQuery } from '@/services/cards/cards.service'
-import { Dropdown, Layout, Page, Pagination, TextField, Typography } from '@/shared'
+import { Button, Dropdown, FormTextField, Layout, Page, Pagination, Typography } from '@/shared'
+
+import s from './cardsPage.module.scss'
 
 export const CardsPage = () => {
   const { id } = useParams<{ id: string }>()
 
   const { data, error, isLoading } = useGetCardsQuery({ id: id ?? '' }, { skip: !id })
+
+  const { control, handleSubmit } = useForm({})
 
   if (!id) {
     return <div>Invalid card ID</div>
@@ -25,10 +33,31 @@ export const CardsPage = () => {
 
   return (
     <Layout>
-      <Page>
-        <Typography option={'h1'}>{isOwner ? 'My Deck' : 'Friend’s Deck'}</Typography>
-        <Dropdown.Root></Dropdown.Root>
-        <TextField fullWidth variant={'search'}></TextField>
+      <Page mt={'24px'}>
+        <Button className={s.buttonBack}>
+          <ArrowBackOutline /> <Typography option={'body2'}>Back to Decks List</Typography>
+        </Button>
+
+        <div className={s.ownerAndLearn}>
+          <div>
+            <Typography option={'h1'}>{isOwner ? 'My Deck' : 'Friend’s Deck'}</Typography>
+            <DropDownDeck />
+          </div>
+
+          <Button>Learn to Deck</Button>
+        </div>
+        <img alt={'deck-img'} className={s.image} src={deckImg} />
+        {isOwner && <Dropdown.Root></Dropdown.Root>}
+
+        <form onSubmit={handleSubmit(() => {})}>
+          <FormTextField
+            control={control}
+            fullWidth
+            label={'search cards'}
+            name={'searchCards'}
+            variant={'search'}
+          />
+        </form>
         <CardsTable cards={data?.items} onDeleteClick={() => {}} onEditClick={() => {}} />
         {data?.pagination && (
           <Pagination

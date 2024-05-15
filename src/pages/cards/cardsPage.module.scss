@@ -1,0 +1,17 @@
+.buttonBack {
+  all: unset;
+  display: flex;
+  align-items: center;
+}
+
+.ownerAndLearn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.image {
+  margin-bottom: 25px;
+  border-radius: 2px;
+}
