@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom'
 
 import { CardsTable } from '@/entities/cards'
 import { useGetCardsQuery } from '@/services/cards/cards.service'
-import { Dropdown, Layout, Page, TextField, Typography } from '@/shared'
+import { Dropdown, Layout, Page, Pagination, TextField, Typography } from '@/shared'
 
 export const CardsPage = () => {
   const { id } = useParams<{ id: string }>()
@@ -30,6 +30,15 @@ export const CardsPage = () => {
         <Dropdown.Root></Dropdown.Root>
         <TextField fullWidth variant={'search'}></TextField>
         <CardsTable cards={data?.items} onDeleteClick={() => {}} onEditClick={() => {}} />
+        {data?.pagination && (
+          <Pagination
+            currentPage={data.pagination.currentPage}
+            onPageChange={() => {}}
+            pageSize={data.pagination.itemsPerPage}
+            setPageSize={() => {}}
+            totalCount={data.pagination.totalItems}
+          />
+        )}
       </Page>
     </Layout>
   )

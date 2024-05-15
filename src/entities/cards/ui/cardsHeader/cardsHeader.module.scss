@@ -1,0 +1,29 @@
+.wrapper {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.button {
+  all: unset;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  line-height: unset;
+
+  .rotate90 {
+    transform: rotate(90deg);
+  }
+
+  .rotate270 {
+    transform: rotate(-90deg);
+  }
+
+  &:hover:enabled {
+    background-color: unset;
+  }
+}
