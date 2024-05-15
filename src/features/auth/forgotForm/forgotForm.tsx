@@ -1,13 +1,7 @@
 import { CSSProperties } from 'react'
 import { useForm } from 'react-hook-form'
 
-<<<<<<<< HEAD:src/features/auth/forgotForm/forgotForm.tsx
-import { Button, Typography } from '@/shared'
-import { FormTextField } from '@/shared/ui/form/formTextfield'
-========
-import { Button, Typography } from '@/components'
-import { FormTextfield } from '@/components/ui/form/formTextfield'
->>>>>>>> b382d7249e5b01c5928da9b87e798dd846d28750:src/components/auth/forgotForm/forgotForm.tsx
+import { Button, FormTextfield, Typography } from '@/shared'
 import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { clsx } from 'clsx'
