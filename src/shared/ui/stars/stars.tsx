@@ -9,15 +9,9 @@ type Props = {
 export const Stars = ({ grade }: Props) => {
   return (
     <>
-      {[...Array(5)].reduce((acc, _, idx) => {
-        if (idx < grade) {
-          acc[idx] = <Star className={s.shaded} />
-        } else {
-          acc[idx] = <Star className={s.hollow} />
-        }
-
-        return acc
-      }, [])}{' '}
+      {[...Array(5)].map((_, idx) => (
+        <Star className={idx < grade ? s.shaded : s.hollow} key={idx} />
+      ))}
     </>
   )
 }
