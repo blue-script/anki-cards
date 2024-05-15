@@ -1,7 +1,7 @@
 import { Edit2 } from '@/assets/icons'
 import SvgLayers from '@/assets/icons/Layers'
 import { Button, Typography } from '@/shared'
-import { FormTextField } from '@/shared/ui/form/form-textfield'
+import { FormTextField } from '@/shared/ui/form/formTextfield'
 
 import s from './profileBody.module.scss'
 
