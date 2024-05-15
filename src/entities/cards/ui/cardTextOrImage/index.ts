@@ -1,0 +1,1 @@
+export { CardTextOrImage } from './сardTextOrImage'

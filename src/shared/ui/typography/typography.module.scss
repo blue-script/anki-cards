@@ -1,0 +1,84 @@
+@mixin text-style($size, $weight, $line) {
+  font-size: var(--font-size-#{$size});
+  font-weight: var(--font-weight-#{$weight});
+  line-height: var(--line-height-#{$line});
+}
+
+/* Headings */
+.h1 {
+  @include text-style(xxl, bold, l);
+}
+
+.h2 {
+  @include text-style(xl, bold, l);
+}
+
+.h3 {
+  @include text-style(l, bold, s);
+}
+
+.h4 {
+  @include text-style(m, bold, s);
+}
+
+/* Body text */
+.body1 {
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-m);
+}
+
+.body2 {
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-m);
+}
+
+/* Subtitles */
+.subtitle1 {
+  @include text-style(m, bold, s);
+}
+
+.subtitle2 {
+  @include text-style(s, bold, s);
+}
+
+/* Caption */
+.caption {
+  @include text-style(xs, regular, xs);
+}
+
+/* Overline */
+.overline {
+  @include text-style(xs, bold, xs);
+}
+
+/* Links */
+a.link1 {
+  @include text-style(s, regular, s);
+
+  cursor: pointer;
+  color: var(--color-info-500);
+}
+
+a.link2 {
+  @include text-style(xs, regular, xs);
+
+  cursor: pointer;
+  color: var(--color-info-500);
+}
+
+/* Main Colors */
+.light {
+  color: var(--color-light-100);
+}
+
+.dark {
+  color: var(--color-dark-900);
+}
+
+.disabled {
+  cursor: not-allowed;
+  color: var(--color-dark-100);
+  opacity: 0.5;
+}

@@ -1,5 +1,0 @@
-export * from './pagination'
-export { NavigationButton } from '@/components/ui/pagination/navigationButton/navigationButton'
-export { PaginationButtonItem } from '@/components/ui/pagination/paginationButtonItem/paginationButtonItem'
-export { PaginationButtonList } from '@/components/ui/pagination/paginationButtonList/paginationButtonList'
-export { SelectCountPage } from '@/components/ui/pagination/selectCountPage/selectCountPage'

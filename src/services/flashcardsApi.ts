@@ -1,4 +1,3 @@
-//                                                        check HERE /react
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const flashcardsApi = createApi({
@@ -10,6 +9,7 @@ export const flashcardsApi = createApi({
     },
   }),
   endpoints: () => ({}),
+  keepUnusedDataFor: 1,
   reducerPath: 'flashcardsApi',
   tagTypes: ['Decks', 'Cards'],
 })

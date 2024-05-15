@@ -1,0 +1,33 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+
+  width: 100%;
+  max-width: 1008px;
+}
+
+@media (width <= 1200px) {
+  .page {
+    max-width: 960px;
+  }
+}
+
+@media (width <= 992px) {
+  .page {
+    max-width: 720px;
+  }
+}
+
+@media (width <= 768px) {
+  .page {
+    max-width: 540px;
+  }
+}
+
+@media (width <= 576px) {
+  .page {
+    max-width: 100%;
+  }
+}
