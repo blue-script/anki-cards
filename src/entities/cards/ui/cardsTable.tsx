@@ -1,7 +1,8 @@
-import { Edit2Outline, Star, TrashOutline } from '@/assets/icons'
+import { Edit2Outline, TrashOutline } from '@/assets/icons'
 import { CardTextOrImage } from '@/entities/cards/ui/cardTextOrImage/сardTextOrImage'
 import { Card } from '@/services/cards/cards.types'
 import { Button, Table } from '@/shared'
+import { Stars } from '@/shared/ui/stars/stars'
 
 import s from './cardsTable.module.scss'
 
@@ -22,7 +23,7 @@ export const CardsTable = ({
   const handleDeleteClick = (id: string) => () => onDeleteClick(id)
 
   return (
-    <Table.TRoot>
+    <Table.TRoot className={s.table}>
       <Table.THead>
         <Table.TRow>
           <Table.Th>Question</Table.Th>
@@ -48,15 +49,7 @@ export const CardsTable = ({
               </Table.Td>
               <Table.Td>{new Date(card.updated).toLocaleDateString('ru-ru')}</Table.Td>
               <Table.Td className={s.starWrapper}>
-                {[...Array(5)].reduce((acc, _, idx) => {
-                  if (idx < card.grade) {
-                    acc[idx] = <Star className={s.shaded} />
-                  } else {
-                    acc[idx] = <Star className={s.hollow} />
-                  }
-
-                  return acc
-                }, [])}
+                <Stars grade={card.grade} />
               </Table.Td>
               <Table.Td>
                 {isOwner && (
