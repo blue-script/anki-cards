@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 
 <<<<<<<< HEAD:src/features/auth/createPassword/createPassword.tsx
 import { Button, Typography } from '@/shared'
-import { FormTextField } from '@/shared/ui/form/form-textfield'
+import { FormTextField } from '@/shared/ui/form/formTextfield'
 ========
 import { Button, Typography } from '@/components'
 import { FormTextfield } from '@/components/ui/form/formTextfield'

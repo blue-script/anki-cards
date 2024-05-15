@@ -2,9 +2,9 @@ import { useForm } from 'react-hook-form'
 
 <<<<<<<< HEAD:src/features/auth/loginForm/loginForm.tsx
 import { Button } from '@/shared'
-import { FormCheckbox } from '@/shared/ui/form/form-checkbox'
-import { FormSelect } from '@/shared/ui/form/form-select'
-import { FormTextField } from '@/shared/ui/form/form-textfield'
+import { FormCheckbox } from '@/shared/ui/form/formCheckbox'
+import { FormSelect } from '@/shared/ui/form/formSelect'
+import { FormTextField } from '@/shared/ui/form/formTextfield'
 ========
 import { Button } from '@/components'
 import { FormCheckbox } from '@/components/ui/form/formCheckbox'
