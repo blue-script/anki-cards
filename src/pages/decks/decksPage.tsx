@@ -9,7 +9,7 @@ import {
   useGetDecksQuery,
   useUpdateDeckMutation,
 } from '@/services/decks/decks.service'
-import { Button, FormTextfield, Select, TextField } from '@/shared'
+import { Button, FormTextField, Select, TextField } from '@/shared'
 
 export function DecksPage() {
   const [createDeck] = useCreateDeckMutation()
@@ -70,7 +70,7 @@ export function DecksPage() {
         options={['10', '20', '30', '50', '100']}
       />
       <form onSubmit={onSubmit}>
-        <FormTextfield control={control} label={'New deck name'} name={'name'} />
+        <FormTextField control={control} label={'New deck name'} name={'name'} />
         <Button>Create deck</Button>
       </form>
       <DecksTable
