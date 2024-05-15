@@ -1,4 +1,4 @@
-import { ForgotForm, FormValuesFromForgot } from '@/features/auth/forgotForm/forgotForm'
+import { ForgotForm, FormValuesFromForgot } from '@/features/auth/forgotForm'
 import { Meta, StoryObj } from '@storybook/react'
 
 const meta: Meta<typeof ForgotForm> = {
