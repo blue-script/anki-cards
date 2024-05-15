@@ -48,6 +48,22 @@ export interface CreateDeckArgs {
 export type UpdateDeckArgs = { id: string } & Partial<CreateDeckArgs>
 export type DeleteDeckArgs = { id: string }
 
+export interface GetDeckArgs {
+  id: string
+}
+
+export interface GetDeckResponse {
+  author: Author
+  cardsCount: number
+  cover: string
+  created: string
+  id: string
+  isPrivate: boolean
+  name: string
+  updated: string
+  userId: string
+}
+
 // Error Message
 // export type ApiError = {
 //   data: DataErrorType
