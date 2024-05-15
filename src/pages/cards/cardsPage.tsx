@@ -57,7 +57,7 @@ export const CardsPage = () => {
   return (
     <Layout>
       <Page mt={'24px'}>
-        <Button className={s.buttonBack} onClick={() => navigate(-1)}>
+        <Button className={s.buttonBack} onClick={() => navigate('/')}>
           <ArrowBackOutline /> <Typography option={'body2'}>Back to Decks List</Typography>
         </Button>
 
