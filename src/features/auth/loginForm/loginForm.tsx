@@ -1,16 +1,8 @@
 import { useForm } from 'react-hook-form'
 
-<<<<<<<< HEAD:src/features/auth/loginForm/loginForm.tsx
-import { Button } from '@/shared'
+import { Button, FormTextfield } from '@/shared'
 import { FormCheckbox } from '@/shared/ui/form/formCheckbox'
 import { FormSelect } from '@/shared/ui/form/formSelect'
-import { FormTextField } from '@/shared/ui/form/formTextfield'
-========
-import { Button } from '@/components'
-import { FormCheckbox } from '@/components/ui/form/formCheckbox'
-import { FormSelect } from '@/components/ui/form/formSelect'
-import { FormTextfield } from '@/components/ui/form/formTextfield'
->>>>>>>> b382d7249e5b01c5928da9b87e798dd846d28750:src/components/auth/loginForm/loginForm.tsx
 import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
