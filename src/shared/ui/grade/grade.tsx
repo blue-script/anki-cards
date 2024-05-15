@@ -1,12 +1,12 @@
 import { Star } from '@/assets/icons'
 
-import s from './stars.module.scss'
+import s from './grade.module.scss'
 
 type Props = {
   grade: number
 }
 
-export const Stars = ({ grade }: Props) => {
+export const Grade = ({ grade }: Props) => {
   return (
     <>
       {[...Array(5)].map((_, idx) => (

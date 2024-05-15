@@ -1,7 +1,16 @@
 .buttonBack {
   all: unset;
+  cursor: pointer;
   display: flex;
   align-items: center;
+
+  &:hover:enabled {
+    background-color: unset;
+  }
+
+  p {
+    margin: 0;
+  }
 }
 
 .ownerAndLearn {
@@ -11,7 +20,14 @@
   width: 100%;
 }
 
+.owner {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
 .image {
+  max-height: 108px;
   margin-bottom: 25px;
   border-radius: 2px;
 }

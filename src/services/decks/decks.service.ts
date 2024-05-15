@@ -3,6 +3,8 @@ import {
   Deck,
   DecksListResponse,
   DeleteDeckArgs,
+  GetDeckArgs,
+  GetDeckResponse,
   GetDecksArgs,
   UpdateDeckArgs,
 } from '@/services/decks/decks.types'
@@ -24,6 +26,13 @@ export const decksService = flashcardsApi.injectEndpoints({
         invalidatesTags: ['Decks'],
         query: ({ id }) => ({
           method: 'DELETE',
+          url: `v1/decks/${id}`,
+        }),
+      }),
+      getDeckById: builder.query<GetDeckResponse, GetDeckArgs>({
+        providesTags: ['Cards'],
+        query: ({ id }) => ({
+          method: 'GET',
           url: `v1/decks/${id}`,
         }),
       }),
@@ -50,6 +59,7 @@ export const decksService = flashcardsApi.injectEndpoints({
 export const {
   useCreateDeckMutation,
   useDeleteDeckMutation,
+  useGetDeckByIdQuery,
   useGetDecksQuery,
   useUpdateDeckMutation,
 } = decksService

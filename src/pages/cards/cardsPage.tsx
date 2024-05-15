@@ -1,63 +1,83 @@
-import { useForm } from 'react-hook-form'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import { ArrowBackOutline } from '@/assets/icons'
-import deckImg from '@/assets/img/mask.png'
 import { CardsTable } from '@/entities/cards'
 import { DropDownDeck } from '@/entities/dropDownDeck/dropDownDeck'
 import { useGetCardsQuery } from '@/services/cards/cards.service'
-import { Button, Dropdown, FormTextField, Layout, Page, Pagination, Typography } from '@/shared'
+import { useGetDeckByIdQuery } from '@/services/decks/decks.service'
+import { Button, Dropdown, Layout, Page, Pagination, TextField, Typography } from '@/shared'
 
 import s from './cardsPage.module.scss'
 
 export const CardsPage = () => {
+  const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
 
-  const { data, error, isLoading } = useGetCardsQuery({ id: id ?? '' }, { skip: !id })
+  const [searchParams, setSearchParams] = useSearchParams()
+  const search = searchParams.get('search') ?? ''
 
-  const { control, handleSubmit } = useForm({})
+  const {
+    data: deckData,
+    error: deckError,
+    isLoading: deckIsLoading,
+  } = useGetDeckByIdQuery({ id: id ?? '' })
+  const { data, error, isLoading } = useGetCardsQuery(
+    // desc or asc ???? not work
+    { currentPage: 1, id: id ?? '', itemsPerPage: 5, orderBy: '', question: search },
+    { skip: !id }
+  )
+
+  const handleSearchChange = (value: string) => {
+    if (value.length) {
+      searchParams.set('search', value)
+    } else {
+      searchParams.delete('search')
+    }
+    setSearchParams(searchParams)
+  }
 
   if (!id) {
     return <div>Invalid card ID</div>
   }
 
-  if (isLoading) {
+  if (isLoading || deckIsLoading) {
     return <div>LOADING...</div>
   }
 
-  if (error) {
-    return <div>{`Error: ${error}`}</div>
+  if (error || deckError) {
+    return <div>{`Error: ${error || deckError}`}</div>
   }
 
-  const isOwner = true //some logic
+  if (!deckData) {
+    return <div>Some error...</div>
+  }
+
+  const isOwner = deckData.userId === deckData.userId //some logic
 
   return (
     <Layout>
       <Page mt={'24px'}>
-        <Button className={s.buttonBack}>
+        <Button className={s.buttonBack} onClick={() => navigate(-1)}>
           <ArrowBackOutline /> <Typography option={'body2'}>Back to Decks List</Typography>
         </Button>
 
         <div className={s.ownerAndLearn}>
-          <div>
+          <div className={s.owner}>
             <Typography option={'h1'}>{isOwner ? 'My Deck' : 'Friend’s Deck'}</Typography>
             <DropDownDeck />
           </div>
 
           <Button>Learn to Deck</Button>
         </div>
-        <img alt={'deck-img'} className={s.image} src={deckImg} />
+        {deckData.cover && <img alt={'deck-img'} className={s.image} src={deckData.cover} />}
         {isOwner && <Dropdown.Root></Dropdown.Root>}
 
-        <form onSubmit={handleSubmit(() => {})}>
-          <FormTextField
-            control={control}
-            fullWidth
-            label={'search cards'}
-            name={'searchCards'}
-            variant={'search'}
-          />
-        </form>
+        <TextField
+          fullWidth
+          label={'search'}
+          onValueChange={handleSearchChange}
+          variant={'search'}
+        />
         <CardsTable cards={data?.items} onDeleteClick={() => {}} onEditClick={() => {}} />
         {data?.pagination && (
           <Pagination

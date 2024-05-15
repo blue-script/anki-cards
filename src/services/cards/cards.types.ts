@@ -34,3 +34,7 @@ export interface GetCardsArgs {
   orderBy?: string | undefined
   question?: string
 }
+
+export interface CreateCardArgs {
+  id: string
+}

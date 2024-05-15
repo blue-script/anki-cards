@@ -1,7 +1,7 @@
 import { Edit2Outline, TrashOutline } from '@/assets/icons'
 import { CardTextOrImage } from '@/entities/cards/ui/cardTextOrImage'
 import { Card } from '@/services/cards/cards.types'
-import { Button, Stars, Table } from '@/shared'
+import { Button, Grade, Table } from '@/shared'
 
 import s from './cardRow.module.scss'
 
@@ -36,7 +36,7 @@ export const CardRow = ({
       </Table.Td>
       <Table.Td>{new Date(updated).toLocaleDateString('ru-ru')}</Table.Td>
       <Table.Td className={s.starWrapper}>
-        <Stars grade={grade} />
+        <Grade grade={grade} />
       </Table.Td>
       <Table.Td>
         {isOwner && (
