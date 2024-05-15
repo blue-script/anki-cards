@@ -1,9 +1,16 @@
 import { useForm } from 'react-hook-form'
 
+<<<<<<<< HEAD:src/features/auth/loginForm/loginForm.tsx
 import { Button } from '@/shared'
 import { FormCheckbox } from '@/shared/ui/form/form-checkbox'
 import { FormSelect } from '@/shared/ui/form/form-select'
 import { FormTextField } from '@/shared/ui/form/form-textfield'
+========
+import { Button } from '@/components'
+import { FormCheckbox } from '@/components/ui/form/formCheckbox'
+import { FormSelect } from '@/components/ui/form/formSelect'
+import { FormTextfield } from '@/components/ui/form/formTextfield'
+>>>>>>>> b382d7249e5b01c5928da9b87e798dd846d28750:src/components/auth/loginForm/loginForm.tsx
 import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -51,8 +58,8 @@ export const LoginForm = ({ onSubmit }: Props) => {
       {import.meta.env.DEV && <DevTool control={control} />}
 
       <form onSubmit={handleSubmit(handleOnSubmit)} style={{ padding: '7px 15px' }}>
-        <FormTextField control={control} label={'email'} name={'email'} />
-        <FormTextField control={control} label={'password'} name={'password'} />
+        <FormTextfield control={control} label={'email'} name={'email'} />
+        <FormTextfield control={control} label={'password'} name={'password'} />
         <FormCheckbox control={control} label={'Remember me'} name={'rememberMe'} />
         <FormCheckbox control={control} label={'Accept terms of service'} name={'TOS'} />
 

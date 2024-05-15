@@ -3,7 +3,11 @@ import { CSSProperties } from 'react'
 import { Button, Typography } from '@/shared'
 import { clsx } from 'clsx'
 
+<<<<<<<< HEAD:src/features/auth/checkEmail/checkEmail.tsx
 import s from './checkEmail.module.scss'
+========
+import s from './checkEmailForm.module.scss'
+>>>>>>>> b382d7249e5b01c5928da9b87e798dd846d28750:src/features/auth/checkEmail/checkEmailForm.tsx
 
 type Props = {
   className?: string
