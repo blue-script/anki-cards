@@ -1,7 +1,7 @@
 import { CSSProperties } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { Button, FormTextfield, Typography } from '@/shared'
+import { Button, FormTextField, Typography } from '@/shared'
 import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import clsx from 'clsx'
@@ -56,7 +56,7 @@ export const CreatePasswordForm = ({ className, onSubmit, style }: Props) => {
         <Typography as={'h1'} className={s.headerText} option={'h1'}>
           Create new password
         </Typography>
-        <FormTextfield
+        <FormTextField
           className={s.emailField}
           control={control}
           fullWidth

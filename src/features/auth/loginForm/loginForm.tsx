@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 
-import { Button, FormTextfield } from '@/shared'
+import { Button, FormTextField } from '@/shared'
 import { FormCheckbox } from '@/shared/ui/form/formCheckbox'
 import { FormSelect } from '@/shared/ui/form/formSelect'
 import { DevTool } from '@hookform/devtools'
@@ -50,8 +50,8 @@ export const LoginForm = ({ onSubmit }: Props) => {
       {import.meta.env.DEV && <DevTool control={control} />}
 
       <form onSubmit={handleSubmit(handleOnSubmit)} style={{ padding: '7px 15px' }}>
-        <FormTextfield control={control} label={'email'} name={'email'} />
-        <FormTextfield control={control} label={'password'} name={'password'} />
+        <FormTextField control={control} label={'email'} name={'email'} />
+        <FormTextField control={control} label={'password'} name={'password'} />
         <FormCheckbox control={control} label={'Remember me'} name={'rememberMe'} />
         <FormCheckbox control={control} label={'Accept terms of service'} name={'TOS'} />
 

@@ -8,7 +8,7 @@ type FormTextFieldProps<T extends FieldValues> = Omit<
 > &
   UseControllerProps<T>
 
-export const FormTextfield = <T extends FieldValues>({
+export const FormTextField = <T extends FieldValues>({
   control,
   name,
   ...rest
