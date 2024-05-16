@@ -31,7 +31,7 @@ export const CardsPage = () => {
       question: search,
     },
     {
-      pollingInterval: 3000,
+      // pollingInterval: 3000,
       selectFromResult: ({ data, error, isLoading }) => {
         return { cards: data?.items, error, isLoading, pagination: data?.pagination }
       },
