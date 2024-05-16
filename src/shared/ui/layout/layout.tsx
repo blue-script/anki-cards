@@ -2,6 +2,7 @@ import { CSSProperties, ComponentPropsWithoutRef, ElementRef, forwardRef } from 
 import { Outlet } from 'react-router-dom'
 
 import { Header } from '@/shared/ui/header/header'
+import LinearProgress from '@/shared/ui/lineProgress/linearProgress'
 import clsx from 'clsx'
 
 import s from './layout.module.scss'
@@ -17,6 +18,7 @@ export const Layout = forwardRef<ElementRef<'div'>, Props>(
     return (
       <div className={classes} ref={ref} {...rest}>
         <Header />
+        <LinearProgress />
         <main className={s.main}>
           <Outlet />
         </main>

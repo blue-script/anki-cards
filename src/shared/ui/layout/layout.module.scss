@@ -7,6 +7,6 @@
   align-items: center;
 
   width: 100%;
-  padding-top: var(--header-height);
+  padding-top: calc(var(--header-height) - 4px);
   padding-inline: var(--header-padding-inline);
 }
