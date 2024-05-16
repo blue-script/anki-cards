@@ -5,7 +5,7 @@ import { CardsTable } from '@/entities/cards'
 import { DropDownDeck } from '@/entities/dropDownDeck/dropDownDeck'
 import { useGetCardsQuery } from '@/services/cards/cards.service'
 import { useGetDeckByIdQuery } from '@/services/decks/decks.service'
-import { Button, Dropdown, Layout, Page, Pagination, TextField, Typography } from '@/shared'
+import { Button, Dropdown, Page, Pagination, TextField, Typography } from '@/shared'
 
 import s from './cardsPage.module.scss'
 
@@ -55,40 +55,33 @@ export const CardsPage = () => {
   const isOwner = deckData.userId === deckData.userId //some logic
 
   return (
-    <Layout>
-      <Page mt={'24px'}>
-        <Button className={s.buttonBack} onClick={() => navigate('/')}>
-          <ArrowBackOutline /> <Typography option={'body2'}>Back to Decks List</Typography>
-        </Button>
+    <Page mt={'24px'}>
+      <Button className={s.buttonBack} onClick={() => navigate('/')}>
+        <ArrowBackOutline /> <Typography option={'body2'}>Back to Decks List</Typography>
+      </Button>
 
-        <div className={s.ownerAndLearn}>
-          <div className={s.owner}>
-            <Typography option={'h1'}>{isOwner ? 'My Deck' : 'Friend’s Deck'}</Typography>
-            <DropDownDeck />
-          </div>
-
-          <Button>Learn to Deck</Button>
+      <div className={s.ownerAndLearn}>
+        <div className={s.owner}>
+          <Typography option={'h1'}>{isOwner ? 'My Deck' : 'Friend’s Deck'}</Typography>
+          <DropDownDeck />
         </div>
-        {deckData.cover && <img alt={'deck-img'} className={s.image} src={deckData.cover} />}
-        {isOwner && <Dropdown.Root></Dropdown.Root>}
 
-        <TextField
-          fullWidth
-          label={'search'}
-          onValueChange={handleSearchChange}
-          variant={'search'}
+        <Button>Learn to Deck</Button>
+      </div>
+      {deckData.cover && <img alt={'deck-img'} className={s.image} src={deckData.cover} />}
+      {isOwner && <Dropdown.Root></Dropdown.Root>}
+
+      <TextField fullWidth label={'search'} onValueChange={handleSearchChange} variant={'search'} />
+      <CardsTable cards={data?.items} onDeleteClick={() => {}} onEditClick={() => {}} />
+      {data?.pagination && (
+        <Pagination
+          currentPage={data.pagination.currentPage}
+          onPageChange={() => {}}
+          pageSize={data.pagination.itemsPerPage}
+          setPageSize={() => {}}
+          totalCount={data.pagination.totalItems}
         />
-        <CardsTable cards={data?.items} onDeleteClick={() => {}} onEditClick={() => {}} />
-        {data?.pagination && (
-          <Pagination
-            currentPage={data.pagination.currentPage}
-            onPageChange={() => {}}
-            pageSize={data.pagination.itemsPerPage}
-            setPageSize={() => {}}
-            totalCount={data.pagination.totalItems}
-          />
-        )}
-      </Page>
-    </Layout>
+      )}
+    </Page>
   )
 }
