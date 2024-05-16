@@ -10,13 +10,15 @@ export interface Pagination {
   totalPages: number
 }
 
+export type GradeType = 0 | 1 | 2 | 3 | 4 | 5
+
 export interface Card {
   answer: string
   answerImg: string
   answerVideo: string
   created: string
   deckId: string
-  grade: number
+  grade: GradeType
   id: string
   question: string
   questionImg: string

@@ -21,10 +21,21 @@ export const CardsPage = () => {
     error: deckError,
     isLoading: deckIsLoading,
   } = useGetDeckByIdQuery({ id: deckId ?? '' })
-  const { data, error, isLoading } = useGetCardsQuery(
-    // desc or asc ???? not work
-    { currentPage: 1, id: deckId ?? '', itemsPerPage: 5, orderBy: '', question: search },
-    { skip: !deckId }
+
+  const { cards, error, isLoading, pagination } = useGetCardsQuery(
+    {
+      currentPage: 1,
+      id: deckId ?? '',
+      itemsPerPage: 5,
+      orderBy: 'question-asc',
+      question: search,
+    },
+    {
+      // pollingInterval: 3000,
+      selectFromResult: ({ data, error, isLoading }) => {
+        return { cards: data?.items, error, isLoading, pagination: data?.pagination }
+      },
+    }
   )
 
   const handleSearchChange = (value: string) => {
@@ -48,11 +59,7 @@ export const CardsPage = () => {
     return <div>{`Error: ${error || deckError}`}</div>
   }
 
-  if (!deckData) {
-    return <div>Some error...</div>
-  }
-
-  const isOwner = deckData.userId === deckData.userId //some logic
+  const isOwner = deckData?.userId === deckData?.userId //some logic
 
   return (
     <Page mt={'24px'}>
@@ -68,18 +75,18 @@ export const CardsPage = () => {
 
         <Button>Learn to Deck</Button>
       </div>
-      {deckData.cover && <img alt={'deck-img'} className={s.image} src={deckData.cover} />}
+      {deckData?.cover && <img alt={'deck-img'} className={s.image} src={deckData.cover} />}
       {isOwner && <Dropdown.Root></Dropdown.Root>}
 
       <TextField fullWidth label={'search'} onValueChange={handleSearchChange} variant={'search'} />
-      <CardsTable cards={data?.items} onDeleteClick={() => {}} onEditClick={() => {}} />
-      {data?.pagination && (
+      <CardsTable cards={cards} onDeleteClick={() => {}} onEditClick={() => {}} />
+      {pagination && (
         <Pagination
-          currentPage={data.pagination.currentPage}
+          currentPage={pagination.currentPage}
           onPageChange={() => {}}
-          pageSize={data.pagination.itemsPerPage}
+          pageSize={pagination.itemsPerPage}
           setPageSize={() => {}}
-          totalCount={data.pagination.totalItems}
+          totalCount={pagination.totalItems}
         />
       )}
     </Page>
