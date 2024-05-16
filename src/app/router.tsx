@@ -8,6 +8,7 @@ import {
 
 import { CardsPage } from '@/pages/cards/cardsPage'
 import { DecksPage } from '@/pages/decks/decksPage'
+import { Layout } from '@/shared'
 
 const publicRoutes: RouteObject[] = [
   {
@@ -43,14 +44,19 @@ const PrivateRoutes = () => {
 
 const router = createBrowserRouter([
   {
-    children: privateRoutes,
-    element: <PrivateRoutes />,
+    children: [
+      {
+        children: privateRoutes,
+        element: <PrivateRoutes />,
+      },
+      {
+        element: <h1>404</h1>,
+        path: '*',
+      },
+      ...publicRoutes,
+    ],
+    element: <Layout />,
   },
-  {
-    element: <h1>404</h1>,
-    path: '*',
-  },
-  ...publicRoutes,
 ])
 
 export const Router = () => {
