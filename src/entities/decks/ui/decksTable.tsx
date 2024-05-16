@@ -1,7 +1,8 @@
 import { Edit2Outline, PlayCircleOutline, TrashOutline } from '@/assets/icons'
 import { Deck } from '@/services/decks/decks.types'
-import { Button, Typography } from '@/shared'
+import { Button } from '@/shared'
 import { Table } from '@/shared/ui/table/table'
+import { TableCellContent } from '@/shared/ui/table/tableCellContent'
 
 import s from './decksTable.module.scss'
 
@@ -33,8 +34,8 @@ export const DecksTable = ({
           <Table.Th>Name</Table.Th>
           <Table.Th>Cards</Table.Th>
           <Table.Th>Last Updated</Table.Th>
-          <Table.Th>Author</Table.Th>
-          <Table.Th>Actions</Table.Th>
+          <Table.Th>Created By</Table.Th>
+          <Table.Th></Table.Th>
         </Table.TRow>
       </Table.THead>
       <Table.TBody>
@@ -44,9 +45,11 @@ export const DecksTable = ({
           return (
             <Table.TRow key={deck.id}>
               <Table.Td>
-                <Typography as={'a'} href={`decks/${deck.id}`} option={'body2'}>
-                  {deck.name}
-                </Typography>
+                <TableCellContent
+                  href={`decks/${deck.id}`}
+                  imageUrl={'src/assets/img/react.png'}
+                  name={deck.name}
+                />
               </Table.Td>
               <Table.Td>{deck.cardsCount}</Table.Td>
               <Table.Td>{new Date(deck.updated).toLocaleDateString('en-GB')}</Table.Td>

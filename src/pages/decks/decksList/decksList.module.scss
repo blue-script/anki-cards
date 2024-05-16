@@ -1,6 +1,18 @@
-.upperContainer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.wrapper {
   width: 100%;
+}
+
+.rowContainer {
+  display: flex;
+  gap: 30px;
+  align-items: end;
+  justify-content: space-between;
+}
+
+.rowHeight {
+  height: 70px;
+}
+
+.specialWrap {
+  align-items: end;
 }
