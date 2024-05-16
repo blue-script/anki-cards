@@ -1,7 +1,10 @@
 .buttonBack {
   all: unset;
+
   cursor: pointer;
+
   display: flex;
+  gap: 7px;
   align-items: center;
 
   &:hover:enabled {
