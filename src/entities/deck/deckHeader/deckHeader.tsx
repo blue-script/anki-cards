@@ -6,13 +6,13 @@ import { AddCardModal } from '@/entities'
 import { DropDownDeck } from '@/entities/dropDownDeck/dropDownDeck'
 import { Button, Typography } from '@/shared'
 
-import s from './cardsHeader.module.scss'
+import s from './deckHeader.module.scss'
 
 type Props = {
   isOwner: boolean
 }
 
-export const CardsHeader = ({ isOwner }: Props) => {
+export const DeckHeader = ({ isOwner }: Props) => {
   const navigate = useNavigate()
 
   const [open, setOpen] = useState(false)
@@ -30,7 +30,7 @@ export const CardsHeader = ({ isOwner }: Props) => {
       {isOwner ? (
         <div className={s.ownerContainer}>
           <div className={s.owner}>
-            <Typography option={'h1'}>My Deck</Typography>
+            <Typography option={'h1'}>My Cards</Typography>
             <DropDownDeck />
           </div>
           <Button onClick={onOpenChange}>Add New Card</Button>
