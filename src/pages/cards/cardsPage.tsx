@@ -1,12 +1,10 @@
 import { useState } from 'react'
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 
-import { ArrowBackOutline } from '@/assets/icons'
-import { CardsTable } from '@/entities/cards'
-import { DropDownDeck } from '@/entities/dropDownDeck/dropDownDeck'
+import { CardsHeader, CardsTable } from '@/entities'
 import { useGetCardsQuery } from '@/services/cards/cards.service'
 import { useGetDeckByIdQuery } from '@/services/decks/decks.service'
-import { Button, Page, Pagination, TextField, Typography } from '@/shared'
+import { Page, Pagination, TextField } from '@/shared'
 import { useDebounce } from '@/shared/hooks/useDebounce'
 
 import s from './cardsPage.module.scss'
@@ -14,7 +12,6 @@ import s from './cardsPage.module.scss'
 const defaultNumberPage = 1
 
 export const CardsPage = () => {
-  const navigate = useNavigate()
   const { deckId } = useParams<{ deckId: string }>()
 
   const [searchParams, setSearchParams] = useSearchParams()
@@ -65,22 +62,14 @@ export const CardsPage = () => {
 
   return (
     <Page mt={'24px'}>
-      <Button className={s.buttonBack} onClick={() => navigate('/')}>
-        <ArrowBackOutline /> <Typography option={'body2'}>Back to Decks List</Typography>
-      </Button>
+      <CardsHeader isOwner={isOwner} />
 
-      <div className={s.ownerAndLearn}>
-        <div className={s.owner}>
-          <Typography option={'h1'}>{isOwner ? 'My Deck' : 'Friend’s Deck'}</Typography>
-          {isOwner && <DropDownDeck />}
-        </div>
-
-        {isOwner ? <Button>Add New Card</Button> : <Button>Learn to Deck</Button>}
-      </div>
       {deckData?.cover && <img alt={'deck-img'} className={s.image} src={deckData.cover} />}
 
       <TextField fullWidth label={'search'} onValueChange={handleSearchChange} variant={'search'} />
+
       <CardsTable cards={cards} onDeleteClick={() => {}} onEditClick={() => {}} />
+
       {pagination && (
         <Pagination
           currentPage={pagination.currentPage}
