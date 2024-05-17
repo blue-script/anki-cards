@@ -46,10 +46,6 @@ export function DecksPage() {
     createDeck(data)
   })
 
-  if (isLoading) {
-    return <div>Loading... Spinner</div>
-  }
-
   if (error) {
     return <div>{`Error ${error}`}</div>
   }
