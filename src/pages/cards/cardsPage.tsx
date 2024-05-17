@@ -16,13 +16,9 @@ export const CardsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const search = searchParams.get('search') ?? ''
 
-  const {
-    data: deckData,
-    error: deckError,
-    isLoading: deckIsLoading,
-  } = useGetDeckByIdQuery({ id: deckId ?? '' })
+  const { data: deckData, error: deckError } = useGetDeckByIdQuery({ id: deckId ?? '' })
 
-  const { cards, error, isLoading, pagination } = useGetCardsQuery(
+  const { cards, error, pagination } = useGetCardsQuery(
     {
       currentPage: 1,
       id: deckId ?? '',
@@ -49,10 +45,6 @@ export const CardsPage = () => {
 
   if (!deckId) {
     return <div>Invalid card ID</div>
-  }
-
-  if (isLoading || deckIsLoading) {
-    return <div>LOADING...</div>
   }
 
   if (error || deckError) {

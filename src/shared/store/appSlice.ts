@@ -27,6 +27,6 @@ const slice = createSlice({
 })
 
 export const appSliceName = slice.name
-export const appReducer = slice.actions
+export const appReducer = slice.reducer
 export const { selectIsLoading } = slice.selectors
 // export const selectIsLoading = (state: RootState) => state.app.isLoading
