@@ -1,3 +1,3 @@
-export * from './cards'
+export * from './deck'
 export * from './decks'
 export * from './dropDownDeck'

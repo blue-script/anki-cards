@@ -1,17 +1,17 @@
 import { useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 
-import { CardsHeader, CardsTable } from '@/entities'
+import { CardsTable, DeckHeader } from '@/entities'
 import { useGetCardsQuery } from '@/services/cards/cards.service'
 import { useGetDeckByIdQuery } from '@/services/decks/decks.service'
 import { Page, Pagination, TextField } from '@/shared'
 import { useDebounce } from '@/shared/hooks/useDebounce'
 
-import s from './cardsPage.module.scss'
+import s from './deckPage.module.scss'
 
 const defaultNumberPage = 1
 
-export const CardsPage = () => {
+export const DeckPage = () => {
   const { deckId } = useParams<{ deckId: string }>()
 
   const [searchParams, setSearchParams] = useSearchParams()
@@ -62,7 +62,7 @@ export const CardsPage = () => {
 
   return (
     <Page mt={'24px'}>
-      <CardsHeader isOwner={isOwner} />
+      <DeckHeader isOwner={isOwner} />
 
       {deckData?.cover && <img alt={'deck-img'} className={s.image} src={deckData.cover} />}
 
