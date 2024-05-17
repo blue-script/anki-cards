@@ -7,6 +7,7 @@ import { DropDownDeck } from '@/entities/dropDownDeck/dropDownDeck'
 import { useGetCardsQuery } from '@/services/cards/cards.service'
 import { useGetDeckByIdQuery } from '@/services/decks/decks.service'
 import { Button, Dropdown, Page, Pagination, TextField, Typography } from '@/shared'
+import { useDebounce } from '@/shared/hooks/useDebounce'
 
 import s from './cardsPage.module.scss'
 
@@ -16,30 +17,7 @@ export const CardsPage = () => {
 
   const [searchParams, setSearchParams] = useSearchParams()
   const search = searchParams.get('search') ?? ''
-
-  const [pageSize, setPageSize] = useState(5)
-  const handlePageSize = (value: number) => {
-    setPageSize(value)
-  }
-
-  const { data: deckData, error: deckError } = useGetDeckByIdQuery({ id: deckId ?? '' })
-
-  const { cards, error, pagination } = useGetCardsQuery(
-    {
-      currentPage: 1,
-      id: deckId ?? '',
-      itemsPerPage: pageSize,
-      orderBy: 'question-asc',
-      question: search,
-    },
-    {
-      // pollingInterval: 3000,
-      selectFromResult: ({ data, error, isLoading }) => {
-        return { cards: data?.items, error, isLoading, pagination: data?.pagination }
-      },
-    }
-  )
-
+  const debounceText = useDebounce<string>(search, 400)
   const handleSearchChange = (value: string) => {
     if (value.length) {
       searchParams.set('search', value)
@@ -49,9 +27,33 @@ export const CardsPage = () => {
     setSearchParams(searchParams)
   }
 
-  if (!deckId) {
-    return <div>Invalid card ID</div>
+  const [pageSize, setPageSize] = useState(5)
+  const handlePageSize = (value: number) => {
+    setPageSize(value)
+    setCurrentPage(1)
   }
+
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const handlePageChange = (value: number) => {
+    setCurrentPage(value)
+  }
+
+  const { data: deckData, error: deckError } = useGetDeckByIdQuery({ id: deckId ?? '' })
+
+  const { cards, error, pagination } = useGetCardsQuery(
+    {
+      currentPage: currentPage,
+      id: deckId ?? '',
+      itemsPerPage: pageSize,
+      orderBy: 'question-asc',
+      question: debounceText,
+    },
+    {
+      selectFromResult: ({ data, error, isLoading }) => {
+        return { cards: data?.items, error, isLoading, pagination: data?.pagination }
+      },
+    }
+  )
 
   if (error || deckError) {
     return <div>{`Error: ${error || deckError}`}</div>
@@ -81,7 +83,7 @@ export const CardsPage = () => {
       {pagination && (
         <Pagination
           currentPage={pagination.currentPage}
-          onPageChange={() => {}}
+          onPageChange={handlePageChange}
           pageSize={pagination.itemsPerPage}
           setPageSize={handlePageSize}
           totalCount={pagination.totalItems}
