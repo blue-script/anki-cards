@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import { ArrowBackOutline } from '@/assets/icons'
@@ -16,13 +17,18 @@ export const CardsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const search = searchParams.get('search') ?? ''
 
+  const [pageSize, setPageSize] = useState(5)
+  const handlePageSize = (value: number) => {
+    setPageSize(value)
+  }
+
   const { data: deckData, error: deckError } = useGetDeckByIdQuery({ id: deckId ?? '' })
 
   const { cards, error, pagination } = useGetCardsQuery(
     {
       currentPage: 1,
       id: deckId ?? '',
-      itemsPerPage: 5,
+      itemsPerPage: pageSize,
       orderBy: 'question-asc',
       question: search,
     },
@@ -77,7 +83,7 @@ export const CardsPage = () => {
           currentPage={pagination.currentPage}
           onPageChange={() => {}}
           pageSize={pagination.itemsPerPage}
-          setPageSize={() => {}}
+          setPageSize={handlePageSize}
           totalCount={pagination.totalItems}
         />
       )}
