@@ -1,5 +1,9 @@
 import { Edit2Outline, TrashOutline } from '@/assets/icons'
+<<<<<<<< HEAD:src/entities/deck/cardsTable/cardRow/cardRow.tsx
 import { CardTextOrImage } from '@/entities/deck/cardsTable/cardTextOrImage'
+========
+import { CardTextOrImage } from '@/entities/cards/cardsTable/cardTextOrImage'
+>>>>>>>> 4eb6ec14e91f68fbb5600a29b59b3d8507a6abae:src/entities/cards/cardsTable/cardRow/cardRow.tsx
 import { Card } from '@/services/cards/cards.types'
 import { Button, Grade, Table } from '@/shared'
 
