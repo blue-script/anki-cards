@@ -12,11 +12,13 @@ type Props = ComponentPropsWithoutRef<'div'>
 export const Layout = forwardRef<ElementRef<'div'>, Props>(({ className, ...rest }, ref) => {
   const classes = clsx(s.layout, className)
 
+  // why error?
+  const isLoading = 'loading' // useSelector(selectIsLoading)
+
   return (
     <div className={classes} ref={ref} {...rest}>
       <Header />
-      {/*hardcode isLoading*/}
-      <LinearProgress isLoading />
+      <LinearProgress isLoading={isLoading} />
       <main className={s.main}>
         <Outlet />
       </main>

@@ -1,9 +1,8 @@
+import { LoadingType } from '@/shared/store/appSlice.types'
 import { createSlice, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit'
 
-export type RequestStatusType = 'failed' | 'idle' | 'loading' | 'succeeded'
-
 const initialState = {
-  isLoading: 'idle' as RequestStatusType,
+  isLoading: 'idle' as LoadingType,
 }
 
 const slice = createSlice({
@@ -27,5 +26,7 @@ const slice = createSlice({
   },
 })
 
+export const appSliceName = slice.name
 export const appReducer = slice.actions
 export const { selectIsLoading } = slice.selectors
+// export const selectIsLoading = (state: RootState) => state.app.isLoading
