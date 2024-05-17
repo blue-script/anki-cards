@@ -61,8 +61,6 @@ export const CardsPage = () => {
 
   const isOwner = deckData?.userId === deckData?.userId //some logic
 
-  console.log('pagination', pagination)
-
   return (
     <Page mt={'24px'}>
       <Button className={s.buttonBack} onClick={() => navigate('/')}>
