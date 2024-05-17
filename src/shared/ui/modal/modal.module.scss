@@ -35,11 +35,8 @@
 .overlay[data-state='open'] {
   position: fixed;
   inset: 0;
-
   opacity: 0.6;
   background-color: var(--color-dark-500);
-
-  animation: overlay-show 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .header {
@@ -70,14 +67,4 @@
 
 .modalBody {
   padding: 24px;
-}
-
-@keyframes overlay-show {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
 }

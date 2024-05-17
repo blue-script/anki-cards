@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { ArrowBackOutline } from '@/assets/icons'
+import { AddCardModal } from '@/entities'
 import { DropDownDeck } from '@/entities/dropDownDeck/dropDownDeck'
 import { Button, Typography } from '@/shared'
 
@@ -13,7 +15,11 @@ type Props = {
 export const CardsHeader = ({ isOwner }: Props) => {
   const navigate = useNavigate()
 
-  const handleAddCard = () => {}
+  const [open, setOpen] = useState(false)
+
+  const onOpenChange = () => {
+    setOpen(!open)
+  }
 
   return (
     <div className={s.cardsHeader}>
@@ -27,7 +33,8 @@ export const CardsHeader = ({ isOwner }: Props) => {
             <Typography option={'h1'}>My Deck</Typography>
             <DropDownDeck />
           </div>
-          <Button onClick={handleAddCard}>Add New Card</Button>
+          <Button onClick={onOpenChange}>Add New Card</Button>
+          <AddCardModal onOpenChange={onOpenChange} open={open} />
         </div>
       ) : (
         <div className={s.ownerContainer}>
