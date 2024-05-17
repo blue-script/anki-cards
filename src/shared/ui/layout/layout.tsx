@@ -14,6 +14,7 @@ type Props = {
 export const Layout = forwardRef<ElementRef<'div'>, Props>(
   ({ className, contentMarginTop = '36px', ...rest }, ref) => {
     const classes = clsx(s.layout)
+    // const isLoading = useSelector(selectIsLoading)
 
     return (
       <div className={classes} ref={ref} {...rest}>

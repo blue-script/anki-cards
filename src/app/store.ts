@@ -1,14 +1,16 @@
 import { flashcardsApi } from '@/services/flashcardsApi'
-import { configureStore } from '@reduxjs/toolkit'
+import { appReducer } from '@/shared/store/appSlice'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
 
 export const store = configureStore({
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(flashcardsApi.middleware),
   //concat(newApi.middleware)
-  reducer: {
+  reducer: combineReducers({
+    app: appReducer,
     [flashcardsApi.reducerPath]: flashcardsApi.reducer,
     //[newApi.reducerPath]: newApi.reducer,
-  },
+  }),
 })
 
 // Метод setupListeners, подключает слушатели событий фокуса (refetchOnFocus) и повторного подключения (refetchOnReconnect ), чтобы автоматически перезагружать данные при возвращении на страницу или восстановлении подключения
