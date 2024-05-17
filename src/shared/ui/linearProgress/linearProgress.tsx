@@ -1,11 +1,13 @@
+import { LoadingType } from '@/shared/store/appSlice.types'
+
 import s from './linearProgress.module.scss'
 
 type Props = {
-  isLoading: boolean
+  isLoading: LoadingType
 }
 
 export const LinearProgress = ({ isLoading }: Props) => {
-  return isLoading ? (
+  return isLoading === 'loading' ? (
     <div className={s.linearProgressContainer}>
       <div className={s.linearProgressBar}>
         <div className={s.linearProgressBarInner}></div>
