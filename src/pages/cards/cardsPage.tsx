@@ -6,7 +6,7 @@ import { CardsTable } from '@/entities/cards'
 import { DropDownDeck } from '@/entities/dropDownDeck/dropDownDeck'
 import { useGetCardsQuery } from '@/services/cards/cards.service'
 import { useGetDeckByIdQuery } from '@/services/decks/decks.service'
-import { Button, Dropdown, Page, Pagination, TextField, Typography } from '@/shared'
+import { Button, Page, Pagination, TextField, Typography } from '@/shared'
 import { useDebounce } from '@/shared/hooks/useDebounce'
 
 import s from './cardsPage.module.scss'
@@ -72,13 +72,12 @@ export const CardsPage = () => {
       <div className={s.ownerAndLearn}>
         <div className={s.owner}>
           <Typography option={'h1'}>{isOwner ? 'My Deck' : 'Friend’s Deck'}</Typography>
-          <DropDownDeck />
+          {isOwner && <DropDownDeck />}
         </div>
 
-        <Button>Learn to Deck</Button>
+        {isOwner ? <Button>Add New Card</Button> : <Button>Learn to Deck</Button>}
       </div>
       {deckData?.cover && <img alt={'deck-img'} className={s.image} src={deckData.cover} />}
-      {isOwner && <Dropdown.Root></Dropdown.Root>}
 
       <TextField fullWidth label={'search'} onValueChange={handleSearchChange} variant={'search'} />
       <CardsTable cards={cards} onDeleteClick={() => {}} onEditClick={() => {}} />
