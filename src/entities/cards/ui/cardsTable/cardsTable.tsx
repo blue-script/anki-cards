@@ -1,4 +1,4 @@
-import { CardRow } from '@/entities/cards/ui/cardRow/cardRow'
+import { CardRow } from '@/entities/cards/ui/cardsTable/cardRow/cardRow'
 import { Card } from '@/services/cards/cards.types'
 import { Table } from '@/shared'
 

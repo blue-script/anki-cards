@@ -1,5 +1,5 @@
 import { Edit2Outline, TrashOutline } from '@/assets/icons'
-import { CardTextOrImage } from '@/entities/cards/ui/cardTextOrImage'
+import { CardTextOrImage } from '@/entities/cards/ui/cardsTable/cardTextOrImage'
 import { Card } from '@/services/cards/cards.types'
 import { Button, Grade, Table } from '@/shared'
 
