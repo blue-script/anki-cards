@@ -11,6 +11,8 @@ import { useDebounce } from '@/shared/hooks/useDebounce'
 
 import s from './cardsPage.module.scss'
 
+const defaultNumberPage = 1
+
 export const CardsPage = () => {
   const navigate = useNavigate()
   const { deckId } = useParams<{ deckId: string }>()
@@ -18,6 +20,10 @@ export const CardsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const search = searchParams.get('search') ?? ''
   const debounceText = useDebounce<string>(search, 400)
+
+  const [pageSize, setPageSize] = useState(5)
+  const [currentPage, setCurrentPage] = useState<number>(defaultNumberPage)
+
   const handleSearchChange = (value: string) => {
     if (value.length) {
       searchParams.set('search', value)
@@ -26,14 +32,10 @@ export const CardsPage = () => {
     }
     setSearchParams(searchParams)
   }
-
-  const [pageSize, setPageSize] = useState(5)
   const handlePageSize = (value: number) => {
     setPageSize(value)
-    setCurrentPage(1)
+    setCurrentPage(defaultNumberPage)
   }
-
-  const [currentPage, setCurrentPage] = useState<number>(1)
   const handlePageChange = (value: number) => {
     setCurrentPage(value)
   }
