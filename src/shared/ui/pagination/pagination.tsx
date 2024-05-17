@@ -25,8 +25,10 @@ export const Pagination = (props: Props) => {
     totalCount,
   }) as number[]
 
+  let isShowNavigate = true
+
   if (currentPage === 0 || (paginationRange && paginationRange.length < 2)) {
-    return null
+    isShowNavigate = false
   }
 
   const nextPage = () => {
@@ -41,19 +43,21 @@ export const Pagination = (props: Props) => {
 
   return (
     <div className={s.navigationAndSelect}>
-      <div className={s.navigation}>
-        <NavigationButton disabled={currentPage === 1} onClick={prevPage}>
-          <ArrowIosBack />
-        </NavigationButton>
-        <PaginationButtonList
-          currentPage={currentPage}
-          onPageChange={onPageChange}
-          paginationRange={paginationRange}
-        />
-        <NavigationButton disabled={currentPage === lastPage} onClick={nextPage}>
-          <ArrowIosForward />
-        </NavigationButton>
-      </div>
+      {isShowNavigate && (
+        <div className={s.navigation}>
+          <NavigationButton disabled={currentPage === 1} onClick={prevPage}>
+            <ArrowIosBack />
+          </NavigationButton>
+          <PaginationButtonList
+            currentPage={currentPage}
+            onPageChange={onPageChange}
+            paginationRange={paginationRange}
+          />
+          <NavigationButton disabled={currentPage === lastPage} onClick={nextPage}>
+            <ArrowIosForward />
+          </NavigationButton>
+        </div>
+      )}
 
       <SelectCountPage setPageSize={setPageSize} />
     </div>

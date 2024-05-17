@@ -1,34 +1,3 @@
-.buttonBack {
-  all: unset;
-
-  cursor: pointer;
-
-  display: flex;
-  gap: 7px;
-  align-items: center;
-
-  &:hover:enabled {
-    background-color: unset;
-  }
-
-  p {
-    margin: 0;
-  }
-}
-
-.ownerAndLearn {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.owner {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-}
-
 .image {
   max-height: 108px;
   margin-bottom: 25px;
