@@ -36,7 +36,7 @@ export function DecksPage() {
 
   const [itemsPerPage, setItemsPerPage] = useState(10)
 
-  const { data: decks, error, isLoading } = useGetDecksQuery({ itemsPerPage, name: search })
+  const { data: decks, error } = useGetDecksQuery({ itemsPerPage, name: search })
 
   const handleItemsPerPage = (numOfItems: string) => {
     setItemsPerPage(+numOfItems)
