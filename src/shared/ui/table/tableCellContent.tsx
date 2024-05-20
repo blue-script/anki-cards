@@ -1,6 +1,6 @@
 import { Typography } from '@/shared'
 
-import s from './decksTable.module.scss'
+import s from './tableCellContent.module.scss'
 
 type TableCellContentProps = {
   href: string

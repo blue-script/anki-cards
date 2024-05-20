@@ -7,6 +7,7 @@ import { TableCellContent } from '@/shared/ui/table/tableCellContent'
 import s from './decksTable.module.scss'
 
 type DecksTableProps = {
+  className?: string
   currentUserId?: string
   decks: Deck[] | undefined
   onDeleteClick: (id: string) => void
@@ -14,6 +15,7 @@ type DecksTableProps = {
 }
 
 export const DecksTable = ({
+  className,
   currentUserId,
   decks,
   onDeleteClick,
@@ -28,7 +30,7 @@ export const DecksTable = ({
   }
 
   return (
-    <Table.TRoot>
+    <Table.TRoot className={className}>
       <Table.THead>
         <Table.TRow style={{ borderBottom: 'none' }}>
           <Table.Th>Name</Table.Th>

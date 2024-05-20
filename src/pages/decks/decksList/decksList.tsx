@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useSearchParams } from 'react-router-dom'
 
 import { TrashOutline } from '@/assets/icons'
 import { DecksTable } from '@/entities/decks'
+import { useGetDecksQuery } from '@/services/decks/decks.service'
 import { Button, FormTextField, Page, Slider, TabSwitcher, Typography } from '@/shared'
 import { clsx } from 'clsx'
 
@@ -18,6 +20,26 @@ export const DecksList = () => {
       name: '',
     },
   })
+
+  const [searchParams, setSearchParams] = useSearchParams()
+  const search = searchParams.get('search') ?? ''
+
+  const handleSearchChange = (value: string) => {
+    if (value.length) {
+      searchParams.set('search', value)
+    } else {
+      searchParams.delete('search')
+    }
+    setSearchParams(searchParams)
+  }
+
+  const [itemsPerPage, setItemsPerPage] = useState(10)
+
+  const { data: decks } = useGetDecksQuery({ itemsPerPage, name: search })
+
+  const handleItemsPerPage = (numOfItems: string) => {
+    setItemsPerPage(+numOfItems)
+  }
 
   const onSubmit = (data: any) => {
     handleSubmit(data)
@@ -36,6 +58,7 @@ export const DecksList = () => {
           <FormTextField
             control={control}
             name={'name'}
+            onValueChange={handleSearchChange}
             placeholder={'Input search'}
             variant={'search'}
           />
@@ -55,22 +78,25 @@ export const DecksList = () => {
             Clear filter
           </Button>
         </div>
-        <DecksTable
-          currentUserId={'f2be95b9-4d07-4751-a775-bd612fc9553a'}
-          decks={decks?.items}
-          // onDeleteClick={id => {
-          //   deleteDeck({ id })
-          // }}
-          // onEditClick={id => {
-          //   updateDeck({ id, name: 'hotPeppers new deck' })
-          // }}
-          onDeleteClick={() => {
-            console.log('onDeleteClick')
-          }}
-          onEditClick={() => {
-            console.log('onEditClick')
-          }}
-        />
+        <div className={s.rowContainer}>
+          <DecksTable
+            className={s.tableMargin}
+            currentUserId={'f2be95b9-4d07-4751-a775-bd612fc9553a'}
+            decks={decks?.items}
+            // onDeleteClick={id => {
+            //   deleteDeck({ id })
+            // }}
+            // onEditClick={id => {
+            //   updateDeck({ id, name: 'hotPeppers new deck' })
+            // }}
+            onDeleteClick={() => {
+              console.log('onDeleteClick')
+            }}
+            onEditClick={() => {
+              console.log('onEditClick')
+            }}
+          />
+        </div>
       </form>
     </Page>
   )
