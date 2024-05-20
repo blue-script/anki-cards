@@ -1,3 +1,5 @@
+import { CSSProperties } from 'react'
+
 import { ArrowIosBack, ArrowIosForward } from '@/assets/icons'
 import { NavigationButton } from '@/shared/ui/pagination/navigationButton/navigationButton'
 import { PaginationButtonList } from '@/shared/ui/pagination/paginationButtonList/paginationButtonList'
@@ -12,11 +14,20 @@ type Props = {
   pageSize: number
   setPageSize: (value: number) => void
   siblingCount?: number
+  style?: CSSProperties
   totalCount: number
 }
 
 export const Pagination = (props: Props) => {
-  const { currentPage, onPageChange, pageSize, setPageSize, siblingCount = 1, totalCount } = props
+  const {
+    currentPage,
+    onPageChange,
+    pageSize,
+    setPageSize,
+    siblingCount = 1,
+    style,
+    totalCount,
+  } = props
 
   const paginationRange = usePagination({
     currentPage,
@@ -40,7 +51,7 @@ export const Pagination = (props: Props) => {
   const lastPage = paginationRange[paginationRange.length - 1]
 
   return (
-    <div className={s.navigationAndSelect}>
+    <div className={s.navigationAndSelect} style={style}>
       <div className={s.navigation}>
         <NavigationButton disabled={currentPage === 1} onClick={prevPage}>
           <ArrowIosBack />

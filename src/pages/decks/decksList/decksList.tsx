@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 
 import { TrashOutline } from '@/assets/icons'
 import { DecksTable } from '@/entities/decks'
 import { useGetDecksQuery } from '@/services/decks/decks.service'
-import { Button, FormTextField, Page, Slider, TabSwitcher, Typography } from '@/shared'
+import { Button, FormTextField, Page, Pagination, Slider, TabSwitcher, Typography } from '@/shared'
 import { clsx } from 'clsx'
 
 import s from './decksList.module.scss'
@@ -49,7 +49,7 @@ export const DecksList = () => {
     <Page className={s.wrapper} mt={'-20px'}>
       <form onSubmit={onSubmit} style={{ width: '100%' }}>
         <div className={s.rowContainer}>
-          <Typography as={'h1'} option={'h1'}>
+          <Typography as={Link} option={'h1'} to={'decks/:id'}>
             Decks List
           </Typography>
           <Button>Add new deck</Button>
@@ -95,6 +95,16 @@ export const DecksList = () => {
             onEditClick={() => {
               console.log('onEditClick')
             }}
+          />
+        </div>
+        <div className={s.rowContainer}>
+          <Pagination
+            currentPage={1}
+            onPageChange={numOfItems => handleItemsPerPage(numOfItems.toString())}
+            pageSize={10}
+            setPageSize={numOfItems => handleItemsPerPage(numOfItems.toString())}
+            style={{ marginTop: '10px' }}
+            totalCount={200}
           />
         </div>
       </form>
