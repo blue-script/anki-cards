@@ -6,6 +6,7 @@ import { TrashOutline } from '@/assets/icons'
 import { DecksTable } from '@/entities/decks'
 import { useGetDecksQuery } from '@/services/decks/decks.service'
 import { Button, FormTextField, Page, Pagination, Slider, TabSwitcher, Typography } from '@/shared'
+import { useDebounce } from '@/shared/hooks/useDebounce'
 import { clsx } from 'clsx'
 
 import s from './decksList.module.scss'
@@ -22,7 +23,9 @@ export const DecksList = () => {
   })
 
   const [searchParams, setSearchParams] = useSearchParams()
+
   const search = searchParams.get('search') ?? ''
+  const debounceText = useDebounce<string>(search, 500)
 
   const handleSearchChange = (value: string) => {
     if (value.length) {
@@ -35,18 +38,19 @@ export const DecksList = () => {
 
   const [itemsPerPage, setItemsPerPage] = useState(10)
 
-  const { data: decks } = useGetDecksQuery({ itemsPerPage, name: search })
+  const { data: decks } = useGetDecksQuery({ itemsPerPage, name: debounceText })
 
   const handleItemsPerPage = (numOfItems: string) => {
     setItemsPerPage(+numOfItems)
   }
 
   const onSubmit = (data: any) => {
+    console.log('line 46', data)
     handleSubmit(data)
   }
 
   return (
-    <Page className={s.wrapper} mt={'-20px'}>
+    <Page className={s.wrapper} mt={'10px'}>
       <form onSubmit={onSubmit} style={{ width: '100%' }}>
         <div className={s.rowContainer}>
           <Typography as={'h1'} option={'h1'}>
@@ -103,7 +107,7 @@ export const DecksList = () => {
             onPageChange={numOfItems => handleItemsPerPage(numOfItems.toString())}
             pageSize={10}
             setPageSize={numOfItems => handleItemsPerPage(numOfItems.toString())}
-            style={{ marginTop: '10px' }}
+            style={{ marginTop: '15px' }}
             totalCount={200}
           />
         </div>
