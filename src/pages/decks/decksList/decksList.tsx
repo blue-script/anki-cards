@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useSearchParams } from 'react-router-dom'
+import { useLoaderData, useSearchParams } from 'react-router-dom'
 
 import { TrashOutline } from '@/assets/icons'
 import { DecksTable } from '@/entities/decks'
@@ -14,6 +14,9 @@ import s from './decksList.module.scss'
 type tabValueT = 'All Cards' | 'My Cards'
 
 export const DecksList = () => {
+  const newDecks = useLoaderData()
+
+  console.log('newDecks', newDecks)
   const [tabValue, setTabValue] = useState<tabValueT>('All Cards')
 
   const { control, handleSubmit } = useForm<{ name: string }>({
@@ -103,12 +106,12 @@ export const DecksList = () => {
         </div>
         <div className={s.rowContainer}>
           <Pagination
-            currentPage={1}
+            currentPage={decks?.pagination.currentPage || 1}
             onPageChange={numOfItems => handleItemsPerPage(numOfItems.toString())}
-            pageSize={10}
+            pageSize={decks?.pagination.itemsPerPage || 10}
             setPageSize={numOfItems => handleItemsPerPage(numOfItems.toString())}
             style={{ marginTop: '15px' }}
-            totalCount={200}
+            totalCount={decks?.pagination.totalItems || 50}
           />
         </div>
       </form>
