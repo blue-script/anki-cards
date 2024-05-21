@@ -3,11 +3,11 @@
   display: flex;
   flex-direction: column;
   align-items: start;
-  width: 100%;
-  margin-bottom: 25px;
 }
 
 .textAboveInput {
+  position: absolute;
+  top: -25px;
   font-size: var(--font-size-s);
   font-weight: var(--font-weight-regular);
   line-height: var(--line-height-m);

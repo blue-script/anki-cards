@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-  width: 100%;
+  position: relative;
 }
 
 .container {
@@ -104,4 +104,12 @@
   .root {
     width: 100%;
   }
+}
+.title {
+  position: absolute;
+  top: -25px;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-m);
+  color: var(--color-light-100);
 }

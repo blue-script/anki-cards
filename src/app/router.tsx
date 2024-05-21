@@ -7,7 +7,8 @@ import {
 } from 'react-router-dom'
 
 import { DeckPage } from '@/pages/deck/deckPage'
-import { DecksPage } from '@/pages/decks/decksPage'
+import { Decks19 } from '@/pages/decks19/decks19'
+// import { DecksPage } from '@/pages/decks/decksPage'
 import { Layout } from '@/shared'
 
 const publicRoutes: RouteObject[] = [
@@ -23,7 +24,7 @@ const publicRoutes: RouteObject[] = [
 
 const privateRoutes: RouteObject[] = [
   {
-    element: <DecksPage />,
+    element: <Decks19 />,
     path: '/',
   },
   {
