@@ -32,7 +32,7 @@ export const DecksTable = ({
         <Table.TRow style={{ borderBottom: 'none' }}>
           <Table.Th>Name</Table.Th>
           <Table.Th>Cards</Table.Th>
-          <Table.Th>Last Updated</Table.Th>
+          <Table.Th>{/*Last Updated<span>{sort === 'asc' ? '▲' : '▼'}</span>*/}</Table.Th>
           <Table.Th>Author</Table.Th>
           <Table.Th>Actions</Table.Th>
         </Table.TRow>

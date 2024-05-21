@@ -9,13 +9,17 @@
   flex-direction: column;
   width: 100%;
 }
-
+.textField {
+  margin-bottom: 48px;
+}
+.bgInput {
+}
 .checkbox {
 }
 
 .title {
-  margin: 0;
   text-align: center;
+  margin-bottom: 51px;
 }
 
 .recoverPasswordLink,
