@@ -1,1 +1,0 @@
-export { CardsTable } from './cardsTable'

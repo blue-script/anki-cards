@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 
-import { DecksTable } from '@/entities/decks/ui/decksTable'
+import { DecksTable } from '@/entities/decks/decksTable/decksTable'
 import {
   useCreateDeckMutation,
   useDeleteDeckMutation,
@@ -36,7 +36,7 @@ export function DecksPage() {
 
   const [itemsPerPage, setItemsPerPage] = useState(10)
 
-  const { data: decks, error, isLoading } = useGetDecksQuery({ itemsPerPage, name: search })
+  const { data: decks, error } = useGetDecksQuery({ itemsPerPage, name: search })
 
   const handleItemsPerPage = (numOfItems: string) => {
     setItemsPerPage(+numOfItems)
@@ -45,10 +45,6 @@ export function DecksPage() {
   const onSubmit = handleSubmit(data => {
     createDeck(data)
   })
-
-  if (isLoading) {
-    return <div>Loading... Spinner</div>
-  }
 
   if (error) {
     return <div>{`Error ${error}`}</div>

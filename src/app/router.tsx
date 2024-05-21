@@ -6,8 +6,8 @@ import {
   createBrowserRouter,
 } from 'react-router-dom'
 
-import { CardsPage } from '@/pages/cards/cardsPage'
-import { DecksList } from '@/pages/decks/decksList/decksList'
+import { DeckPage } from '@/pages/deck/deckPage'
+import { DecksPage } from '@/pages/decks/decksPage'
 import { Layout } from '@/shared'
 
 const publicRoutes: RouteObject[] = [
@@ -22,16 +22,12 @@ const publicRoutes: RouteObject[] = [
 ]
 
 const privateRoutes: RouteObject[] = [
-  // {
-  //   element: <DecksPage />,
-  //   path: '/',
-  // },
   {
-    element: <DecksList />,
+    element: <DecksPage />,
     path: '/',
   },
   {
-    element: <CardsPage />,
+    element: <DeckPage />,
     path: '/decks/:deckId',
   },
   {

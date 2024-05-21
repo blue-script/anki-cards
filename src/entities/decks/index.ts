@@ -1,1 +1,1 @@
-export { DecksTable } from './ui/decksTable'
+export { DecksTable } from './decksTable/decksTable'

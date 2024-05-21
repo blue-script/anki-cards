@@ -1,10 +1,8 @@
-import { CardRow } from '@/entities/cards/ui/cardRow/cardRow'
+import { CardRow, CardsHeader } from '@/entities'
 import { Card } from '@/services/cards/cards.types'
 import { Table } from '@/shared'
 
 import s from './cardsTable.module.scss'
-
-import { CardsHeader } from './cardsHeader'
 
 type CardsTableProps = {
   cards: Card[] | undefined
