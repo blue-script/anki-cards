@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 
 import { TrashOutline } from '@/assets/icons'
 import { DecksTable } from '@/entities/decks'
@@ -49,7 +49,7 @@ export const DecksList = () => {
     <Page className={s.wrapper} mt={'-20px'}>
       <form onSubmit={onSubmit} style={{ width: '100%' }}>
         <div className={s.rowContainer}>
-          <Typography as={Link} option={'h1'} to={'decks/:id'}>
+          <Typography as={'h1'} option={'h1'}>
             Decks List
           </Typography>
           <Button>Add new deck</Button>

@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 import { Edit2Outline, PlayCircleOutline, TrashOutline } from '@/assets/icons'
 import { Deck } from '@/services/decks/decks.types'
 import { Button } from '@/shared'
@@ -57,7 +59,7 @@ export const DecksTable = ({
               <Table.Td>{new Date(deck.updated).toLocaleDateString('en-GB')}</Table.Td>
               <Table.Td>{deck.author.name}</Table.Td>
               <Table.Td className={s.withIcons}>
-                <Button as={'a'} className={s.button} href={`decks/${deck.id}/learn`}>
+                <Button as={Link} className={s.button} to={`decks/${deck.id}`}>
                   <PlayCircleOutline />
                 </Button>
                 {isCurrentUser && (
