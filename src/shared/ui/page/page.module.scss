@@ -1,11 +1,12 @@
 .page {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: center;
+  //display: flex;
+  //flex-direction: column;
+  ////align-items: start;
+  //justify-content: start;
 
   width: 100%;
-  max-width: 1008px;
+  //max-width: 1008px;
+  min-width: 1008px;
 }
 
 @media (width <= 1200px) {

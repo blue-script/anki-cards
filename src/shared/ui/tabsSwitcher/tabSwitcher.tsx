@@ -18,11 +18,11 @@ export type TabSwitcherProps = {
 }
 
 export const TabSwitcher = ({ className, label, onValueChange, tabs, value }: TabSwitcherProps) => {
-  const classes = clsx(s.label, className)
+  const classes = clsx(s.wrapper, className)
 
   return (
     <div className={classes}>
-      {label}
+      <span className={s.label}>{label}</span>
       <TabsSwitcher.Root className={s.root} onValueChange={onValueChange} value={value}>
         <TabsSwitcher.List>
           {tabs.map(t => (

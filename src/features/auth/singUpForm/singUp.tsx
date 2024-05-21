@@ -67,29 +67,35 @@ export const SignUp = ({ onSubmit }: Props) => {
         </Typography>
         <form onSubmit={handleFormSubmitted}>
           <div className={s.form}>
-            <FormTextField
-              control={control}
-              fullWidth
-              label={'Email'}
-              name={'email'}
-              placeholder={'Enter email'}
-            />
-            <FormTextField
-              control={control}
-              fullWidth
-              label={'Password'}
-              name={'password'}
-              placeholder={'Enter password'}
-              variant={'password'}
-            />
-            <FormTextField
-              control={control}
-              fullWidth
-              label={'Confirm Password'}
-              name={'password'}
-              placeholder={'Enter confirm password'}
-              variant={'password'}
-            />
+            <div className={s.textField}>
+              <FormTextField
+                control={control}
+                fullWidth
+                label={'Email'}
+                name={'email'}
+                placeholder={'Enter email'}
+              />
+            </div>
+            <div className={s.textField}>
+              <FormTextField
+                control={control}
+                fullWidth
+                label={'Password'}
+                name={'password'}
+                placeholder={'Enter password'}
+                variant={'password'}
+              />
+            </div>
+            <div className={s.textField}>
+              <FormTextField
+                control={control}
+                fullWidth
+                label={'Confirm Password'}
+                name={'password'}
+                placeholder={'Enter confirm password'}
+                variant={'password'}
+              />
+            </div>
           </div>
           <Button className={s.button} fullWidth type={'submit'}>
             Sign Up

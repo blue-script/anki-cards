@@ -1,6 +1,5 @@
 import { ComponentProps, ElementRef, forwardRef } from 'react'
 
-import { Typography } from '@/shared'
 import * as SliderPrimitive from '@radix-ui/react-slider'
 import clsx from 'clsx'
 
@@ -18,9 +17,7 @@ export const Slider = forwardRef<ElementRef<typeof SliderPrimitive.Root>, Props>
 
   return (
     <div className={s.wrapper}>
-      <Typography as={'span'} option={'body2'}>
-        {label}
-      </Typography>
+      <span className={s.title}>{label}</span>
       <div className={s.container}>
         <span className={s.values}>{value1}</span>
         <SliderPrimitive.Root
