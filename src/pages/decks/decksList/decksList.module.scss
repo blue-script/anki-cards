@@ -12,6 +12,8 @@
   gap: 30px;
   align-items: end;
   justify-content: space-between;
+
+  width: 100%;
 }
 
 .rowHeight {
@@ -20,4 +22,13 @@
 
 .specialWrap {
   align-items: end;
+}
+
+.uploadBtn {
+  min-height: 36px;
+  margin-top: 24px;
+}
+
+.privateBox {
+  margin-top: 24px;
 }

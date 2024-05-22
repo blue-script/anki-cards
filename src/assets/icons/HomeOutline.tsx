@@ -1,4 +1,4 @@
-import { Ref, SVGProps, forwardRef, memo } from 'react'
+import { forwardRef, memo, Ref, SVGProps } from 'react'
 
 const SvgHomeOutline = (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
   <svg

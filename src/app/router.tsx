@@ -22,12 +22,15 @@ const publicRoutes: RouteObject[] = [
 ]
 
 const privateRoutes: RouteObject[] = [
+  // {
+  //   element: <DecksPage />,
+  //   index: true,
+  //   path: '/decks',
+  // },
   {
     element: <DecksList />,
     index: true,
     path: '/decks',
-    //loader: someLoader
-    //action: someAction
   },
   {
     element: <DeckPage />,

@@ -1,4 +1,4 @@
-import { FieldValues, UseControllerProps, useController } from 'react-hook-form'
+import { FieldValues, useController, UseControllerProps } from 'react-hook-form'
 
 import { TextField, TextFieldProps } from '@/shared'
 
