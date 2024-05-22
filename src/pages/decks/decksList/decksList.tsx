@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 
@@ -7,19 +7,20 @@ import { DecksTable } from '@/entities/decks'
 import { useCreateDeckMutation, useGetDecksQuery } from '@/services/decks/decks.service'
 import {
   Button,
-  Checkbox,
+  FormCheckbox,
   FormTextField,
   Modal,
   Page,
   Pagination,
   Slider,
   TabSwitcher,
-  TextField,
   Typography,
 } from '@/shared'
 import { useDebounce } from '@/shared/hooks/useDebounce'
 import { CountButton } from '@/shared/ui/modal/footer/footer'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { clsx } from 'clsx'
+import { z } from 'zod'
 
 import s from './decksList.module.scss'
 
@@ -147,46 +148,103 @@ export const DecksList = () => {
     </Page>
   )
 }
-
 type AddNewDeckModalProps = {
   open: boolean
   setOpen: (open: boolean) => void
   title?: string
 }
 
+const newDeckSchema = z.object({
+  deckName: z
+    .string()
+    .min(3, { message: 'Deck Name must be at least 3 characters long' })
+    .max(30, { message: 'Deck Name must not exceed 30 characters' }),
+  imagePath: z.string().regex(/\.(jpg|jpeg|png|gif|bmp)$/, {
+    message: 'Invalid image path. Must be a valid image format',
+  }),
+  isPrivateDeck: z.boolean(),
+})
+
+export type FormValuesFromAddDeck = z.infer<typeof newDeckSchema>
+
 export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) => {
-  //const [open, setOpen] = useState<boolean>(false)
+  const { control, handleSubmit, reset, setValue, watch } = useForm<FormValuesFromAddDeck>({
+    defaultValues: {
+      deckName: '',
+      imagePath: '',
+      isPrivateDeck: true,
+    },
+    resolver: zodResolver(newDeckSchema),
+  })
+
+  const imagePath = watch('imagePath')
+
+  const submitHandler = handleSubmit(data => {
+    console.log(data)
+    //createDeck(data)
+  })
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+
+    if (file) {
+      setValue('imagePath', file.name) // Update form state with the file name
+    }
+  }
+
+  const handleUploadClick = () => {
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement
+
+    if (fileInput) {
+      fileInput.click()
+    }
+  }
+
+  const addFormClickHandler = (data: FormValuesFromAddDeck) => {
+    console.log(data)
+    reset()
+  }
 
   const openChangeHandler = () => {
     setOpen(!open)
   }
 
   return (
-    <Modal onOpenChange={openChangeHandler} open={open} title={title}>
-      <TextField label={'Deck Name'} placeholder={'DeckName'}></TextField>
-      <Button
-        className={s.uploadBtn}
-        fullWidth
-        onClick={() => {
-          console.log('button #image click')
-        }}
-        variant={'secondary'}
-      >
-        <ImageOutline />
-        Upload Image
-      </Button>
-      <Checkbox className={s.privateBox} label={'Private Deck'}></Checkbox>
-      <Modal.Footer
-        countButton={CountButton.Two}
-        firstButtonHandler={() => {
-          console.log('button #2 click')
-        }}
-        firstButtonName={'Add New Deck'}
-        secondButtonHandler={() => {
-          console.log('button #3 click')
-        }}
-        secondButtonName={'Cancel'}
-      ></Modal.Footer>
-    </Modal>
+    <form onSubmit={submitHandler}>
+      <Modal onOpenChange={openChangeHandler} open={open} title={title}>
+        <FormTextField
+          control={control}
+          label={'Deck Name'}
+          name={'deckName'}
+          placeholder={'DeckName'}
+        />
+        <input
+          accept={'image/*'}
+          id={'fileInput'}
+          onChange={handleFileChange}
+          style={{ display: 'none' }}
+          type={'file'}
+        />
+        <Button className={s.uploadBtn} fullWidth onClick={handleUploadClick} variant={'secondary'}>
+          <ImageOutline />
+          {imagePath || 'Upload Image'}
+        </Button>
+        <FormCheckbox
+          className={s.privateBox}
+          control={control}
+          label={'Private Deck'}
+          name={'isPrivateDeck'}
+        />
+        <Modal.Footer
+          countButton={CountButton.Two}
+          firstButtonHandler={handleSubmit(addFormClickHandler)}
+          firstButtonName={'Add New Deck'}
+          secondButtonHandler={() => {
+            console.log('button #3 click')
+          }}
+          secondButtonName={'Cancel'}
+        />
+      </Modal>
+    </form>
   )
 }
