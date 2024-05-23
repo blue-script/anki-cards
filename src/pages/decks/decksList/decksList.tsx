@@ -37,11 +37,13 @@ export const DecksList = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const search = searchParams.get('search') ?? ''
   const [itemsPerPage, setItemsPerPage] = useState(10)
+  const [currentPage, setCurrentPage] = useState(1)
   const debounceText = useDebounce<string>(search, 500)
   const { data: decks, refetch } = useGetDecksQuery({
+    currentPage,
     itemsPerPage,
     name: debounceText,
-    ...(tabValue === 'My Cards' && { authorId: currentUserId }), // Conditionally add authorId
+    ...(tabValue === 'My Cards' && { authorId: currentUserId }),
   })
   const [updateDeck] = useUpdateDeckMutation()
   const [deleteDeck] = useDeleteDeckMutation()
@@ -55,9 +57,9 @@ export const DecksList = () => {
   })
 
   useEffect(() => {
-    // Refetch data when tab changes, adding the authorId parameter conditionally
+    // Refetch data when tab, itemsPerPage, or debounceText changes
     refetch()
-  }, [tabValue, refetch])
+  }, [tabValue, itemsPerPage, debounceText, currentPage])
 
   const tabValueHandler = (value: string) => {
     setTabValue(value as tabValueT)
@@ -70,6 +72,11 @@ export const DecksList = () => {
       searchParams.delete('search')
     }
     setSearchParams(searchParams)
+  }
+
+  const pageChangeHandler = (pageNumber: number) => {
+    setCurrentPage(pageNumber)
+    refetch()
   }
 
   const handleItemsPerPage = (numOfItems: string) => {
@@ -143,7 +150,7 @@ export const DecksList = () => {
       <div className={s.rowContainer}>
         <Pagination
           currentPage={decks?.pagination.currentPage || 1}
-          onPageChange={numOfItems => handleItemsPerPage(numOfItems.toString())}
+          onPageChange={pageNumber => pageChangeHandler(pageNumber)}
           pageSize={decks?.pagination.itemsPerPage || 10}
           setPageSize={numOfItems => handleItemsPerPage(numOfItems.toString())}
           style={{ marginTop: '15px' }}
