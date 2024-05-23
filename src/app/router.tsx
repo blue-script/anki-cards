@@ -7,6 +7,8 @@ import {
 } from 'react-router-dom'
 
 import { DeckPage } from '@/pages/deck/deckPage'
+import { DecksList } from '@/pages/decks/decksList/decksList'
+import { Decks19 } from '@/pages/decks19/decks19'
 import { Layout } from '@/shared'
 
 const publicRoutes: RouteObject[] = [
@@ -66,6 +68,3 @@ const router = createBrowserRouter([
 export const Router = () => {
   return <RouterProvider router={router} />
 }
-import { Decks19 } from '@/pages/decks19/decks19'
-import { DecksList } from '@/pages/decks/decksList/decksList'
-
