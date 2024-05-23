@@ -37,6 +37,8 @@ export const DecksList = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const search = searchParams.get('search') ?? ''
   const [itemsPerPage, setItemsPerPage] = useState(10)
+  const [minCardsCount, setMinCardsCount] = useState(1)
+  const [maxCardsCount, setMaxCardsCount] = useState(10)
   const [currentPage, setCurrentPage] = useState(1)
   const debounceText = useDebounce<string>(search, 500)
   const { data: decks, refetch } = useGetDecksQuery({
@@ -44,6 +46,8 @@ export const DecksList = () => {
     itemsPerPage,
     name: debounceText,
     ...(tabValue === 'My Cards' && { authorId: currentUserId }),
+    maxCardsCount,
+    minCardsCount,
   })
   const [updateDeck] = useUpdateDeckMutation()
   const [deleteDeck] = useDeleteDeckMutation()
@@ -57,9 +61,9 @@ export const DecksList = () => {
   })
 
   useEffect(() => {
-    // Refetch data when tab, itemsPerPage, or debounceText changes
+    // Refetch data when tab, itemsPerPage, currentPage changes
     refetch()
-  }, [tabValue, itemsPerPage, debounceText, currentPage])
+  }, [tabValue, itemsPerPage, currentPage, refetch])
 
   const tabValueHandler = (value: string) => {
     setTabValue(value as tabValueT)
@@ -86,6 +90,12 @@ export const DecksList = () => {
   const onSubmit = handleSubmit(data => {
     console.log('Form data:', data) // Added console.log to see the form data
   })
+
+  const sliderHandler = (data: any) => {
+    //console.log(data)
+    setMinCardsCount(data[0])
+    setMaxCardsCount(data[1])
+  }
 
   return (
     <Page className={s.wrapper} mt={'10px'}>
@@ -119,7 +129,15 @@ export const DecksList = () => {
             ]}
             value={tabValue}
           />
-          <Slider label={'Number of cards'} max={10} min={0} value={[2, 10]}></Slider>
+          <Slider
+            label={'Number of cards'}
+            max={10}
+            min={0}
+            onValueChange={sliderData => {
+              sliderHandler(sliderData)
+            }}
+            value={[minCardsCount, maxCardsCount]}
+          ></Slider>
           <Button
             icon
             onClick={() => {
@@ -225,6 +243,7 @@ export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) 
       <Modal onOpenChange={openChangeHandler} open={open} title={title}>
         <FormTextField
           control={control}
+          fullWidth
           label={'Deck Name'}
           name={'name'}
           placeholder={'DeckName'}
