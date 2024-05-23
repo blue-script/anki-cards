@@ -1,10 +1,15 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 
 import { ImageOutline, TrashOutline } from '@/assets/icons'
 import { DecksTable } from '@/entities/decks'
-import { useCreateDeckMutation, useGetDecksQuery } from '@/services/decks/decks.service'
+import {
+  useCreateDeckMutation,
+  useDeleteDeckMutation,
+  useGetDecksQuery,
+  useUpdateDeckMutation,
+} from '@/services/decks/decks.service'
 import {
   Button,
   FormCheckbox,
@@ -27,24 +32,36 @@ import s from './decksList.module.scss'
 type tabValueT = 'All Cards' | 'My Cards'
 
 export const DecksList = () => {
-  const [createDeck] = useCreateDeckMutation()
-  //const [updateDeck] = useUpdateDeckMutation()
-  //const [deleteDeck] = useDeleteDeckMutation()
   const [tabValue, setTabValue] = useState<tabValueT>('All Cards')
+  const currentUserId = 'f2be95b9-4d07-4751-a775-bd612fc9553a'
+  const [searchParams, setSearchParams] = useSearchParams()
+  const search = searchParams.get('search') ?? ''
+  const [itemsPerPage, setItemsPerPage] = useState(10)
+  const debounceText = useDebounce<string>(search, 500)
+  const { data: decks, refetch } = useGetDecksQuery({
+    itemsPerPage,
+    name: debounceText,
+    ...(tabValue === 'My Cards' && { authorId: currentUserId }), // Conditionally add authorId
+  })
+  const [updateDeck] = useUpdateDeckMutation()
+  const [deleteDeck] = useDeleteDeckMutation()
+
   const [open, setOpen] = useState<boolean>(false)
 
-  //console.log(open)
-
-  const { control, handleSubmit } = useForm<{ name: string }>({
+  const { control, handleSubmit, reset } = useForm<{ name: string }>({
     defaultValues: {
       name: '',
     },
   })
 
-  const [searchParams, setSearchParams] = useSearchParams()
+  useEffect(() => {
+    // Refetch data when tab changes, adding the authorId parameter conditionally
+    refetch()
+  }, [tabValue, refetch])
 
-  const search = searchParams.get('search') ?? ''
-  const debounceText = useDebounce<string>(search, 500)
+  const tabValueHandler = (value: string) => {
+    setTabValue(value as tabValueT)
+  }
 
   const handleSearchChange = (value: string) => {
     if (value.length) {
@@ -55,24 +72,12 @@ export const DecksList = () => {
     setSearchParams(searchParams)
   }
 
-  const [itemsPerPage, setItemsPerPage] = useState(10)
-
-  const { data: decks } = useGetDecksQuery({ itemsPerPage, name: debounceText })
-
   const handleItemsPerPage = (numOfItems: string) => {
     setItemsPerPage(+numOfItems)
   }
 
   const onSubmit = handleSubmit(data => {
     console.log('Form data:', data) // Added console.log to see the form data
-    createDeck(data)
-      .unwrap()
-      .then(() => {
-        console.log('Deck created successfully')
-      })
-      .catch(error => {
-        console.error('Failed to create deck:', error)
-      })
   })
 
   return (
@@ -100,9 +105,7 @@ export const DecksList = () => {
             variant={'search'}
           />
           <TabSwitcher
-            onValueChange={(value: string) => {
-              setTabValue(value as tabValueT)
-            }}
+            onValueChange={tabValueHandler}
             tabs={[
               { text: 'My Cards', value: 'My Cards' },
               { text: 'All Cards', value: 'All Cards' },
@@ -110,7 +113,15 @@ export const DecksList = () => {
             value={tabValue}
           />
           <Slider label={'Number of cards'} max={10} min={0} value={[2, 10]}></Slider>
-          <Button icon variant={'secondary'}>
+          <Button
+            icon
+            onClick={() => {
+              reset()
+              searchParams.delete('search')
+              setSearchParams(searchParams)
+            }}
+            variant={'secondary'}
+          >
             <TrashOutline />
             Clear filter
           </Button>
@@ -118,33 +129,27 @@ export const DecksList = () => {
         <div className={s.rowContainer}>
           <DecksTable
             className={s.tableMargin}
-            currentUserId={'f2be95b9-4d07-4751-a775-bd612fc9553a'}
+            currentUserId={currentUserId}
             decks={decks?.items}
-            // onDeleteClick={id => {
-            //   deleteDeck({ id })
-            // }}
-            // onEditClick={id => {
-            //   updateDeck({ id, name: 'hotPeppers new deck' })
-            // }}
-            onDeleteClick={() => {
-              console.log('onDeleteClick')
+            onDeleteClick={id => {
+              deleteDeck({ id })
             }}
-            onEditClick={() => {
-              console.log('onEditClick')
+            onEditClick={id => {
+              updateDeck({ id, name: 'hotPeppers new deck' })
             }}
-          />
-        </div>
-        <div className={s.rowContainer}>
-          <Pagination
-            currentPage={decks?.pagination.currentPage || 1}
-            onPageChange={numOfItems => handleItemsPerPage(numOfItems.toString())}
-            pageSize={decks?.pagination.itemsPerPage || 10}
-            setPageSize={numOfItems => handleItemsPerPage(numOfItems.toString())}
-            style={{ marginTop: '15px' }}
-            totalCount={decks?.pagination.totalItems || 50}
           />
         </div>
       </form>
+      <div className={s.rowContainer}>
+        <Pagination
+          currentPage={decks?.pagination.currentPage || 1}
+          onPageChange={numOfItems => handleItemsPerPage(numOfItems.toString())}
+          pageSize={decks?.pagination.itemsPerPage || 10}
+          setPageSize={numOfItems => handleItemsPerPage(numOfItems.toString())}
+          style={{ marginTop: '15px' }}
+          totalCount={decks?.pagination.totalItems || 50}
+        />
+      </div>
     </Page>
   )
 }
@@ -155,40 +160,39 @@ type AddNewDeckModalProps = {
 }
 
 const newDeckSchema = z.object({
-  deckName: z
+  cover: z
+    .string()
+    .optional()
+    .refine(val => !val || /\.(jpg|jpeg|png|gif|bmp)$/.test(val), {
+      message: 'Invalid image path. Must be a valid image format',
+    }),
+  isPrivate: z.boolean(),
+  name: z
     .string()
     .min(3, { message: 'Deck Name must be at least 3 characters long' })
     .max(30, { message: 'Deck Name must not exceed 30 characters' }),
-  imagePath: z.string().regex(/\.(jpg|jpeg|png|gif|bmp)$/, {
-    message: 'Invalid image path. Must be a valid image format',
-  }),
-  isPrivateDeck: z.boolean(),
 })
 
 export type FormValuesFromAddDeck = z.infer<typeof newDeckSchema>
 
 export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) => {
+  const [createDeck] = useCreateDeckMutation()
   const { control, handleSubmit, reset, setValue, watch } = useForm<FormValuesFromAddDeck>({
     defaultValues: {
-      deckName: '',
-      imagePath: '',
-      isPrivateDeck: true,
+      cover: '',
+      isPrivate: true,
+      name: '',
     },
     resolver: zodResolver(newDeckSchema),
   })
 
-  const imagePath = watch('imagePath')
-
-  const submitHandler = handleSubmit(data => {
-    console.log(data)
-    //createDeck(data)
-  })
+  const imagePath = watch('cover')
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
 
     if (file) {
-      setValue('imagePath', file.name) // Update form state with the file name
+      setValue('cover', file.name) // Update form state with the file name
     }
   }
 
@@ -201,7 +205,7 @@ export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) 
   }
 
   const addFormClickHandler = (data: FormValuesFromAddDeck) => {
-    console.log(data)
+    createDeck(data)
     reset()
   }
 
@@ -210,12 +214,12 @@ export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) 
   }
 
   return (
-    <form onSubmit={submitHandler}>
+    <form>
       <Modal onOpenChange={openChangeHandler} open={open} title={title}>
         <FormTextField
           control={control}
           label={'Deck Name'}
-          name={'deckName'}
+          name={'name'}
           placeholder={'DeckName'}
         />
         <input
@@ -233,14 +237,14 @@ export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) 
           className={s.privateBox}
           control={control}
           label={'Private Deck'}
-          name={'isPrivateDeck'}
+          name={'isPrivate'}
         />
         <Modal.Footer
           countButton={CountButton.Two}
           firstButtonHandler={handleSubmit(addFormClickHandler)}
           firstButtonName={'Add New Deck'}
           secondButtonHandler={() => {
-            console.log('button #3 click')
+            openChangeHandler()
           }}
           secondButtonName={'Cancel'}
         />
