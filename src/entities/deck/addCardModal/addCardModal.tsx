@@ -46,8 +46,8 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
             {questionImg ? 'Change Image' : 'Upload Image'}
           </Typography>
         </ImageUpload>
-        Question:
-        <TextField fullWidth label={'Question?'} />
+        Answer:
+        <TextField fullWidth label={'Answer'} />
         {questionImg && (
           <img alt={'Uploaded'} src={questionImg} style={{ height: '100px', width: '100px' }} />
         )}
