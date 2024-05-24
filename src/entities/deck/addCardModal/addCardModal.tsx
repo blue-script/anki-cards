@@ -35,23 +35,23 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
   return (
     <Modal onOpenChange={onOpenChange} open={open} title={'Add New Card'}>
       <form onSubmit={handleSubmit(submitHandler)}>
-        Question:
-        <TextField fullWidth label={'Question?'} />
-        {questionImg && (
-          <img alt={'Uploaded'} src={questionImg} style={{ height: '100px', width: '100px' }} />
-        )}
-        <ImageUpload handleChangeImage={setQuestionImg} variantButton={'secondary'}>
-          <Layer2 />
-          <Typography option={'subtitle2'}>
-            {questionImg ? 'Change Image' : 'Upload Image'}
-          </Typography>
-        </ImageUpload>
-        Answer:
-        <TextField fullWidth label={'Answer'} />
-        {questionImg && (
-          <img alt={'Uploaded'} src={questionImg} style={{ height: '100px', width: '100px' }} />
-        )}
-        <div className={s.answer}>
+        <div className={s.body}>
+          <div>
+            Question:
+            <TextField fullWidth label={'Question?'} />
+            {questionImg && <img alt={'Uploaded'} className={s.img} src={questionImg} />}
+          </div>
+          <ImageUpload handleChangeImage={setQuestionImg} variantButton={'secondary'}>
+            <Layer2 />
+            <Typography option={'subtitle2'}>
+              {questionImg ? 'Change Image' : 'Upload Image'}
+            </Typography>
+          </ImageUpload>
+          <div>
+            Answer:
+            <TextField fullWidth label={'Answer'} />
+            {answerImg && <img alt={'Uploaded'} className={s.img} src={questionImg} />}
+          </div>
           <ImageUpload handleChangeImage={setQuestionImg} variantButton={'secondary'}>
             <Layer2 />
             <Typography option={'subtitle2'}>
