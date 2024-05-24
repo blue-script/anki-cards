@@ -1,6 +1,6 @@
 .button {
   all: unset;
-
+  height: 36px;
   cursor: pointer;
   user-select: none;
 
@@ -11,7 +11,7 @@
   justify-content: center;
 
   box-sizing: border-box;
-  padding: 0.375rem 1.75rem;
+  padding: 0.375rem 1.5rem;
 
   font-size: 1rem;
   font-weight: 600;
@@ -23,9 +23,8 @@
   border: none;
   border-radius: 0.25rem;
 
-  transition:
-    var(--transition-duration-basic) background-color,
-    var(--transition-duration-basic) color;
+  transition: var(--transition-duration-basic) background-color,
+  var(--transition-duration-basic) color;
 
   &:focus-visible {
     outline: 2px solid var(--color-info-900);

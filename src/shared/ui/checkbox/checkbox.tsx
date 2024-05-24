@@ -21,7 +21,7 @@ export const Checkbox = forwardRef<ElementRef<typeof RadixCheckbox.Root>, Checkb
     const specialTextClass = disabled ? `${s['text-disabled']}` : ''
 
     return (
-      <div className={s.checkboxContainer}>
+      <div className={clsx(s.checkboxContainer, className)}>
         <Typography
           as={'label'}
           className={`${s.label} ${specialTextClass}`}
@@ -31,7 +31,7 @@ export const Checkbox = forwardRef<ElementRef<typeof RadixCheckbox.Root>, Checkb
           <div className={s.checkIconEffect}>
             <RadixCheckbox.Root
               checked={checked}
-              className={clsx(s.checkboxRoot, { [s.disabled]: disabled }, className)}
+              className={clsx(s.checkboxRoot, { [s.disabled]: disabled })}
               disabled={disabled}
               id={label}
               onCheckedChange={onChange}

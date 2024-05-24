@@ -1,7 +1,8 @@
-.label {
+.wrapper {
   display: flex;
   flex-direction: column;
   row-gap: 7px;
+  position: relative;
 
   .root {
     width: max-content;
@@ -62,8 +63,12 @@
     }
   }
 }
-/*.active {
+
+.label {
+  position: absolute;
+  top: -25px;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-m);
   color: var(--color-light-100);
-  background-color: var(--color-accent-500);
-  border-color: var(--color-accent-500);
-}*/
+}
