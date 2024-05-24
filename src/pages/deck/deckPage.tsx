@@ -66,13 +66,7 @@ export const DeckPage = () => {
 
       {deckData?.cover && <img alt={'deck-img'} className={s.image} src={deckData.cover} />}
 
-      <TextField
-        className={s.input}
-        fullWidth
-        label={'search'}
-        onValueChange={handleSearchChange}
-        variant={'search'}
-      />
+      <TextField fullWidth label={'search'} onValueChange={handleSearchChange} variant={'search'} />
 
       <CardsTable cards={cards} onDeleteClick={() => {}} onEditClick={() => {}} />
 

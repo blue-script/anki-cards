@@ -46,6 +46,11 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
             {questionImg ? 'Change Image' : 'Upload Image'}
           </Typography>
         </ImageUpload>
+        Question:
+        <TextField fullWidth label={'Question?'} />
+        {questionImg && (
+          <img alt={'Uploaded'} src={questionImg} style={{ height: '100px', width: '100px' }} />
+        )}
         <div className={s.answer}>
           <ImageUpload handleChangeImage={setQuestionImg} variantButton={'secondary'}>
             <Layer2 />
