@@ -22,14 +22,14 @@ const loginSchema = z.object({
   selectedValue: z.string().default(''),
 })
 
-export type FormValues = z.infer<typeof loginSchema>
+export type FormValuesFromLoginForm = z.infer<typeof loginSchema>
 
 type Props = {
-  onSubmit: (values: FormValues) => void
+  onSubmit: (values: FormValuesFromLoginForm) => void
 }
 
 export const LoginForm = ({ onSubmit }: Props) => {
-  const { control, handleSubmit, reset } = useForm<FormValues>({
+  const { control, handleSubmit, reset } = useForm<FormValuesFromLoginForm>({
     defaultValues: {
       TOS: false,
       email: '',
@@ -40,7 +40,7 @@ export const LoginForm = ({ onSubmit }: Props) => {
     resolver: zodResolver(loginSchema),
   })
 
-  const handleOnSubmit = (data: FormValues) => {
+  const handleOnSubmit = (data: FormValuesFromLoginForm) => {
     onSubmit(data)
     reset()
   }

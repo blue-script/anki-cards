@@ -4,11 +4,14 @@
 
 .withIcons {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 
   & > a,
   button {
-    margin: 0 3px;
+    display: flex;
+    place-items: center;
+    margin: 0 5px;
   }
 }

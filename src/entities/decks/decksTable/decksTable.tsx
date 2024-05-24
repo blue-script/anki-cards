@@ -1,11 +1,15 @@
+import { Link } from 'react-router-dom'
+
 import { Edit2Outline, PlayCircleOutline, TrashOutline } from '@/assets/icons'
 import { Deck } from '@/services/decks/decks.types'
-import { Button, Typography } from '@/shared'
+import { Button } from '@/shared'
 import { Table } from '@/shared/ui/table/table'
+import { TableCellContent } from '@/shared/ui/table/tableCellContent'
 
 import s from './decksTable.module.scss'
 
 type DecksTableProps = {
+  className?: string
   currentUserId?: string
   decks: Deck[] | undefined
   onDeleteClick: (id: string) => void
@@ -13,6 +17,7 @@ type DecksTableProps = {
 }
 
 export const DecksTable = ({
+  className,
   currentUserId,
   decks,
   onDeleteClick,
@@ -27,14 +32,14 @@ export const DecksTable = ({
   }
 
   return (
-    <Table.TRoot>
+    <Table.TRoot className={className}>
       <Table.THead>
         <Table.TRow style={{ borderBottom: 'none' }}>
           <Table.Th>Name</Table.Th>
           <Table.Th>Cards</Table.Th>
-          <Table.Th>{/*Last Updated<span>{sort === 'asc' ? '▲' : '▼'}</span>*/}</Table.Th>
-          <Table.Th>Author</Table.Th>
-          <Table.Th>Actions</Table.Th>
+          <Table.Th>Last Updated</Table.Th>
+          <Table.Th>Created By</Table.Th>
+          <Table.Th></Table.Th>
         </Table.TRow>
       </Table.THead>
       <Table.TBody>
@@ -44,15 +49,17 @@ export const DecksTable = ({
           return (
             <Table.TRow key={deck.id}>
               <Table.Td>
-                <Typography as={'a'} href={`decks/${deck.id}`} option={'body2'}>
-                  {deck.name}
-                </Typography>
+                <TableCellContent
+                  href={`decks/${deck.id}`}
+                  imageUrl={'src/assets/img/react.png'}
+                  name={deck.name}
+                />
               </Table.Td>
               <Table.Td>{deck.cardsCount}</Table.Td>
               <Table.Td>{new Date(deck.updated).toLocaleDateString('en-GB')}</Table.Td>
               <Table.Td>{deck.author.name}</Table.Td>
               <Table.Td className={s.withIcons}>
-                <Button as={'a'} className={s.button} href={`decks/${deck.id}/learn`}>
+                <Button as={Link} className={s.button} to={`decks/${deck.id}`}>
                   <PlayCircleOutline />
                 </Button>
                 {isCurrentUser && (

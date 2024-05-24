@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react'
 
-import { FormValues, LoginForm } from './loginForm'
+import { FormValuesFromLoginForm, LoginForm } from './loginForm'
 
 // Define meta with proper type annotation
 const meta: Meta<typeof LoginForm> = {
@@ -11,7 +11,7 @@ const meta: Meta<typeof LoginForm> = {
 
 export default meta
 
-const handleSubmit = (data: FormValues) => {
+const handleSubmit = (data: FormValuesFromLoginForm) => {
   console.log(data)
 }
 
