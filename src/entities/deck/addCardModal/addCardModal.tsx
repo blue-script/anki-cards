@@ -1,10 +1,13 @@
-import { ChangeEvent, useRef } from 'react'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { useParams } from 'react-router-dom'
 
-import { Edit2 } from '@/assets/icons'
+import { Layer2 } from '@/assets/icons'
 import { useCreateCardMutation } from '@/services/cards/cards.service'
-import { Button, Modal, TextField } from '@/shared'
+import { CreateCardArgs } from '@/services/cards/cards.types'
+import { ImageUpload, Modal, TextField, Typography } from '@/shared'
 
-import s from '@/features/profile/profileAvatar/profileAvatar.module.scss'
+import s from './addCardModal.module.scss'
 
 type Props = {
   onOpenChange: () => void
@@ -12,60 +15,52 @@ type Props = {
 }
 
 export const AddCardModal = ({ onOpenChange, open }: Props) => {
+  const { deckId } = useParams<{ deckId: string }>()
   const [createCard] = useCreateCardMutation()
 
-  const inputRef = useRef<HTMLInputElement>(null)
+  const [question, setQuestion] = useState<string>('')
+  const [questionImg, setQuestionImg] = useState<string>('')
 
-  const selectFileHandler = () => {
-    inputRef.current?.click()
-  }
+  const [answer, setAnswer] = useState<string>('')
+  const [answerImg, setAnswerImg] = useState<string>('')
 
-  const uploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
+  const { handleSubmit } = useForm<CreateCardArgs>({
+    defaultValues: { answer: '', id: deckId, question: '' },
+  })
 
-    if (file) {
-      if (!file.type.match('image.*')) {
-        alert('Please select a valid image file.')
-
-        return
-      }
-
-      const reader = new FileReader()
-
-      reader.onload = e => {
-        const newAvatar = e.target?.result as string
-
-        console.log(newAvatar)
-        // if (newAvatar) {
-        //   onAvatarChange(newAvatar)
-        // }
-      }
-      reader.readAsDataURL(file)
-    }
+  const submitHandler = (data: CreateCardArgs) => {
+    // createCard(data)
   }
 
   return (
     <Modal onOpenChange={onOpenChange} open={open} title={'Add New Card'}>
-      Question:
-      <TextField fullWidth label={'Question?'} />
-      <>
-        <Button className={s.editAvatarButton} onClick={selectFileHandler}>
-          <Edit2 />
-        </Button>
-        <input
-          accept={'image/*'}
-          onChange={uploadHandler}
-          ref={inputRef}
-          style={{ display: 'none' }}
-          type={'file'}
+      <form onSubmit={handleSubmit(submitHandler)}>
+        Question:
+        <TextField fullWidth label={'Question?'} />
+        {questionImg && (
+          <img alt={'Uploaded'} src={questionImg} style={{ height: '100px', width: '100px' }} />
+        )}
+        <ImageUpload handleChangeImage={setQuestionImg} variantButton={'secondary'}>
+          <Layer2 />
+          <Typography option={'subtitle2'}>
+            {questionImg ? 'Change Image' : 'Upload Image'}
+          </Typography>
+        </ImageUpload>
+        <div className={s.answer}>
+          <ImageUpload handleChangeImage={setQuestionImg} variantButton={'secondary'}>
+            <Layer2 />
+            <Typography option={'subtitle2'}>
+              {answerImg ? 'Change Image' : 'Upload Image'}
+            </Typography>
+          </ImageUpload>
+        </div>
+        <Modal.Footer
+          countButton={2}
+          firstButtonName={'Add New Card'}
+          secondButtonHandler={onOpenChange}
+          secondButtonName={'Cancel'}
         />
-      </>
-      <Modal.Footer
-        countButton={2}
-        firstButtonName={'Add New Card'}
-        secondButtonHandler={onOpenChange}
-        secondButtonName={'Cancel'}
-      />
+      </form>
     </Modal>
   )
 }
