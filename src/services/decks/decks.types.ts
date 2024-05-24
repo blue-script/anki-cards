@@ -1,6 +1,5 @@
 export interface DecksListResponse {
   items: Deck[]
-  maxCardsCount: number
   pagination: Pagination
 }
 
