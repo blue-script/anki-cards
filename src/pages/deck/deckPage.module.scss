@@ -1,5 +1,14 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+}
+
 .image {
   max-height: 108px;
-  margin-bottom: 25px;
   border-radius: 2px;
+}
+
+.input {
 }

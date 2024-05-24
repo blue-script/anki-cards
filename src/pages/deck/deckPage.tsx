@@ -61,16 +61,22 @@ export const DeckPage = () => {
   const isOwner = deckData?.userId === deckData?.userId //some logic
 
   return (
-    <Page mt={'24px'}>
+    <Page className={s.page} mt={'24px'}>
       <DeckHeader isOwner={isOwner} />
 
       {deckData?.cover && <img alt={'deck-img'} className={s.image} src={deckData.cover} />}
 
-      <TextField fullWidth label={'search'} onValueChange={handleSearchChange} variant={'search'} />
+      <TextField
+        className={s.input}
+        fullWidth
+        label={'search'}
+        onValueChange={handleSearchChange}
+        variant={'search'}
+      />
 
       <CardsTable cards={cards} onDeleteClick={() => {}} onEditClick={() => {}} />
 
-      {pagination && (
+      {pagination && pagination.totalItems > 0 && (
         <Pagination
           currentPage={pagination.currentPage}
           onPageChange={handlePageChange}
