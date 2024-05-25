@@ -38,5 +38,11 @@ export interface GetCardsArgs {
 }
 
 export interface CreateCardArgs {
+  answer: string
+  answerImg?: string
+  answerVideo?: string
   id: string
+  question: string
+  questionImg?: string
+  questionVideo?: string
 }

@@ -1,10 +1,10 @@
-import { CardsListResponse, GetCardsArgs } from '@/services/cards/cards.types'
+import { Card, CardsListResponse, CreateCardArgs, GetCardsArgs } from '@/services/cards/cards.types'
 import { flashcardsApi } from '@/services/flashcardsApi'
 
 export const cardsService = flashcardsApi.injectEndpoints({
   endpoints: build => {
     return {
-      createCard: build.mutation<any, any>({
+      createCard: build.mutation<Card, CreateCardArgs>({
         invalidatesTags: ['Cards'],
         query: ({ id, ...body }) => ({
           body: body,
@@ -24,4 +24,4 @@ export const cardsService = flashcardsApi.injectEndpoints({
   },
 })
 
-export const { useGetCardsQuery } = cardsService
+export const { useCreateCardMutation, useGetCardsQuery } = cardsService
