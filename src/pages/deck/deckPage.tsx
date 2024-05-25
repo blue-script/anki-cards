@@ -58,7 +58,7 @@ export const DeckPage = () => {
     return <div>{`Error: ${error || deckError}`}</div>
   }
 
-  const isOwner = true //deckData?.userId === deckData?.userId //some logic
+  const isOwner = false //deckData?.userId === deckData?.userId //some logic
   const cardsLength = cards?.length ?? 0
 
   return (
