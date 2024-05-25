@@ -41,10 +41,14 @@ export const CardRow = ({
       <Table.Td>
         {isOwner && (
           <>
-            <Button className={s.button} onClick={() => handleEditClick(id)}>
+            <Button className={s.button} onClick={() => handleEditClick(id)} variant={'secondary'}>
               <Edit2Outline />
             </Button>
-            <Button className={s.button} onClick={() => handleDeleteClick(id)}>
+            <Button
+              className={s.button}
+              onClick={() => handleDeleteClick(id)}
+              variant={'secondary'}
+            >
               <TrashOutline />
             </Button>
           </>
