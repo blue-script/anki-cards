@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 
 import { ArrowBackOutline } from '@/assets/icons'
 import {
+  useGetDeckByIdQuery,
   useLearnRandomCardQuery,
   useUpdateRandomCardMutation,
 } from '@/services/decks/decks.service'
@@ -11,26 +12,27 @@ import { Button, Card, Page, RadioGroup, Typography } from '@/shared'
 
 import s from './learn.module.scss'
 
-const radioGroupData = [
-  { label: `Didn't know`, value: '1' },
-  { label: `Forgot`, value: '2' },
-  {
-    label: `A lot of thoughts`,
-    value: '3',
-  },
-  { label: `Confused`, value: '4' },
-  { label: `Knew the answer`, value: '5' },
-]
-
 export const Learn = () => {
   const { deckId } = useParams<{ deckId: string }>()
   const { data, refetch } = useLearnRandomCardQuery({ id: deckId ?? '' })
-  const [answer, showAnswer] = useState<boolean>(false)
-  const [textGrade, setTextGrade] = useState<string>('')
+  const { data: deckData } = useGetDeckByIdQuery({ id: deckId ?? '' })
+  const [answerVisible, setAnswerVisible] = useState(false)
+  const [selectedGrade, setSelectedGrade] = useState('')
   const [updateCardGrade] = useUpdateRandomCardMutation()
 
+  const radioGroupData = useMemo(
+    () => [
+      { label: `Didn't know`, value: '1' },
+      { label: `Forgot`, value: '2' },
+      { label: `A lot of thoughts`, value: '3' },
+      { label: `Confused`, value: '4' },
+      { label: `Knew the answer`, value: '5' },
+    ],
+    []
+  )
+
   const handleClick = () => {
-    showAnswer(!answer)
+    setAnswerVisible(!answerVisible)
   }
 
   const handleNextQuestionQuery = async () => {
@@ -42,13 +44,13 @@ export const Learn = () => {
 
     const newData: NewGradeData = {
       cardId: data.id,
-      grade: parseInt(textGrade),
+      grade: parseInt(selectedGrade),
     }
 
     await updateCardGrade({ id: deckId, ...newData })
     await refetch()
-    showAnswer(false)
-    setTextGrade('')
+    setAnswerVisible(false)
+    setSelectedGrade('')
   }
 
   return (
@@ -64,7 +66,7 @@ export const Learn = () => {
       <Card className={s.card}>
         <div className={s.textWrapper}>
           <Typography className={s.header} option={'h1'}>
-            Learn {data?.deckId}
+            Learn {deckData?.name}
           </Typography>
           <Typography className={s.subtitle} option={'subtitle'}>
             Question: {data?.question}
@@ -77,12 +79,12 @@ export const Learn = () => {
             className={s.subtitle2}
             option={'subtitle2'}
           >{`Количество попыток ответов на вопрос: ${data?.shots}`}</Typography>
-          {!answer && (
+          {!answerVisible && (
             <Button className={s.btn} fullWidth onClick={handleClick}>
               Show Answer
             </Button>
           )}
-          {answer && (
+          {answerVisible && (
             <>
               <Typography className={s.subtitle} option={'subtitle'}>
                 Answer: {data?.answer}
@@ -95,9 +97,9 @@ export const Learn = () => {
                 Rate yourself :
               </Typography>
               <RadioGroup
-                onValueChange={setTextGrade}
+                onValueChange={setSelectedGrade}
                 options={radioGroupData}
-                value={textGrade || data?.grade.toString()}
+                value={selectedGrade || data?.grade.toString()}
               ></RadioGroup>
               <Button className={s.btn} fullWidth onClick={handleNextQuestionQuery}>
                 Next Question
