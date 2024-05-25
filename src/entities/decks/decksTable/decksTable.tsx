@@ -51,7 +51,7 @@ export const DecksTable = ({
               <Table.Td>
                 <TableCellContent
                   href={`decks/${deck.id}`}
-                  imageUrl={'src/assets/img/react.png'}
+                  imageUrl={deck.cover || 'src/assets/img/react.png'}
                   name={deck.name}
                 />
               </Table.Td>

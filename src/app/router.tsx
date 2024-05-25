@@ -9,6 +9,7 @@ import {
 import { DeckPage } from '@/pages/deck/deckPage'
 import { DecksList } from '@/pages/decks/decksList/decksList'
 import { Decks19 } from '@/pages/decks19/decks19'
+import { QuestionWithImg } from '@/pages/learn/questionWithImg/questionWithImg'
 import { Layout } from '@/shared'
 
 const publicRoutes: RouteObject[] = [
@@ -24,17 +25,24 @@ const publicRoutes: RouteObject[] = [
 
 const privateRoutes: RouteObject[] = [
   {
-    element: <Decks19 />,
+    element: <Navigate replace to={'/decks'} />,
     path: '/',
   },
   {
     element: <DecksList />,
-    index: true,
     path: '/decks',
   },
   {
     element: <DeckPage />,
     path: '/decks/:deckId',
+  },
+  {
+    element: <QuestionWithImg />,
+    path: '/decks/:deckId/learn',
+  },
+  {
+    element: <Decks19 />,
+    path: '/decks19',
   },
   {
     element: <div>inside privateRoutes / News Here</div>,
@@ -62,6 +70,7 @@ const router = createBrowserRouter([
       ...publicRoutes,
     ],
     element: <Layout />,
+    path: '/',
   },
 ])
 

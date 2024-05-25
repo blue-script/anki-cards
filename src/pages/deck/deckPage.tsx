@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { Outlet, useParams, useSearchParams } from 'react-router-dom'
 
 import { CardsTable, DeckHeader } from '@/entities'
 import { useGetCardsQuery } from '@/services/cards/cards.service'
@@ -61,24 +61,32 @@ export const DeckPage = () => {
   const isOwner = deckData?.userId === deckData?.userId //some logic
 
   return (
-    <Page mt={'24px'}>
-      <DeckHeader isOwner={isOwner} />
+    <>
+      <Page mt={'24px'}>
+        <DeckHeader isOwner={isOwner} />
 
-      {deckData?.cover && <img alt={'deck-img'} className={s.image} src={deckData.cover} />}
+        {deckData?.cover && <img alt={'deck-img'} className={s.image} src={deckData.cover} />}
 
-      <TextField fullWidth label={'search'} onValueChange={handleSearchChange} variant={'search'} />
-
-      <CardsTable cards={cards} onDeleteClick={() => {}} onEditClick={() => {}} />
-
-      {pagination && (
-        <Pagination
-          currentPage={pagination.currentPage}
-          onPageChange={handlePageChange}
-          pageSize={pagination.itemsPerPage}
-          setPageSize={handlePageSize}
-          totalCount={pagination.totalItems}
+        <TextField
+          fullWidth
+          label={'search'}
+          onValueChange={handleSearchChange}
+          variant={'search'}
         />
-      )}
-    </Page>
+
+        <CardsTable cards={cards} onDeleteClick={() => {}} onEditClick={() => {}} />
+
+        {pagination && (
+          <Pagination
+            currentPage={pagination.currentPage}
+            onPageChange={handlePageChange}
+            pageSize={pagination.itemsPerPage}
+            setPageSize={handlePageSize}
+            totalCount={pagination.totalItems}
+          />
+        )}
+      </Page>
+      <Outlet />
+    </>
   )
 }
