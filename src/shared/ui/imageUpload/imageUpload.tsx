@@ -1,11 +1,11 @@
-import { ChangeEvent, useRef } from 'react'
+import { ChangeEvent, ReactNode, useRef } from 'react'
 
 import { Button } from '@/shared'
 
 import s from '@/features/profile/profileAvatar/profileAvatar.module.scss'
 
 type Props = {
-  children: React.ReactNode
+  children: ReactNode
   handleChangeImage: (value: string) => void
   variantButton?: 'primary' | 'secondary'
 }
