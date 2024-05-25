@@ -43,7 +43,6 @@ export function DecksPage() {
   }
 
   const onSubmit = handleSubmit(data => {
-    console.log('data', data)
     createDeck(data)
   })
 
