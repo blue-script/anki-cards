@@ -2,3 +2,10 @@
   display: flex;
   gap: 10px;
 }
+
+.button {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}

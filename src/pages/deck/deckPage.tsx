@@ -4,7 +4,7 @@ import { useParams, useSearchParams } from 'react-router-dom'
 import { CardsTable, DeckHeader } from '@/entities'
 import { useGetCardsQuery } from '@/services/cards/cards.service'
 import { useGetDeckByIdQuery } from '@/services/decks/decks.service'
-import { Page, Pagination, TextField } from '@/shared'
+import { Button, Page, Pagination, TextField, Typography } from '@/shared'
 import { useDebounce } from '@/shared/hooks/useDebounce'
 
 import s from './deckPage.module.scss'
@@ -58,17 +58,39 @@ export const DeckPage = () => {
     return <div>{`Error: ${error || deckError}`}</div>
   }
 
-  const isOwner = deckData?.userId === deckData?.userId //some logic
+  const isOwner = true //deckData?.userId === deckData?.userId //some logic
+  const cardsLength = cards?.length ?? 0
 
   return (
     <Page className={s.page} mt={'24px'}>
-      <DeckHeader isOwner={isOwner} />
+      <DeckHeader cardsLength={cardsLength} isOwner={isOwner} />
 
-      {deckData?.cover && <img alt={'deck-img'} className={s.image} src={deckData.cover} />}
+      {cardsLength ? (
+        <>
+          {deckData?.cover && <img alt={'deck-img'} className={s.image} src={deckData.cover} />}
 
-      <TextField fullWidth label={'search'} onValueChange={handleSearchChange} variant={'search'} />
+          <TextField
+            fullWidth
+            label={'search'}
+            onValueChange={handleSearchChange}
+            variant={'search'}
+          />
 
-      <CardsTable cards={cards} onDeleteClick={() => {}} onEditClick={() => {}} />
+          <CardsTable
+            cards={cards}
+            isOwner={isOwner}
+            onDeleteClick={() => {}}
+            onEditClick={() => {}}
+          />
+        </>
+      ) : (
+        <>
+          <Typography option={'body1'}>
+            This pack is empty. Click add new card to fill this pack
+          </Typography>
+          <Button>Add New Card</Button>
+        </>
+      )}
 
       {pagination && pagination.totalItems > 0 && (
         <Pagination
