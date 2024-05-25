@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
 import { Layer2 } from '@/assets/icons'
-import { useCreateCardMutation } from '@/services/cards/cards.service'
 import { CreateCardArgs } from '@/services/cards/cards.types'
 import { ImageUpload, Modal, TextField, Typography } from '@/shared'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -26,12 +25,12 @@ type Props = {
 
 export const AddCardModal = ({ onOpenChange, open }: Props) => {
   const { deckId } = useParams<{ deckId: string }>()
-  const [createCard] = useCreateCardMutation()
+  // const [createCard] = useCreateCardMutation()
 
-  const [question, setQuestion] = useState<string>('')
+  // const [question, setQuestion] = useState<string>('')
   const [questionImg, setQuestionImg] = useState<string>('')
 
-  const [answer, setAnswer] = useState<string>('')
+  // const [answer, setAnswer] = useState<string>('')
   const [answerImg, setAnswerImg] = useState<string>('')
 
   const { handleSubmit } = useForm<CreateCardArgs>({
@@ -40,6 +39,7 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
   })
 
   const submitHandler = (data: CreateCardArgs) => {
+    console.log(data)
     // createCard(data)
   }
 
