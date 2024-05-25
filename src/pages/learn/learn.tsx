@@ -2,7 +2,11 @@ import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 
 import { ArrowBackOutline } from '@/assets/icons'
-import { useGetRandomCardQuery } from '@/services/decks/decks.service'
+import {
+  useLearnRandomCardQuery,
+  useUpdateRandomCardMutation,
+} from '@/services/decks/decks.service'
+import { NewGradeData } from '@/services/decks/decks.types'
 import { Button, Card, Page, RadioGroup, Typography } from '@/shared'
 
 import s from './learn.module.scss'
@@ -20,20 +24,32 @@ const radioGroupData = [
 
 export const Learn = () => {
   const { deckId } = useParams<{ deckId: string }>()
-  const { data, refetch } = useGetRandomCardQuery({ id: deckId ?? '' })
+  const { data, refetch } = useLearnRandomCardQuery({ id: deckId ?? '' })
   const [answer, showAnswer] = useState<boolean>(false)
   const [textGrade, setTextGrade] = useState<string>('')
+  const [updateCardGrade] = useUpdateRandomCardMutation()
 
   const handleClick = () => {
     showAnswer(!answer)
   }
 
   const handleNextQuestionQuery = async () => {
+    if (!deckId || !data) {
+      console.error('deckId or data is not defined')
+
+      return
+    }
+
+    const newData: NewGradeData = {
+      cardId: data.id,
+      grade: parseInt(textGrade),
+    }
+
+    await updateCardGrade({ id: deckId, ...newData })
     await refetch()
     showAnswer(false)
+    setTextGrade('')
   }
-
-  console.log(data)
 
   return (
     <Page className={s.wrapper} mt={'24px'}>

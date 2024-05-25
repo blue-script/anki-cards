@@ -8,6 +8,7 @@ import {
 
 import { DeckPage } from '@/pages/deck/deckPage'
 import { DecksList } from '@/pages/decks/decksList/decksList'
+import { DecksPage } from '@/pages/decks/decksPage'
 import { Decks19 } from '@/pages/decks19/decks19'
 import { Learn } from '@/pages/learn/learn'
 import { Layout } from '@/shared'
@@ -45,7 +46,7 @@ const privateRoutes: RouteObject[] = [
     path: '/decks19',
   },
   {
-    element: <div>inside privateRoutes / News Here</div>,
+    element: <DecksPage />,
     path: '/news',
   },
 ]

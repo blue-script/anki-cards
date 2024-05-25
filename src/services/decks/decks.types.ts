@@ -52,6 +52,12 @@ export type LearnDeckArgs = {
   previousCardId?: string
 }
 
+export type UpdateGradeArgs = {
+  cardId: string
+  grade: number
+  id: string
+}
+
 export interface GetDeckArgs {
   id: string
 }
@@ -81,6 +87,11 @@ export interface RandomCardResponse {
   questionVideo: null | string
   shots: number
   updated: string
+}
+
+export type NewGradeData = {
+  cardId: string
+  grade: number
 }
 
 // Error Message
