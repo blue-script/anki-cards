@@ -9,7 +9,7 @@ import {
 import { DeckPage } from '@/pages/deck/deckPage'
 import { DecksList } from '@/pages/decks/decksList/decksList'
 import { Decks19 } from '@/pages/decks19/decks19'
-import { QuestionWithImg } from '@/pages/learn/questionWithImg/questionWithImg'
+import { Learn } from '@/pages/learn/learn'
 import { Layout } from '@/shared'
 
 const publicRoutes: RouteObject[] = [
@@ -37,7 +37,7 @@ const privateRoutes: RouteObject[] = [
     path: '/decks/:deckId',
   },
   {
-    element: <QuestionWithImg />,
+    element: <Learn />,
     path: '/decks/:deckId/learn',
   },
   {
