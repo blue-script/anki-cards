@@ -1,3 +1,5 @@
+import { Outlet } from 'react-router-dom'
+
 import { DecksTable } from '@/entities'
 import { Button, Page, Pagination, Slider, TabSwitcher, TextField, Typography } from '@/shared'
 
@@ -48,38 +50,41 @@ export const Decks19 = () => {
   }
 
   return (
-    <Page mt={'36px'}>
-      <div className={s.header}>
-        <Typography option={'h1'}>Decks</Typography>
-        <Button className={s.widthButton} variant={'primary'}>
-          Add New Deck
-        </Button>
-      </div>
-      <div className={s.filter}>
-        <TextField variant={'search'} />
-        <TabSwitcher
-          label={'Show decks cards'}
-          onValueChange={value => value}
-          tabs={tabs}
-          value={'All Cards'}
+    <>
+      <Page mt={'36px'}>
+        <div className={s.header}>
+          <Typography option={'h1'}>Decks</Typography>
+          <Button className={s.widthButton} variant={'primary'}>
+            Add New Deck
+          </Button>
+        </div>
+        <div className={s.filter}>
+          <TextField variant={'search'} />
+          <TabSwitcher
+            label={'Show decks cards'}
+            onValueChange={value => value}
+            tabs={tabs}
+            value={'All Cards'}
+          />
+          <Slider label={'Number of cards'} />
+          <Button variant={'secondary'}>
+            <SvgTrashOutline />
+            Clear Filter
+          </Button>
+        </div>
+        <div className={s.table}>
+          <DecksTable decks={decks} onDeleteClick={id => id} onEditClick={id => id} />
+        </div>
+        <Pagination
+          currentPage={pagination.currentPage}
+          onPageChange={(value: number) => value}
+          pageSize={pagination.pageSize}
+          setPageSize={(value: number) => value}
+          siblingCount={pagination.siblingCount}
+          totalCount={pagination.totalCount}
         />
-        <Slider label={'Number of cards'} />
-        <Button variant={'secondary'}>
-          <SvgTrashOutline />
-          Clear Filter
-        </Button>
-      </div>
-      <div className={s.table}>
-        <DecksTable decks={decks} onDeleteClick={id => id} onEditClick={id => id} />
-      </div>
-      <Pagination
-        currentPage={pagination.currentPage}
-        onPageChange={(value: number) => value}
-        pageSize={pagination.pageSize}
-        setPageSize={(value: number) => value}
-        siblingCount={pagination.siblingCount}
-        totalCount={pagination.totalCount}
-      />
-    </Page>
+      </Page>
+      <Outlet />
+    </>
   )
 }

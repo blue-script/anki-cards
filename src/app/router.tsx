@@ -8,6 +8,9 @@ import {
 
 import { DeckPage } from '@/pages/deck/deckPage'
 import { DecksList } from '@/pages/decks/decksList/decksList'
+import { DecksPage } from '@/pages/decks/decksPage'
+import { Decks19 } from '@/pages/decks19/decks19'
+import { Learn } from '@/pages/learn/learn'
 import { Layout } from '@/shared'
 
 const publicRoutes: RouteObject[] = [
@@ -23,12 +26,11 @@ const publicRoutes: RouteObject[] = [
 
 const privateRoutes: RouteObject[] = [
   {
-    element: <DecksList />,
+    element: <Navigate replace to={'/decks'} />,
     path: '/',
   },
   {
     element: <DecksList />,
-    index: true,
     path: '/decks',
   },
   {
@@ -36,7 +38,15 @@ const privateRoutes: RouteObject[] = [
     path: '/decks/:deckId',
   },
   {
-    element: <div>inside privateRoutes / News Here</div>,
+    element: <Learn />,
+    path: '/decks/:deckId/learn',
+  },
+  {
+    element: <Decks19 />,
+    path: '/decks19',
+  },
+  {
+    element: <DecksPage />,
     path: '/news',
   },
 ]
@@ -61,6 +71,7 @@ const router = createBrowserRouter([
       ...publicRoutes,
     ],
     element: <Layout />,
+    path: '/',
   },
 ])
 
