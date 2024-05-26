@@ -6,14 +6,16 @@ import {
   GetDeckArgs,
   GetDeckResponse,
   GetDecksArgs,
+  LearnDeckArgs,
+  RandomCardResponse,
   UpdateDeckArgs,
+  UpdateGradeArgs,
 } from '@/services/decks/decks.types'
 import { flashcardsApi } from '@/services/flashcardsApi'
 
 export const decksService = flashcardsApi.injectEndpoints({
   endpoints: builder => {
     return {
-      //createDeck: builder.mutation<Deck, CreateDeckArgs>({
       createDeck: builder.mutation<Deck, CreateDeckArgs>({
         invalidatesTags: ['Decks'],
         query: args => ({
@@ -44,12 +46,27 @@ export const decksService = flashcardsApi.injectEndpoints({
           url: `v2/decks`,
         }),
       }),
+      learnRandomCard: builder.query<RandomCardResponse, LearnDeckArgs>({
+        providesTags: ['Cards'],
+        query: ({ id }) => ({
+          method: 'GET',
+          url: `v1/decks/${id}/learn`,
+        }),
+      }),
       updateDeck: builder.mutation<Deck, UpdateDeckArgs>({
         invalidatesTags: ['Decks'],
         query: ({ id, ...body }) => ({
           body,
           method: 'PATCH',
           url: `v1/decks/${id}`,
+        }),
+      }),
+      updateRandomCard: builder.mutation<RandomCardResponse, UpdateGradeArgs>({
+        invalidatesTags: ['Cards'],
+        query: ({ id, ...body }) => ({
+          body,
+          method: 'POST',
+          url: `v1/decks/${id}/learn`,
         }),
       }),
     }
@@ -61,5 +78,7 @@ export const {
   useDeleteDeckMutation,
   useGetDeckByIdQuery,
   useGetDecksQuery,
+  useLearnRandomCardQuery,
   useUpdateDeckMutation,
+  useUpdateRandomCardMutation,
 } = decksService
