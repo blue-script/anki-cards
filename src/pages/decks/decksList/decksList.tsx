@@ -24,7 +24,7 @@ export const DecksList = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const search = searchParams.get('search') ?? ''
   const [itemsPerPage, setItemsPerPage] = useState(10)
-  const [minCardsCount, setMinCardsCount] = useState(1)
+  const [minCardsCount, setMinCardsCount] = useState(0)
   const [maxCardsCount, setMaxCardsCount] = useState(10)
   const [currentPage, setCurrentPage] = useState(1)
   const debounceText = useDebounce<string>(search, 500)

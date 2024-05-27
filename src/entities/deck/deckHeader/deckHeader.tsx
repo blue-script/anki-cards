@@ -22,6 +22,17 @@ export const DeckHeader = ({ cardsLength, isOwner }: Props) => {
     setOpen(!open)
   }
 
+  const renderFriendContent = () => {
+    return (
+      <div className={s.ownerContainer}>
+        <div className={s.owner}>
+          <Typography option={'h1'}>Friend’s Deck</Typography>
+        </div>
+        <Button>Learn to Deck</Button>
+      </div>
+    )
+  }
+
   const renderOwnerContent = () => {
     return (
       <div className={s.ownerContainer}>
@@ -35,17 +46,6 @@ export const DeckHeader = ({ cardsLength, isOwner }: Props) => {
             <AddCardModal onOpenChange={onOpenChange} open={open} />
           </>
         )}
-      </div>
-    )
-  }
-
-  const renderFriendContent = () => {
-    return (
-      <div className={s.ownerContainer}>
-        <div className={s.owner}>
-          <Typography option={'h1'}>Friend’s Deck</Typography>
-        </div>
-        <Button>Learn to Deck</Button>
       </div>
     )
   }

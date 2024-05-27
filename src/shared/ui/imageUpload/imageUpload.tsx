@@ -1,4 +1,5 @@
 import { ChangeEvent, ReactNode, useRef } from 'react'
+import toast from 'react-hot-toast'
 
 import { Button } from '@/shared'
 
@@ -22,7 +23,7 @@ export const ImageUpload = ({ children, handleChangeImage, variantButton = 'prim
 
     if (file) {
       if (!file.type.match('image.*')) {
-        alert('Please select a valid image file.')
+        toast.error('Please select a valid image file.')
 
         return
       }
@@ -46,6 +47,7 @@ export const ImageUpload = ({ children, handleChangeImage, variantButton = 'prim
         className={s.editAvatarButton}
         fullWidth
         onClick={selectFileHandler}
+        type={'reset'}
         variant={variantButton}
       >
         {children}
