@@ -1,4 +1,4 @@
-.starWrapper {
+.stars {
   display: flex;
   gap: 10px;
 }
@@ -8,4 +8,14 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+}
+
+.buttons {
+  display: inline-flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.nowrap {
+  white-space: nowrap;
 }

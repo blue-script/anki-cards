@@ -2,6 +2,7 @@ import { Edit2Outline, TrashOutline } from '@/assets/icons'
 import { CardTextOrImage } from '@/entities'
 import { Card } from '@/services/cards/cards.types'
 import { Button, Grade, Table } from '@/shared'
+import { clsx } from 'clsx'
 
 import s from './cardRow.module.scss'
 
@@ -35,12 +36,12 @@ export const CardRow = ({
         <CardTextOrImage img={answerImg} text={answer} />
       </Table.Td>
       <Table.Td>{new Date(updated).toLocaleDateString('ru-ru')}</Table.Td>
-      <Table.Td className={s.starWrapper}>
+      <Table.Td className={clsx(s.stars, s.nowrap)}>
         <Grade grade={grade} />
       </Table.Td>
-      <Table.Td>
+      <Table.Td className={s.nowrap}>
         {isOwner && (
-          <>
+          <div className={s.buttons}>
             <Button className={s.button} onClick={() => handleEditClick(id)} variant={'secondary'}>
               <Edit2Outline />
             </Button>
@@ -51,7 +52,7 @@ export const CardRow = ({
             >
               <TrashOutline />
             </Button>
-          </>
+          </div>
         )}
       </Table.Td>
     </Table.TRow>
