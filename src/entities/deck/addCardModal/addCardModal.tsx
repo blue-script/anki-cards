@@ -38,9 +38,13 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
   })
 
   const submitHandler = handleSubmit((data: CreateCardArgs) => {
-    data.answerImg = answerImg
-    data.questionImg = questionImg
-    createCard(data)
+    const formData = new FormData()
+
+    formData.append('answer', data.answer)
+    formData.append('question', data.question)
+    formData.append('answerImg', data.answerImg | '')
+    formData.append('questionImg', data.questionImg)
+    createCard(formData)
       .unwrap()
       .then(() => toast.success('Card added successfully!'))
       .catch(() => toast.error('Failed to add card'))
