@@ -1,6 +1,13 @@
+import { useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import { Edit2Outline, PlayCircleOutline, TrashOutline } from '@/assets/icons'
+import {
+  ArrowIosDownOutline,
+  ArrowIosUp,
+  Edit2Outline,
+  PlayCircleOutline,
+  TrashOutline,
+} from '@/assets/icons'
 import { Deck } from '@/services/decks/decks.types'
 import { Button } from '@/shared'
 import { Table } from '@/shared/ui/table/table'
@@ -14,6 +21,7 @@ type DecksTableProps = {
   decks: Deck[] | undefined
   onDeleteClick: (id: string) => void
   onEditClick: (id: string) => void
+  onIconClick: () => void
 }
 
 export const DecksTable = ({
@@ -22,14 +30,28 @@ export const DecksTable = ({
   decks,
   onDeleteClick,
   onEditClick,
+  onIconClick,
 }: DecksTableProps) => {
-  const handleDeleteClick = (id: string) => {
-    onDeleteClick(id)
-  }
+  const [isAsc, setIsAsc] = useState(false)
 
-  const handleEditClick = (id: string) => {
-    onEditClick(id)
-  }
+  const handleDeleteClick = useCallback(
+    (id: string) => {
+      onDeleteClick(id)
+    },
+    [onDeleteClick]
+  )
+
+  const handleEditClick = useCallback(
+    (id: string) => {
+      onEditClick(id)
+    },
+    [onEditClick]
+  )
+
+  const handleSortClick = useCallback(() => {
+    setIsAsc(prevIsAsc => !prevIsAsc)
+    onIconClick()
+  }, [onIconClick])
 
   return (
     <Table.TRoot className={className}>
@@ -37,7 +59,16 @@ export const DecksTable = ({
         <Table.TRow style={{ borderBottom: 'none' }}>
           <Table.Th>Name</Table.Th>
           <Table.Th>Cards</Table.Th>
-          <Table.Th>Last Updated</Table.Th>
+          <Table.Th>
+            <div className={s.orderWrapper}>
+              Last Updated
+              {isAsc ? (
+                <ArrowIosUp color={'#fff'} onClick={handleSortClick} />
+              ) : (
+                <ArrowIosDownOutline color={'#fff'} onClick={handleSortClick} />
+              )}
+            </div>
+          </Table.Th>
           <Table.Th>Created By</Table.Th>
           <Table.Th></Table.Th>
         </Table.TRow>
@@ -59,15 +90,23 @@ export const DecksTable = ({
               <Table.Td>{new Date(deck.updated).toLocaleDateString('en-GB')}</Table.Td>
               <Table.Td>{deck.author.name}</Table.Td>
               <Table.Td className={s.withIcons}>
-                <Button as={Link} className={s.button} to={`decks/${deck.id}`}>
+                <Button as={Link} className={s.button} to={`${deck.id}/learn`} type={'button'}>
                   <PlayCircleOutline />
                 </Button>
                 {isCurrentUser && (
                   <>
-                    <Button className={s.button} onClick={() => handleEditClick(deck.id)}>
+                    <Button
+                      className={s.button}
+                      onClick={() => handleEditClick(deck.id)}
+                      type={'button'}
+                    >
                       <Edit2Outline />
                     </Button>
-                    <Button className={s.button} onClick={() => handleDeleteClick(deck.id)}>
+                    <Button
+                      className={s.button}
+                      onClick={() => handleDeleteClick(deck.id)}
+                      type={'button'}
+                    >
                       <TrashOutline />
                     </Button>
                   </>
