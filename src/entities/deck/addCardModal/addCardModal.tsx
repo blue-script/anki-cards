@@ -7,6 +7,7 @@ import { Layer2 } from '@/assets/icons'
 import { useCreateCardMutation } from '@/services/cards/cards.service'
 import { CreateCardArgs } from '@/services/cards/cards.types'
 import { FormTextField, ImageUpload, Modal, Typography } from '@/shared'
+import { CountButton } from '@/shared/ui/modal/footer/footer'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
@@ -32,7 +33,7 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
   const [questionImg, setQuestionImg] = useState<string>('')
   const [answerImg, setAnswerImg] = useState<string>('')
 
-  const { control, handleSubmit } = useForm<CreateCardArgs>({
+  const { control, getFieldState, handleSubmit, reset, watch } = useForm<CreateCardArgs>({
     defaultValues: { answer: '', answerImg: '', id: deckId, question: '', questionImg: '' },
     resolver: zodResolver(addCardSchema),
   })
@@ -40,13 +41,24 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
   const submitHandler = handleSubmit((data: CreateCardArgs) => {
     const formData = new FormData()
 
+    // data.questionImg = questionImg
+    // data.answerImg = answerImg
+
     formData.append('answer', data.answer)
     formData.append('question', data.question)
-    formData.append('answerImg', data.answerImg | '')
-    formData.append('questionImg', data.questionImg)
-    createCard(formData)
+    if (questionImg) {
+      formData.append('questionImg', questionImg)
+    }
+
+    if (answerImg) {
+      formData.append('answerImg', answerImg)
+    }
+    createCard(data)
       .unwrap()
-      .then(() => toast.success('Card added successfully!'))
+      .then(() => {
+        reset()
+        toast.success('Card added successfully!')
+      })
       .catch(() => toast.error('Failed to add card'))
       .finally(() => onOpenChange())
   })
@@ -79,7 +91,7 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
           </ImageUpload>
         </div>
         <Modal.Footer
-          countButton={2}
+          countButton={CountButton.Two}
           firstButtonName={'Add New Card'}
           firstButtonType={'submit'}
           secondButtonHandler={onOpenChange}

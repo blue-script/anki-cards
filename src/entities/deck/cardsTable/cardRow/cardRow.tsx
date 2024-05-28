@@ -1,5 +1,8 @@
+import toast from 'react-hot-toast'
+
 import { Edit2Outline, TrashOutline } from '@/assets/icons'
 import { CardTextOrImage } from '@/entities'
+import { useDeleteCardMutation } from '@/services/cards/cards.service'
 import { Card } from '@/services/cards/cards.types'
 import { Button, Grade, Table } from '@/shared'
 import { clsx } from 'clsx'
@@ -8,7 +11,6 @@ import s from './cardRow.module.scss'
 
 type Props = {
   isOwner: boolean
-  onDeleteClick: (id: string) => void
   onEditClick: (id: string) => void
 } & Card
 
@@ -18,14 +20,18 @@ export const CardRow = ({
   grade,
   id,
   isOwner,
-  onDeleteClick,
   onEditClick,
   question,
   questionImg,
   updated,
 }: Props) => {
   const handleEditClick = (id: string) => onEditClick(id)
-  const handleDeleteClick = (id: string) => onDeleteClick(id)
+
+  const [deleteCard] = useDeleteCardMutation()
+
+  const onDeleteClick = () => {
+    deleteCard({ id }).then(() => toast.success(`Delete card`))
+  }
 
   return (
     <Table.TRow>
@@ -45,11 +51,7 @@ export const CardRow = ({
             <Button className={s.button} onClick={() => handleEditClick(id)} variant={'secondary'}>
               <Edit2Outline />
             </Button>
-            <Button
-              className={s.button}
-              onClick={() => handleDeleteClick(id)}
-              variant={'secondary'}
-            >
+            <Button className={s.button} onClick={onDeleteClick} variant={'secondary'}>
               <TrashOutline />
             </Button>
           </div>

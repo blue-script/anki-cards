@@ -7,23 +7,16 @@ import s from './cardsTable.module.scss'
 type CardsTableProps = {
   cards: Card[] | undefined
   isOwner: boolean
-  onDeleteClick: (id: string) => void
   onEditClick: (id: string) => void
 }
 
-export const CardsTable = ({ cards, isOwner, onDeleteClick, onEditClick }: CardsTableProps) => {
+export const CardsTable = ({ cards, isOwner, onEditClick }: CardsTableProps) => {
   return (
     <Table.TRoot className={s.table}>
       <CardsHeader />
       <Table.TBody>
         {cards?.map(card => (
-          <CardRow
-            {...card}
-            isOwner={isOwner}
-            key={card.id}
-            onDeleteClick={onDeleteClick}
-            onEditClick={onEditClick}
-          />
+          <CardRow {...card} isOwner={isOwner} key={card.id} onEditClick={onEditClick} />
         ))}
       </Table.TBody>
     </Table.TRoot>
