@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 
@@ -16,11 +16,11 @@ import { clsx } from 'clsx'
 
 import s from './decksList.module.scss'
 
-type tabValueT = 'All Cards' | 'My Cards'
-export type OrderType = 'updated-asc' | 'updated-desc'
+type SelectTab = 'All Cards' | 'My Cards'
+export type SortOrder = 'updated-asc' | 'updated-desc'
 
 export const DecksList = () => {
-  const [tabValue, setTabValue] = useState<tabValueT>('My Cards')
+  const [selectTab, setSelectTab] = useState<SelectTab>('My Cards')
   const currentUserId = 'f2be95b9-4d07-4751-a775-bd612fc9553a'
   const [searchParams, setSearchParams] = useSearchParams()
   const search = searchParams.get('search') ?? ''
@@ -29,48 +29,53 @@ export const DecksList = () => {
   const [maxCardsCount, setMaxCardsCount] = useState(10)
   const [currentPage, setCurrentPage] = useState(1)
   const debounceText = useDebounce<string>(search, 500)
-  const [orderBy, setOrderBy] = useState<OrderType>('updated-desc')
+  const [sortOrder, setSortOrder] = useState<SortOrder>('updated-desc')
+  const [open, setOpen] = useState<boolean>(false)
 
   const { data: decks } = useGetDecksQuery({
     currentPage,
     itemsPerPage,
     name: debounceText,
-    ...(tabValue === 'My Cards' && { authorId: currentUserId }),
+    ...(selectTab === 'My Cards' && { authorId: currentUserId }),
     maxCardsCount,
     minCardsCount,
-    orderBy,
+    orderBy: sortOrder,
   })
 
   const [updateDeck] = useUpdateDeckMutation()
   const [deleteDeck] = useDeleteDeckMutation()
-  const [open, setOpen] = useState<boolean>(false)
   const { control, reset } = useForm<{ name: string }>({
     defaultValues: { name: '' },
   })
 
-  // useEffect(() => {
-  //   refetch()
-  // }, [tabValue, itemsPerPage, currentPage, refetch])
+  const tabValueHandler = useCallback((value: string) => setSelectTab(value as SelectTab), [])
 
-  const tabValueHandler = (value: string) => setTabValue(value as tabValueT)
+  const handleSearchChange = useCallback(
+    (value: string) => {
+      searchParams.set('search', value || '')
+      setSearchParams(searchParams)
+    },
+    [searchParams, setSearchParams]
+  )
 
-  const handleSearchChange = (value: string) => {
-    searchParams.set('search', value || '')
-    setSearchParams(searchParams)
-  }
+  const iconClickHandler = useCallback(() => {
+    setSortOrder(prevOrderBy => (prevOrderBy === 'updated-asc' ? 'updated-desc' : 'updated-asc'))
+  }, [])
 
-  const iconClickHandler = () => {
-    orderBy === 'updated-asc' ? setOrderBy('updated-desc') : setOrderBy('updated-asc')
-  }
+  const pageChangeHandler = useCallback((pageNumber: number) => setCurrentPage(pageNumber), [])
 
-  const pageChangeHandler = (pageNumber: number) => setCurrentPage(pageNumber)
+  const handleItemsPerPage = useCallback((numOfItems: string) => setItemsPerPage(+numOfItems), [])
 
-  const handleItemsPerPage = (numOfItems: string) => setItemsPerPage(+numOfItems)
-
-  const sliderHandler = (data: [number, number]) => {
+  const sliderHandler = useCallback((data: [number, number]) => {
     setMinCardsCount(data[0])
     setMaxCardsCount(data[1])
-  }
+  }, [])
+
+  const handleClearFilter = useCallback(() => {
+    reset()
+    searchParams.delete('search')
+    setSearchParams(searchParams)
+  }, [reset, searchParams, setSearchParams])
 
   return (
     <>
@@ -97,7 +102,7 @@ export const DecksList = () => {
                 { text: 'My Cards', value: 'My Cards' },
                 { text: 'All Cards', value: 'All Cards' },
               ]}
-              value={tabValue}
+              value={selectTab}
             />
             <Slider
               label={'Number of cards'}
@@ -106,14 +111,7 @@ export const DecksList = () => {
               onValueChange={sliderHandler}
               value={[minCardsCount, maxCardsCount]}
             />
-            <Button
-              onClick={() => {
-                reset()
-                searchParams.delete('search')
-                setSearchParams(searchParams)
-              }}
-              variant={'secondary'}
-            >
+            <Button onClick={handleClearFilter} type={'button'} variant={'secondary'}>
               <TrashOutline /> Clear filter
             </Button>
           </div>
@@ -122,9 +120,7 @@ export const DecksList = () => {
               className={s.tableMargin}
               currentUserId={currentUserId}
               decks={decks?.items}
-              onDeleteClick={id => {
-                deleteDeck({ id })
-              }}
+              onDeleteClick={id => deleteDeck({ id })}
               onEditClick={id => updateDeck({ id, name: 'hotPeppers new deck' })}
               onIconClick={iconClickHandler}
             />

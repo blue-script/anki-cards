@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import {
@@ -34,18 +34,24 @@ export const DecksTable = ({
 }: DecksTableProps) => {
   const [isAsc, setIsAsc] = useState(false)
 
-  const handleDeleteClick = (id: string) => {
-    onDeleteClick(id)
-  }
+  const handleDeleteClick = useCallback(
+    (id: string) => {
+      onDeleteClick(id)
+    },
+    [onDeleteClick]
+  )
 
-  const handleEditClick = (id: string) => {
-    onEditClick(id)
-  }
+  const handleEditClick = useCallback(
+    (id: string) => {
+      onEditClick(id)
+    },
+    [onEditClick]
+  )
 
-  const handleIconClick = () => {
-    setIsAsc(!isAsc)
+  const handleSortClick = useCallback(() => {
+    setIsAsc(prevIsAsc => !prevIsAsc)
     onIconClick()
-  }
+  }, [onIconClick])
 
   return (
     <Table.TRoot className={className}>
@@ -57,9 +63,9 @@ export const DecksTable = ({
             <div className={s.orderWrapper}>
               Last Updated
               {isAsc ? (
-                <ArrowIosUp color={'#fff'} onClick={handleIconClick} />
+                <ArrowIosUp color={'#fff'} onClick={handleSortClick} />
               ) : (
-                <ArrowIosDownOutline color={'#fff'} onClick={handleIconClick} />
+                <ArrowIosDownOutline color={'#fff'} onClick={handleSortClick} />
               )}
             </div>
           </Table.Th>
@@ -98,9 +104,7 @@ export const DecksTable = ({
                     </Button>
                     <Button
                       className={s.button}
-                      onClick={() => {
-                        handleDeleteClick(deck.id)
-                      }}
+                      onClick={() => handleDeleteClick(deck.id)}
                       type={'button'}
                     >
                       <TrashOutline />
