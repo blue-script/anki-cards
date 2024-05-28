@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 import { Edit2Outline, TrashOutline } from '@/assets/icons'
 import { CardTextOrImage } from '@/entities'
+import { DeleteCardModal } from '@/entities/deck/deleteCardModal/deleteCardModal'
 import { useDeleteCardMutation } from '@/services/cards/cards.service'
 import { Card } from '@/services/cards/cards.types'
 import { Button, Grade, Table } from '@/shared'
@@ -29,8 +31,12 @@ export const CardRow = ({
 
   const [deleteCard] = useDeleteCardMutation()
 
-  const onDeleteClick = () => {
+  const onDeleteCard = () => {
     deleteCard({ id }).then(() => toast.success(`Delete card`))
+  }
+  const [deleteModal, setDeleteModal] = useState<boolean>(false)
+  const handleOpenChange = () => {
+    setDeleteModal(prev => !prev)
   }
 
   return (
@@ -51,9 +57,14 @@ export const CardRow = ({
             <Button className={s.button} onClick={() => handleEditClick(id)} variant={'secondary'}>
               <Edit2Outline />
             </Button>
-            <Button className={s.button} onClick={onDeleteClick} variant={'secondary'}>
+            <Button className={s.button} onClick={handleOpenChange} variant={'secondary'}>
               <TrashOutline />
             </Button>
+            <DeleteCardModal
+              closeModal={handleOpenChange}
+              onDeleteCard={onDeleteCard}
+              open={deleteModal}
+            />
           </div>
         )}
       </Table.Td>
