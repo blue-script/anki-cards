@@ -33,7 +33,7 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
   const [questionImg, setQuestionImg] = useState<string>('')
   const [answerImg, setAnswerImg] = useState<string>('')
 
-  const { control, getFieldState, handleSubmit, reset, watch } = useForm<CreateCardArgs>({
+  const { control, handleSubmit, reset } = useForm<CreateCardArgs>({
     defaultValues: { answer: '', answerImg: '', id: deckId, question: '', questionImg: '' },
     resolver: zodResolver(addCardSchema),
   })
@@ -53,7 +53,7 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
     if (answerImg) {
       formData.append('answerImg', answerImg)
     }
-    createCard(data)
+    createCard({ data: formData, id: deckId })
       .unwrap()
       .then(() => {
         reset()

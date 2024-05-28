@@ -1,6 +1,8 @@
 import { ChangeEvent, ReactNode, useRef } from 'react'
 // import toast from 'react-hot-toast'
 
+// import toast from 'react-hot-toast'
+
 import { Button } from '@/shared'
 
 import s from '@/features/profile/profileAvatar/profileAvatar.module.scss'

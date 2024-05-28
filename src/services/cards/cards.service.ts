@@ -4,13 +4,15 @@ import { flashcardsApi } from '@/services/flashcardsApi'
 export const cardsService = flashcardsApi.injectEndpoints({
   endpoints: build => {
     return {
-      createCard: build.mutation<Card, CreateCardArgs | any>({
+      createCard: build.mutation<Card, any>({
         invalidatesTags: ['Cards'],
-        query: ({ id, ...body }) => ({
-          body: body,
-          method: 'POST',
-          url: `v1/decks/${id}/cards`,
-        }),
+        query: ({ data, id }) => {
+          return {
+            body: data,
+            method: 'POST',
+            url: `v1/decks/${id}/cards`,
+          }
+        },
       }),
       deleteCard: build.mutation<any, any>({
         invalidatesTags: ['Cards'],
