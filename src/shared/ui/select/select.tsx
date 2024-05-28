@@ -1,20 +1,19 @@
 import { ComponentPropsWithoutRef, ElementRef, forwardRef, useState } from 'react'
 
 import { ArrowIosDownOutline, ArrowIosUp } from '@/assets/icons'
-import { Option } from '@/shared/ui/select/select.stories'
 import { Typography } from '@/shared/ui/typography'
 import * as RadixSelect from '@radix-ui/react-select'
 import clsx from 'clsx'
 
 import s from './select.module.scss'
 
-export type SelectProps = {
+export type SelectProps<T> = {
   className?: string
   defaultValue?: string
   disabled?: boolean
   label?: string
-  onValueChange?: (value: string) => void
-  options: Option[]
+  onValueChange?: (value: T) => void
+  options: T[]
   placeholder?: string
   required?: boolean
   small?: boolean
@@ -59,14 +58,14 @@ const SelectIcon = forwardRef<
   ComponentPropsWithoutRef<typeof RadixSelect.Icon>
 >((props, ref) => <RadixSelect.Icon {...props} ref={ref} />)
 
-export const Select = ({
+export const Select = <T extends string>({
   defaultValue,
   disabled = false,
   label,
   onValueChange,
   options,
   placeholder = '10',
-}: SelectProps) => {
+}: SelectProps<T>) => {
   const [isOpen, setIsOpen] = useState(false)
   const iconColor = disabled ? '#4c4c4c' : '#fff'
   const longestOptionLength = Math.max(...options.map(option => option.length))
