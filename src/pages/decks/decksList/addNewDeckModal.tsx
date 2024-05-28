@@ -2,7 +2,6 @@ import { ChangeEvent } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { ImageOutline } from '@/assets/icons'
-import { FormValuesFromAddDeck } from '@/pages/decks/decksList/decksList'
 import { useCreateDeckMutation } from '@/services/decks/decks.service'
 import { Button, FormCheckbox, FormTextField, Modal } from '@/shared'
 import { CountButton } from '@/shared/ui/modal/footer/footer'
@@ -24,6 +23,8 @@ const newDeckSchema = z.object({
     .min(3, { message: 'Deck Name must be at least 3 characters long' })
     .max(30, { message: 'Deck Name must not exceed 30 characters' }),
 })
+
+type FormValuesFromAddDeck = z.infer<typeof newDeckSchema>
 
 type AddNewDeckModalProps = {
   open: boolean
@@ -57,6 +58,7 @@ export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) 
   }
 
   const addFormClickHandler = (data: FormValuesFromAddDeck) => {
+    //console.log('data', data)
     createDeck(data)
     reset()
   }

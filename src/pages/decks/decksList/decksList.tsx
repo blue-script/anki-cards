@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 
@@ -16,85 +16,71 @@ import { clsx } from 'clsx'
 
 import s from './decksList.module.scss'
 
-type TabValue = 'All Cards' | 'My Cards'
-type OrderType = 'created-asc' | 'created-desc'
+type tabValueT = 'All Cards' | 'My Cards'
+export type OrderType = 'updated-asc' | 'updated-desc'
 
 export const DecksList = () => {
-  const [activeTab, setActiveTab] = useState<TabValue>('All Cards')
+  const [tabValue, setTabValue] = useState<tabValueT>('My Cards')
   const currentUserId = 'f2be95b9-4d07-4751-a775-bd612fc9553a'
   const [searchParams, setSearchParams] = useSearchParams()
-  const searchQuery = searchParams.get('search') ?? ''
-  const [pagination, setPagination] = useState({ currentPage: 1, itemsPerPage: 10 })
-  const [cardsCountRange, setCardsCountRange] = useState<[number, number]>([1, 10])
-  const debouncedSearchQuery = useDebounce<string>(searchQuery, 500)
-  const [sortOrder, setSortOrder] = useState<OrderType>('created-desc')
-  const [isModalOpen, setModalOpen] = useState<boolean>(false)
+  const search = searchParams.get('search') ?? ''
+  const [itemsPerPage, setItemsPerPage] = useState(10)
+  const [minCardsCount, setMinCardsCount] = useState(0)
+  const [maxCardsCount, setMaxCardsCount] = useState(10)
+  const [currentPage, setCurrentPage] = useState(1)
+  const debounceText = useDebounce<string>(search, 500)
+  const [orderBy, setOrderBy] = useState<OrderType>('updated-desc')
 
-  const { data: decks, refetch } = useGetDecksQuery({
-    currentPage: pagination.currentPage,
-    itemsPerPage: pagination.itemsPerPage,
-    name: debouncedSearchQuery,
-    ...(activeTab === 'My Cards' && { authorId: currentUserId }),
-    maxCardsCount: cardsCountRange[1],
-    minCardsCount: cardsCountRange[0],
-    orderBy: sortOrder,
+  const { data: decks } = useGetDecksQuery({
+    currentPage,
+    itemsPerPage,
+    name: debounceText,
+    ...(tabValue === 'My Cards' && { authorId: currentUserId }),
+    maxCardsCount,
+    minCardsCount,
+    orderBy,
   })
 
   const [updateDeck] = useUpdateDeckMutation()
   const [deleteDeck] = useDeleteDeckMutation()
+  const [open, setOpen] = useState<boolean>(false)
   const { control, reset } = useForm<{ name: string }>({
     defaultValues: { name: '' },
   })
 
-  useEffect(() => {
-    refetch()
-  }, [activeTab, pagination, refetch])
+  // useEffect(() => {
+  //   refetch()
+  // }, [tabValue, itemsPerPage, currentPage, refetch])
 
-  const handleTabChange = useCallback((value: string) => setActiveTab(value as TabValue), [])
+  const tabValueHandler = (value: string) => setTabValue(value as tabValueT)
 
-  const handleSearchChange = useCallback(
-    (value: string) => {
-      searchParams.set('search', value || '')
-      setSearchParams(searchParams)
-    },
-    [searchParams, setSearchParams]
-  )
-
-  const handleSortOrderToggle = useCallback(() => {
-    setSortOrder(prevSortOrder =>
-      prevSortOrder === 'created-desc' ? 'created-asc' : 'created-desc'
-    )
-  }, [])
-
-  const handlePageChange = useCallback((pageNumber: number) => {
-    setPagination(prev => ({ ...prev, currentPage: pageNumber }))
-  }, [])
-
-  const handleItemsPerPageChange = useCallback((numOfItems: string) => {
-    setPagination(prev => ({ ...prev, itemsPerPage: +numOfItems }))
-  }, [])
-
-  const handleSliderChange = useCallback((data: [number, number]) => {
-    setCardsCountRange(data)
-  }, [])
-
-  const handleClearFilter = useCallback(() => {
-    reset()
-    searchParams.delete('search')
+  const handleSearchChange = (value: string) => {
+    searchParams.set('search', value || '')
     setSearchParams(searchParams)
-  }, [reset, searchParams, setSearchParams])
+  }
+
+  const iconClickHandler = () => {
+    orderBy === 'updated-asc' ? setOrderBy('updated-desc') : setOrderBy('updated-asc')
+  }
+
+  const pageChangeHandler = (pageNumber: number) => setCurrentPage(pageNumber)
+
+  const handleItemsPerPage = (numOfItems: string) => setItemsPerPage(+numOfItems)
+
+  const sliderHandler = (data: [number, number]) => {
+    setMinCardsCount(data[0])
+    setMaxCardsCount(data[1])
+  }
 
   return (
     <>
       <Page className={s.wrapper} mt={'10px'}>
-        {isModalOpen && (
-          <AddNewDeckModal open={isModalOpen} setOpen={setModalOpen} title={'Add new deck'} />
-        )}
+        {open && <AddNewDeckModal open={open} setOpen={setOpen} title={'Add new deck'} />}
         <div className={s.rowContainer}>
           <Typography as={'h1'} option={'h1'}>
             Decks List
           </Typography>
-          <Button onClick={() => setModalOpen(!isModalOpen)}>Add new deck</Button>
+          <Button onClick={() => setOpen(!open)}>Add new deck</Button>
         </div>
         <form style={{ width: '100%' }}>
           <div className={clsx(s.rowContainer, s.rowHeight)}>
@@ -106,21 +92,28 @@ export const DecksList = () => {
               variant={'search'}
             />
             <TabSwitcher
-              onValueChange={handleTabChange}
+              onValueChange={tabValueHandler}
               tabs={[
                 { text: 'My Cards', value: 'My Cards' },
                 { text: 'All Cards', value: 'All Cards' },
               ]}
-              value={activeTab}
+              value={tabValue}
             />
             <Slider
               label={'Number of cards'}
               max={10}
               min={0}
-              onValueChange={handleSliderChange}
-              value={cardsCountRange}
+              onValueChange={sliderHandler}
+              value={[minCardsCount, maxCardsCount]}
             />
-            <Button onClick={handleClearFilter} variant={'secondary'}>
+            <Button
+              onClick={() => {
+                reset()
+                searchParams.delete('search')
+                setSearchParams(searchParams)
+              }}
+              variant={'secondary'}
+            >
               <TrashOutline /> Clear filter
             </Button>
           </div>
@@ -129,18 +122,20 @@ export const DecksList = () => {
               className={s.tableMargin}
               currentUserId={currentUserId}
               decks={decks?.items}
-              onDeleteClick={id => deleteDeck({ id })}
+              onDeleteClick={id => {
+                deleteDeck({ id })
+              }}
               onEditClick={id => updateDeck({ id, name: 'hotPeppers new deck' })}
-              onIconClick={handleSortOrderToggle}
+              onIconClick={iconClickHandler}
             />
           </div>
         </form>
         <div className={s.rowContainer}>
           <Pagination
             currentPage={decks?.pagination.currentPage || 1}
-            onPageChange={handlePageChange}
+            onPageChange={pageChangeHandler}
             pageSize={decks?.pagination.itemsPerPage || 10}
-            setPageSize={numOfItems => handleItemsPerPageChange(numOfItems.toString())}
+            setPageSize={numOfItems => handleItemsPerPage(numOfItems.toString())}
             style={{ marginTop: '15px' }}
             totalCount={decks?.pagination.totalItems || 50}
           />
