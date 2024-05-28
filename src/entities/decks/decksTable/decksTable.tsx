@@ -90,7 +90,7 @@ export const DecksTable = ({
               <Table.Td>{new Date(deck.updated).toLocaleDateString('en-GB')}</Table.Td>
               <Table.Td>{deck.author.name}</Table.Td>
               <Table.Td className={s.withIcons}>
-                <Button as={Link} className={s.button} to={`decks/${deck.id}`}>
+                <Button as={Link} className={s.button} to={`${deck.id}/learn`} type={'button'}>
                   <PlayCircleOutline />
                 </Button>
                 {isCurrentUser && (

@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 
 import { TrashOutline } from '@/assets/icons'
 import { DecksTable } from '@/entities/decks'
-import { AddNewDeckModal } from '@/pages/decks/decksList/addNewDeckModal'
+import { AddNewDeckModal } from '@/entities/decks/addNewDeckModal/addNewDeckModal'
 import {
   useDeleteDeckMutation,
   useGetDecksQuery,
@@ -58,7 +58,7 @@ export const DecksList = () => {
     [searchParams, setSearchParams]
   )
 
-  const iconClickHandler = useCallback(() => {
+  const handleSortOrderToggle = useCallback(() => {
     setSortOrder(prevOrderBy => (prevOrderBy === 'updated-asc' ? 'updated-desc' : 'updated-asc'))
   }, [])
 
@@ -122,7 +122,7 @@ export const DecksList = () => {
               decks={decks?.items}
               onDeleteClick={id => deleteDeck({ id })}
               onEditClick={id => updateDeck({ id, name: 'hotPeppers new deck' })}
-              onIconClick={iconClickHandler}
+              onIconClick={handleSortOrderToggle}
             />
           </div>
         </form>

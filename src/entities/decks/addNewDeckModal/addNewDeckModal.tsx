@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 
 import { ImageOutline } from '@/assets/icons'
 import { useCreateDeckMutation } from '@/services/decks/decks.service'
+import { CreateDeckArgs } from '@/services/decks/decks.types'
 import { Button, FormCheckbox, FormTextField, Modal } from '@/shared'
 import { CountButton } from '@/shared/ui/modal/footer/footer'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -12,11 +13,11 @@ import s from './addNewDeckModal.module.scss'
 
 const newDeckSchema = z.object({
   cover: z
-    .string()
-    .optional()
-    .refine(val => !val || /\.(jpg|jpeg|png|gif|bmp)$/.test(val), {
-      message: 'Invalid image path. Must be a valid image format',
-    }),
+    .instanceof(File)
+    .refine(file => ['image/jpeg', 'image/png'].includes(file.type), {
+      message: 'Must be a .jpeg or .png file.',
+    })
+    .optional(),
   isPrivate: z.boolean(),
   name: z
     .string()
@@ -35,7 +36,7 @@ type AddNewDeckModalProps = {
 export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) => {
   const [createDeck] = useCreateDeckMutation()
   const { control, handleSubmit, reset, setValue, watch } = useForm<FormValuesFromAddDeck>({
-    defaultValues: { cover: '', isPrivate: true, name: '' },
+    defaultValues: { cover: undefined, isPrivate: true, name: '' },
     resolver: zodResolver(newDeckSchema),
   })
 
@@ -45,7 +46,7 @@ export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) 
     const file = event.target.files?.[0]
 
     if (file) {
-      setValue('cover', file.name)
+      setValue('cover', file)
     }
   }
 
@@ -58,9 +59,23 @@ export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) 
   }
 
   const addFormClickHandler = (data: FormValuesFromAddDeck) => {
-    //console.log('data', data)
-    createDeck(data)
-    reset()
+    const formData = new FormData()
+
+    if (data.cover) {
+      formData.append('cover', data.cover)
+    }
+    formData.append('name', data.name)
+    formData.append('isPrivate', String(data.isPrivate))
+
+    createDeck(formData as unknown as CreateDeckArgs)
+      .unwrap()
+      .then(() => {
+        reset()
+        setOpen(false)
+      })
+      .catch(error => {
+        console.error('Failed to create deck:', error)
+      })
   }
 
   return (
@@ -82,7 +97,7 @@ export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) 
         />
         <Button className={s.uploadBtn} fullWidth onClick={handleUploadClick} variant={'secondary'}>
           <ImageOutline />
-          {imagePath || 'Upload Image'}
+          {imagePath ? imagePath.name : 'Upload Image'}
         </Button>
         <FormCheckbox
           className={s.privateBox}
