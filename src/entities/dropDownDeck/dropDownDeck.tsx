@@ -1,9 +1,14 @@
 import { Edit2, MoreVerticalOutline, PlayCircleOutline, Trash } from '@/assets/icons'
+import { useDeleteDeckMutation } from '@/services/decks/decks.service'
 import { Dropdown, Typography } from '@/shared'
 
-type Props = {}
+type Props = { deckId: string }
 
-export const DropDownDeck = ({}: Props) => {
+export const DropDownDeck = ({ deckId }: Props) => {
+  const [deleteDeck] = useDeleteDeckMutation()
+
+  const onDeleteDeck = () => deleteDeck({ id: deckId })
+
   return (
     <Dropdown.Root modal={false}>
       <Dropdown.Trigger asChild>
@@ -24,7 +29,7 @@ export const DropDownDeck = ({}: Props) => {
           </Typography>
         </Dropdown.Item>
         <Dropdown.Separator />
-        <Dropdown.Item>
+        <Dropdown.Item onClick={onDeleteDeck}>
           <Trash />
           <Typography as={'span'} option={'caption'}>
             Delete

@@ -10,10 +10,11 @@ import s from './deckHeader.module.scss'
 
 type Props = {
   cardsLength: number
+  deckId: string
   isOwner: boolean
 }
 
-export const DeckHeader = ({ cardsLength, isOwner }: Props) => {
+export const DeckHeader = ({ cardsLength, deckId, isOwner }: Props) => {
   const navigate = useNavigate()
 
   const [open, setOpen] = useState(false)
@@ -29,7 +30,12 @@ export const DeckHeader = ({ cardsLength, isOwner }: Props) => {
       </Button>
 
       {isOwner ? (
-        <OwnerContent cardsLength={cardsLength} onOpenChange={onOpenChange} open={open} />
+        <OwnerContent
+          cardsLength={cardsLength}
+          deckId={deckId}
+          onOpenChange={onOpenChange}
+          open={open}
+        />
       ) : (
         <FriendContent />
       )}
@@ -50,16 +56,17 @@ const FriendContent = () => {
 
 type OwnerContentProps = {
   cardsLength: number
+  deckId: string
   onOpenChange: () => void
   open: boolean
 }
 
-const OwnerContent = ({ cardsLength, onOpenChange, open }: OwnerContentProps) => {
+const OwnerContent = ({ cardsLength, deckId, onOpenChange, open }: OwnerContentProps) => {
   return (
     <div className={s.ownerContainer}>
       <div className={s.owner}>
         <Typography option={'h1'}>My Cards</Typography>
-        {cardsLength > 0 && <DropDownDeck />}
+        {cardsLength > 0 && <DropDownDeck deckId={deckId} />}
       </div>
       {cardsLength > 0 && (
         <>

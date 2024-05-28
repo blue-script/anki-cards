@@ -60,7 +60,7 @@ export const DeckPage = () => {
     setOpen(!open)
   }
 
-  if (error || deckError) {
+  if (!deckId || error || deckError) {
     return <div>{`Error: ${error || deckError}`}</div>
   }
 
@@ -69,7 +69,7 @@ export const DeckPage = () => {
 
   return (
     <Page className={s.page} mt={'24px'}>
-      <DeckHeader cardsLength={cardsLength} isOwner={isOwner} />
+      <DeckHeader cardsLength={cardsLength} deckId={deckId} isOwner={isOwner} />
 
       {cardsLength ? (
         <>
@@ -82,12 +82,7 @@ export const DeckPage = () => {
             variant={'search'}
           />
 
-          <CardsTable
-            cards={cards}
-            isOwner={isOwner}
-            onDeleteClick={() => {}}
-            onEditClick={() => {}}
-          />
+          <CardsTable cards={cards} isOwner={isOwner} onEditClick={() => {}} />
         </>
       ) : (
         <>
