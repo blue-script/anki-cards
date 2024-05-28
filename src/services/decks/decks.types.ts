@@ -1,6 +1,5 @@
 export interface DecksListResponse {
   items: Deck[]
-  maxCardsCount: number
   pagination: Pagination
 }
 
@@ -48,6 +47,17 @@ export interface CreateDeckArgs {
 export type UpdateDeckArgs = { id: string } & Partial<CreateDeckArgs>
 export type DeleteDeckArgs = { id: string }
 
+export type LearnDeckArgs = {
+  id: string
+  previousCardId?: string
+}
+
+export type UpdateGradeArgs = {
+  cardId: string
+  grade: number
+  id: string
+}
+
 export interface GetDeckArgs {
   id: string
 }
@@ -62,6 +72,26 @@ export interface GetDeckResponse {
   name: string
   updated: string
   userId: string
+}
+
+export interface RandomCardResponse {
+  answer: string
+  answerImg: null | string
+  answerVideo: null | string
+  created: string
+  deckId: string
+  grade: number
+  id: string
+  question: string
+  questionImg: null | string
+  questionVideo: null | string
+  shots: number
+  updated: string
+}
+
+export type NewGradeData = {
+  cardId: string
+  grade: number
 }
 
 // Error Message

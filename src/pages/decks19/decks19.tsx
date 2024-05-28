@@ -76,7 +76,7 @@ export const Decks19 = () => {
       </div>
       <div className={s.table}>
         <DecksTable
-          currentUserId={decks?.}
+          // currentUserId={decks?.items.}
           decks={decks?.items}
           onDeleteClick={id => id}
           onEditClick={id => id}

@@ -32,7 +32,7 @@ export const Footer = (props: Props) => {
     </div>
   ) : (
     <div className={s.footer}>
-      <button className={s.secondaryButton} onClick={secondButtonHandler}>
+      <button className={s.secondaryButton} onClick={secondButtonHandler} type={'reset'}>
         {secondButtonName}
       </button>
       <button className={s.primaryButton} onClick={firstButtonHandler}>

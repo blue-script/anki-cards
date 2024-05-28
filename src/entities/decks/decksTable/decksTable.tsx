@@ -10,14 +10,13 @@ type DecksTableProps = {
   decks: Deck[] | undefined
   onDeleteClick: (id: string) => void
   onEditClick: (id: string) => void
-  // onSort: (sort: string) => void
 }
 
 export const DecksTable = ({
   currentUserId,
   decks,
   onDeleteClick,
-  onEditClick /*onSort,*/,
+  onEditClick,
 }: DecksTableProps) => {
   const handleDeleteClick = (id: string) => {
     onDeleteClick(id)
@@ -27,24 +26,13 @@ export const DecksTable = ({
     onEditClick(id)
   }
 
-  /*  let sortable = 'desc'
-
-  const handleSort = (sort: string) => {
-    onSort(sort === 'desc' ? (sortable = 'asc') : (sortable = 'desc'))
-  }*/
-
   return (
     <Table.TRoot>
       <Table.THead>
         <Table.TRow style={{ borderBottom: 'none' }}>
           <Table.Th>Name</Table.Th>
           <Table.Th>Cards</Table.Th>
-          <Table.Th
-          // onClick={handleSort(sortable)}
-          >
-            Last Updated
-            {/*<span>{sortable === 'asc' ? '▲' : '▼'}</span>*/}
-          </Table.Th>
+          <Table.Th>{/*Last Updated<span>{sort === 'asc' ? '▲' : '▼'}</span>*/}</Table.Th>
           <Table.Th>Author</Table.Th>
           <Table.Th>Actions</Table.Th>
         </Table.TRow>

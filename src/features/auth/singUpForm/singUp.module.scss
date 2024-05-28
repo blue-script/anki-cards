@@ -9,9 +9,11 @@
   flex-direction: column;
   width: 100%;
 }
+
 .textField {
   margin-bottom: 48px;
 }
+
 .checkbox {
 }
 
@@ -23,6 +25,7 @@
 .recoverPasswordLink,
 .recoverPasswordLink:visited {
   cursor: pointer;
+
   display: flex;
   justify-content: flex-end;
 
@@ -35,8 +38,8 @@
 }
 
 .button {
-  margin-bottom: 20px;
   margin-top: 35px;
+  margin-bottom: 20px;
 }
 
 .caption {
@@ -47,9 +50,12 @@
 
 .signUpLink {
   cursor: pointer;
+
   display: flex;
   justify-content: center;
+
   margin: 10px 0;
+
   font-size: var(--font-size-m);
   font-weight: var(--font-weight-bold);
   color: var(--color-accent-500);
