@@ -78,6 +78,7 @@ export function DecksPage() {
         onEditClick={id => {
           updateDeck({ id, name: 'hotPeppers new deck' })
         }}
+        onIconClick={() => {}}
       />
     </div>
   )

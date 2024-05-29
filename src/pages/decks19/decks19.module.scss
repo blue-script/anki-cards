@@ -11,6 +11,10 @@
 
 .table {
   margin-bottom: 24px;
+  table-layout: fixed;
+  & a {
+    text-decoration: none;
+  }
 }
 
 .widthButton {

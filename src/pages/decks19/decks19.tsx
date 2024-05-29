@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useSearchParams } from 'react-router-dom'
 
 import { DecksTable } from '@/entities'
 import { useGetDecksQuery } from '@/services/decks/decks.service'
@@ -16,23 +17,39 @@ const tabsSwitcher = [
 ]
 
 export const Decks19 = () => {
-  const [search, setSearch] = useState('')
+  const [searchParams, setSearchParams] = useSearchParams()
+  const search = searchParams.get('name') ?? ''
   const [tabSwitcherValue, setTabSwitcherValue] = useState('All Cards')
-  const [itemsPerPage, setItemsPerPage] = useState(5)
+  const [itemsPerPage, setItemsPerPage] = useState(10)
   const [currentPage, setCurrentPage] = useState(1)
-  const debouncedSearch = useDebounce(search, 1500)
+  const [minCardsCount, setMinCardsCount] = useState(0)
+  const [maxCardsCount, setMaxCardsCount] = useState(25)
+  const [orderBy, setOrderBy] = useState('updated-asc')
+  const [currentUserId, setCurrentUserId] = useState('')
+  const debouncedSearch = useDebounce(search, 1000)
   const { data: decks } = useGetDecksQuery({
+    authorId: currentUserId,
     currentPage: currentPage,
     itemsPerPage: itemsPerPage,
+    maxCardsCount: maxCardsCount,
+    minCardsCount: minCardsCount,
     name: debouncedSearch,
+    orderBy: orderBy,
   })
   const { control, reset } = useForm<{ name: string }>({
     defaultValues: { name: '' },
   })
-  const handleSearchChange = (search: string) => {
-    setSearch(search)
+  const handleSearchChange = (searchName: string) => {
+    setCurrentPage(1)
+    if (searchName.length) {
+      searchParams.set('name', searchName)
+    } else {
+      searchParams.delete('name')
+    }
+    setSearchParams(searchParams)
   }
   const handleItemsPerPage = (page: number) => {
+    setCurrentPage(1)
     setItemsPerPage(page)
   }
   const handlePageChange = (page: number) => {
@@ -40,10 +57,32 @@ export const Decks19 = () => {
   }
   const resetFilters = () => {
     reset()
-    setSearch('')
+    searchParams.delete('name')
+    setSearchParams(searchParams)
+    setCurrentPage(1)
+    setMinCardsCount(0)
+    setMaxCardsCount(25)
+    setTabSwitcherValue('All Cards')
+    setCurrentUserId('')
   }
-  const handleValueChange = (value: string) => {
+  const handleTabSwitcherChange = (value: string) => {
+    setCurrentPage(1)
     setTabSwitcherValue(value)
+    value === 'My Cards'
+      ? setCurrentUserId('f2be95b9-4d07-4751-a775-bd612fc9553a')
+      : setCurrentUserId('')
+  }
+  const handleSliderChange = ([minCardsCount, maxCardsCount]: number[]) => {
+    setMinCardsCount(minCardsCount)
+    setMaxCardsCount(maxCardsCount)
+  }
+  const handleDataSortOrder = () => {
+    if (orderBy === 'updated-desc') {
+      setOrderBy('updated-asc')
+    }
+    if (orderBy === 'updated-asc') {
+      setOrderBy('updated-desc')
+    }
   }
 
   return (
@@ -64,30 +103,36 @@ export const Decks19 = () => {
         />
         <TabSwitcher
           label={'Show decks cards'}
-          onValueChange={handleValueChange}
+          onValueChange={handleTabSwitcherChange}
           tabs={tabsSwitcher}
           value={tabSwitcherValue}
         />
-        <Slider label={'Number of cards'} />
+        <Slider
+          label={'Number of cards'}
+          max={25}
+          min={0}
+          onValueChange={handleSliderChange}
+          value={[minCardsCount, maxCardsCount]}
+        />
         <Button onClick={resetFilters} variant={'secondary'}>
           <SvgTrashOutline />
           Clear Filter
         </Button>
       </div>
-      <div className={s.table}>
-        <DecksTable
-          // currentUserId={decks?.items.}
-          decks={decks?.items}
-          onDeleteClick={id => id}
-          onEditClick={id => id}
-        />
-      </div>
+      <DecksTable
+        className={s.table}
+        currentUserId={currentUserId}
+        decks={decks?.items}
+        onDeleteClick={id => id}
+        onEditClick={id => id}
+        onIconClick={handleDataSortOrder}
+      />
       <Pagination
-        currentPage={currentPage}
+        currentPage={decks?.pagination.currentPage || 1}
         onPageChange={handlePageChange}
-        pageSize={itemsPerPage}
+        pageSize={decks?.pagination.itemsPerPage || 10}
         setPageSize={handleItemsPerPage}
-        totalCount={decks?.pagination.totalItems || 50}
+        totalCount={decks?.pagination.totalItems || 55}
       />
     </Page>
   )

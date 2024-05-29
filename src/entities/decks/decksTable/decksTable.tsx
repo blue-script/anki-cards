@@ -1,40 +1,76 @@
-import { Edit2Outline, PlayCircleOutline, TrashOutline } from '@/assets/icons'
+import { useCallback, useState } from 'react'
+import { Link } from 'react-router-dom'
+
+import {
+  ArrowIosDownOutline,
+  ArrowIosUp,
+  Edit2Outline,
+  PlayCircleOutline,
+  TrashOutline,
+} from '@/assets/icons'
 import { Deck } from '@/services/decks/decks.types'
-import { Button, Typography } from '@/shared'
+import { Button } from '@/shared'
 import { Table } from '@/shared/ui/table/table'
+import { TableCellContent } from '@/shared/ui/table/tableCellContent'
 
 import s from './decksTable.module.scss'
 
 type DecksTableProps = {
+  className?: string
   currentUserId?: string
   decks: Deck[] | undefined
   onDeleteClick: (id: string) => void
   onEditClick: (id: string) => void
+  onIconClick: () => void
 }
 
 export const DecksTable = ({
+  className,
   currentUserId,
   decks,
   onDeleteClick,
   onEditClick,
+  onIconClick,
 }: DecksTableProps) => {
-  const handleDeleteClick = (id: string) => {
-    onDeleteClick(id)
-  }
+  const [isAsc, setIsAsc] = useState(false)
 
-  const handleEditClick = (id: string) => {
-    onEditClick(id)
-  }
+  const handleDeleteClick = useCallback(
+    (id: string) => {
+      onDeleteClick(id)
+    },
+    [onDeleteClick]
+  )
+
+  const handleEditClick = useCallback(
+    (id: string) => {
+      onEditClick(id)
+    },
+    [onEditClick]
+  )
+
+  const handleSortClick = useCallback(() => {
+    setIsAsc(prevIsAsc => !prevIsAsc)
+    onIconClick()
+  }, [onIconClick])
 
   return (
-    <Table.TRoot>
+    <Table.TRoot className={className}>
       <Table.THead>
         <Table.TRow style={{ borderBottom: 'none' }}>
-          <Table.Th>Name</Table.Th>
+          <Table.Th style={{ width: '30%' }}>Name</Table.Th>
           <Table.Th>Cards</Table.Th>
-          <Table.Th>{/*Last Updated<span>{sort === 'asc' ? '▲' : '▼'}</span>*/}</Table.Th>
-          <Table.Th>Author</Table.Th>
-          <Table.Th>Actions</Table.Th>
+          <Table.Th>
+            <div className={s.orderWrapper}>
+              Last Updated
+              {isAsc ? (
+                <ArrowIosUp color={'#fff'} onClick={handleSortClick} />
+              ) : (
+                <ArrowIosDownOutline color={'#fff'} onClick={handleSortClick} />
+              )}
+            </div>
+          </Table.Th>
+          <Table.Th>Created By</Table.Th>
+          <Table.Th></Table.Th>
         </Table.TRow>
       </Table.THead>
       <Table.TBody>
@@ -44,23 +80,33 @@ export const DecksTable = ({
           return (
             <Table.TRow key={deck.id}>
               <Table.Td>
-                <Typography as={'a'} href={`decks/${deck.id}`} option={'body2'}>
-                  {deck.name}
-                </Typography>
+                <TableCellContent
+                  href={`decks/${deck.id}`}
+                  imageUrl={deck.cover || 'src/assets/img/react.png'}
+                  name={deck.name}
+                />
               </Table.Td>
               <Table.Td>{deck.cardsCount}</Table.Td>
               <Table.Td>{new Date(deck.updated).toLocaleDateString('en-GB')}</Table.Td>
               <Table.Td>{deck.author.name}</Table.Td>
               <Table.Td className={s.withIcons}>
-                <Button as={'a'} className={s.button} href={`decks/${deck.id}/learn`}>
+                <Button as={Link} className={s.button} to={`${deck.id}/learn`} type={'button'}>
                   <PlayCircleOutline />
                 </Button>
                 {isCurrentUser && (
                   <>
-                    <Button className={s.button} onClick={() => handleEditClick(deck.id)}>
+                    <Button
+                      className={s.button}
+                      onClick={() => handleEditClick(deck.id)}
+                      type={'button'}
+                    >
                       <Edit2Outline />
                     </Button>
-                    <Button className={s.button} onClick={() => handleDeleteClick(deck.id)}>
+                    <Button
+                      className={s.button}
+                      onClick={() => handleDeleteClick(deck.id)}
+                      type={'button'}
+                    >
                       <TrashOutline />
                     </Button>
                   </>
