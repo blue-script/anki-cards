@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 
-import { CardsTable, DeckHeader } from '@/entities'
+import { AddCardModal, CardsTable, DeckHeader } from '@/entities'
 import { useGetCardsQuery } from '@/services/cards/cards.service'
 import { useGetDeckByIdQuery } from '@/services/decks/decks.service'
 import { Button, Page, Pagination, TextField, Typography } from '@/shared'
@@ -54,16 +54,22 @@ export const DeckPage = () => {
     }
   )
 
-  if (error || deckError) {
+  const [open, setOpen] = useState(false)
+
+  const onOpenChange = () => {
+    setOpen(!open)
+  }
+
+  if (!deckId || error || deckError) {
     return <div>{`Error: ${error || deckError}`}</div>
   }
 
-  const isOwner = false //deckData?.userId === deckData?.userId //some logic
+  const isOwner = true //deckData?.userId === deckData?.userId //some logic
   const cardsLength = cards?.length ?? 0
 
   return (
     <Page className={s.page} mt={'24px'}>
-      <DeckHeader cardsLength={cardsLength} isOwner={isOwner} />
+      <DeckHeader cardsLength={cardsLength} deckId={deckId} isOwner={isOwner} />
 
       {cardsLength ? (
         <>
@@ -76,19 +82,19 @@ export const DeckPage = () => {
             variant={'search'}
           />
 
-          <CardsTable
-            cards={cards}
-            isOwner={isOwner}
-            onDeleteClick={() => {}}
-            onEditClick={() => {}}
-          />
+          <CardsTable cards={cards} isOwner={isOwner} onEditClick={() => {}} />
         </>
       ) : (
         <>
           <Typography option={'body1'}>
             This pack is empty. Click add new card to fill this pack
           </Typography>
-          <Button>Add New Card</Button>
+          {isOwner && (
+            <>
+              <Button onClick={onOpenChange}>Add New Card</Button>
+              <AddCardModal onOpenChange={onOpenChange} open={open} />
+            </>
+          )}
         </>
       )}
 
