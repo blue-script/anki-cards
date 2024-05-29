@@ -1,3 +1,4 @@
+import { Button } from '@/shared'
 import clsx from 'clsx'
 
 import s from '@/shared/ui/modal/footer/footer.module.scss'
@@ -11,6 +12,7 @@ type Props = {
   countButton: CountButton
   firstButtonHandler?: () => void
   firstButtonName?: string
+  firstButtonType?: 'button' | 'reset' | 'submit'
   secondButtonHandler?: () => void
   secondButtonName?: string
 }
@@ -20,6 +22,7 @@ export const Footer = (props: Props) => {
     countButton,
     firstButtonHandler,
     firstButtonName,
+    firstButtonType,
     secondButtonHandler,
     secondButtonName,
   } = props
@@ -32,12 +35,12 @@ export const Footer = (props: Props) => {
     </div>
   ) : (
     <div className={s.footer}>
-      <button className={s.secondaryButton} onClick={secondButtonHandler} type={'reset'}>
+      <Button onClick={secondButtonHandler} type={'reset'} variant={'secondary'}>
         {secondButtonName}
-      </button>
-      <button className={s.primaryButton} onClick={firstButtonHandler}>
+      </Button>
+      <Button onClick={firstButtonHandler} type={firstButtonType}>
         {firstButtonName}
-      </button>
+      </Button>
     </div>
   )
 }
