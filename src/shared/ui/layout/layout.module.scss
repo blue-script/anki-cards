@@ -9,3 +9,9 @@
   width: 100%;
   padding-inline: var(--header-padding-inline);
 }
+
+@media (width <= 1140px) {
+  .main {
+    padding-inline: 5px;
+  }
+}

@@ -19,7 +19,7 @@ export const CardsHeader = () => {
 
   return (
     <Table.THead>
-      <Table.TRow>
+      <Table.TRow className={s.nowrap}>
         <Table.Th>Question</Table.Th>
         <Table.Th>Answer</Table.Th>
         <Table.Th className={s.wrapper}>

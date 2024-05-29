@@ -1,4 +1,7 @@
 import { ChangeEvent, ReactNode, useRef } from 'react'
+// import toast from 'react-hot-toast'
+
+// import toast from 'react-hot-toast'
 
 import { Button } from '@/shared'
 
@@ -21,23 +24,27 @@ export const ImageUpload = ({ children, handleChangeImage, variantButton = 'prim
     const file = e.target.files?.[0]
 
     if (file) {
-      if (!file.type.match('image.*')) {
-        alert('Please select a valid image file.')
-
-        return
-      }
-
-      const reader = new FileReader()
-
-      reader.onload = e => {
-        const newImage = e.target?.result as string
-
-        if (newImage) {
-          handleChangeImage(newImage)
-        }
-      }
-      reader.readAsDataURL(file)
+      handleChangeImage(URL.createObjectURL(file))
     }
+
+    // if (file) {
+    //   if (!file.type.match('image.*')) {
+    //     toast.error('Please select a valid image file.')
+    //
+    //     return
+    //   }
+    //
+    //   const reader = new FileReader()
+    //
+    //   reader.onload = e => {
+    //     const newImage = e.target?.result as string
+    //
+    //     if (newImage) {
+    //       handleChangeImage(newImage)
+    //     }
+    //   }
+    //   reader.readAsDataURL(file)
+    // }
   }
 
   return (
@@ -46,6 +53,7 @@ export const ImageUpload = ({ children, handleChangeImage, variantButton = 'prim
         className={s.editAvatarButton}
         fullWidth
         onClick={selectFileHandler}
+        type={'reset'}
         variant={variantButton}
       >
         {children}
