@@ -15,3 +15,19 @@
     margin: 0 5px;
   }
 }
+
+.orderWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  padding: 5px 5px 5px 0;
+
+  & svg {
+    margin-left: 5px;
+  }
+}
+
+.firstColumn {
+  min-width: 18vw;
+  max-width: 18vw;
+}
