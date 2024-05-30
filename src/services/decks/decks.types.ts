@@ -38,6 +38,11 @@ export interface GetDecksArgs {
   orderBy?: string
 }
 
+export type GetMinMaxCardsResponse = {
+  max: number
+  min: number
+}
+
 export interface CreateDeckArgs {
   cover?: string
   isPrivate?: boolean

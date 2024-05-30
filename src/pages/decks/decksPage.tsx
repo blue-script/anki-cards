@@ -7,6 +7,7 @@ import {
   useCreateDeckMutation,
   useDeleteDeckMutation,
   useGetDecksQuery,
+  useGetMinMaxCardsQuery,
   useUpdateDeckMutation,
 } from '@/services/decks/decks.service'
 import { Button, FormTextField, Select, TextField } from '@/shared'
@@ -15,6 +16,9 @@ export function DecksPage() {
   const [createDeck] = useCreateDeckMutation()
   const [updateDeck] = useUpdateDeckMutation()
   const [deleteDeck] = useDeleteDeckMutation()
+  const { data: minMaxCardsData, isLoading } = useGetMinMaxCardsQuery()
+
+  console.log(minMaxCardsData, isLoading)
 
   const { control, handleSubmit } = useForm<{ name: string }>({
     defaultValues: {

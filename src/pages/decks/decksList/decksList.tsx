@@ -8,6 +8,7 @@ import { AddNewDeckModal } from '@/entities/decks/addNewDeckModal/addNewDeckModa
 import {
   useDeleteDeckMutation,
   useGetDecksQuery,
+  useGetMinMaxCardsQuery,
   useUpdateDeckMutation,
 } from '@/services/decks/decks.service'
 import { Button, FormTextField, Page, Pagination, Slider, TabSwitcher, Typography } from '@/shared'
@@ -20,13 +21,15 @@ type SelectTab = 'All Cards' | 'My Cards'
 export type SortOrder = 'updated-asc' | 'updated-desc'
 
 export const DecksList = () => {
+  const { data: minMaxCardsData } = useGetMinMaxCardsQuery()
+
   const [selectTab, setSelectTab] = useState<SelectTab>('My Cards')
   const currentUserId = 'f2be95b9-4d07-4751-a775-bd612fc9553a'
   const [searchParams, setSearchParams] = useSearchParams()
   const search = searchParams.get('search') ?? ''
   const [itemsPerPage, setItemsPerPage] = useState(10)
-  const [minCardsCount, setMinCardsCount] = useState(0)
-  const [maxCardsCount, setMaxCardsCount] = useState(10)
+  const [minCardsCount, setMinCardsCount] = useState(minMaxCardsData?.min)
+  const [maxCardsCount, setMaxCardsCount] = useState(minMaxCardsData?.max)
   const [currentPage, setCurrentPage] = useState(1)
   const debounceText = useDebounce<string>(search, 500)
   const [sortOrder, setSortOrder] = useState<SortOrder>('updated-desc')
@@ -106,10 +109,10 @@ export const DecksList = () => {
             />
             <Slider
               label={'Number of cards'}
-              max={10}
-              min={0}
+              max={minMaxCardsData?.max || 10}
+              min={minMaxCardsData?.min || 0}
               onValueChange={sliderHandler}
-              value={[minCardsCount, maxCardsCount]}
+              value={[minCardsCount as number, maxCardsCount as number]}
             />
             <Button onClick={handleClearFilter} type={'button'} variant={'secondary'}>
               <TrashOutline /> Clear filter
