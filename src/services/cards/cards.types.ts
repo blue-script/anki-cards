@@ -39,10 +39,10 @@ export interface GetCardsArgs {
 
 export interface CreateCardArgs {
   answer: string
-  answerImg?: null | string
+  answerImg?: File | null
   answerVideo?: null | string
   id: string
   question: string
-  questionImg?: null | string
+  questionImg?: File | null
   questionVideo?: null | string
 }
