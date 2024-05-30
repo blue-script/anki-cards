@@ -7,27 +7,27 @@ import {
   useCreateDeckMutation,
   useDeleteDeckMutation,
   useGetDecksQuery,
-  useGetMinMaxCardsQuery,
+  useLazyGetDecksQuery,
   useUpdateDeckMutation,
 } from '@/services/decks/decks.service'
-import { Button, FormTextField, Select, TextField } from '@/shared'
+import { Button, FormTextField, Select, TextField, Typography } from '@/shared'
 
 export function DecksPage() {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const search = searchParams.get('search') ?? ''
+  const [itemsPerPage, setItemsPerPage] = useState(10)
+
   const [createDeck] = useCreateDeckMutation()
   const [updateDeck] = useUpdateDeckMutation()
   const [deleteDeck] = useDeleteDeckMutation()
-  const { data: minMaxCardsData, isLoading } = useGetMinMaxCardsQuery()
-
-  console.log(minMaxCardsData, isLoading)
+  const { data: decks, error } = useGetDecksQuery({ itemsPerPage, name: search })
+  const [getDecks, { data: decksData, isLoading: isDecksLoading }] = useLazyGetDecksQuery()
 
   const { control, handleSubmit } = useForm<{ name: string }>({
     defaultValues: {
       name: '',
     },
   })
-
-  const [searchParams, setSearchParams] = useSearchParams()
-  const search = searchParams.get('search') ?? ''
 
   const handleSearchChange = (value: string) => {
     if (value.length) {
@@ -37,10 +37,6 @@ export function DecksPage() {
     }
     setSearchParams(searchParams)
   }
-
-  const [itemsPerPage, setItemsPerPage] = useState(10)
-
-  const { data: decks, error } = useGetDecksQuery({ itemsPerPage, name: search })
 
   const handleItemsPerPage = (numOfItems: string) => {
     setItemsPerPage(+numOfItems)
@@ -64,6 +60,25 @@ export function DecksPage() {
         width: '1024px',
       }}
     >
+      <div>
+        <Typography option={'h1'}>
+          Get decks is loading : {JSON.stringify(isDecksLoading)}
+        </Typography>
+        <Button onClick={() => getDecks()}>Get decks</Button>
+        <DecksTable
+          decks={decksData?.items}
+          onDeleteClick={() => {
+            console.log('del')
+          }}
+          onEditClick={() => {
+            console.log('edit')
+          }}
+          onIconClick={() => {
+            console.log('learn')
+          }}
+        />
+      </div>
+
       <TextField label={'Search'} onValueChange={handleSearchChange} />
       <Select
         onValueChange={numOfItems => handleItemsPerPage(numOfItems)}

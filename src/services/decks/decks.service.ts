@@ -83,6 +83,7 @@ export const {
   useGetDeckByIdQuery,
   useGetDecksQuery,
   useGetMinMaxCardsQuery,
+  useLazyGetDecksQuery,
   useLearnRandomCardQuery,
   useUpdateDeckMutation,
   useUpdateRandomCardMutation,

@@ -73,7 +73,14 @@ export const Decks19 = () => {
           </Button>
         </div>
         <div className={s.table}>
-          <DecksTable decks={decks} onDeleteClick={id => id} onEditClick={id => id} />
+          <DecksTable
+            decks={decks}
+            onDeleteClick={id => id}
+            onEditClick={id => id}
+            onIconClick={() => {
+              console.log('learn')
+            }}
+          />
         </div>
         <Pagination
           currentPage={pagination.currentPage}

@@ -21,7 +21,7 @@ type DecksTableProps = {
   decks: Deck[] | undefined
   onDeleteClick: (id: string) => void
   onEditClick: (id: string) => void
-  onIconClick: () => void
+  onIconClick?: () => void
 }
 
 export const DecksTable = ({
@@ -50,7 +50,9 @@ export const DecksTable = ({
 
   const handleSortClick = useCallback(() => {
     setIsAsc(prevIsAsc => !prevIsAsc)
-    onIconClick()
+    if (onIconClick) {
+      onIconClick()
+    }
   }, [onIconClick])
 
   return (

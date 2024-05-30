@@ -4,10 +4,10 @@ export const flashcardsApi = createApi({
   baseQuery: retry(
     fetchBaseQuery({
       baseUrl: 'https://api.flashcards.andrii.es',
-      credentials: 'include',
-      prepareHeaders: headers => {
-        headers.append('x-auth-skip', 'true')
-      },
+      // credentials: 'include',
+      // prepareHeaders: headers => {
+      //   headers.append('x-auth-skip', 'true')
+      // },
     })
     // { maxRetries: 3 }
   ),
@@ -16,5 +16,5 @@ export const flashcardsApi = createApi({
   reducerPath: 'flashcardsApi',
   // refetchOnFocus: true,
   // refetchOnReconnect: true,
-  tagTypes: ['Decks', 'Cards'],
+  tagTypes: ['Decks', 'Cards', 'Me'],
 })

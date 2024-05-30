@@ -21,7 +21,7 @@ type SelectTab = 'All Cards' | 'My Cards'
 export type SortOrder = 'updated-asc' | 'updated-desc'
 
 export const DecksList = () => {
-  const { data: minMaxCardsData } = useGetMinMaxCardsQuery()
+  const { data: minMaxCardsData, isLoading: isLoadingMinMaxCardsData } = useGetMinMaxCardsQuery()
 
   const [selectTab, setSelectTab] = useState<SelectTab>('My Cards')
   const currentUserId = 'f2be95b9-4d07-4751-a775-bd612fc9553a'
@@ -35,15 +35,18 @@ export const DecksList = () => {
   const [sortOrder, setSortOrder] = useState<SortOrder>('updated-desc')
   const [open, setOpen] = useState<boolean>(false)
 
-  const { data: decks } = useGetDecksQuery({
-    currentPage,
-    itemsPerPage,
-    name: debounceText,
-    ...(selectTab === 'My Cards' && { authorId: currentUserId }),
-    maxCardsCount,
-    minCardsCount,
-    orderBy: sortOrder,
-  })
+  const { data: decks } = useGetDecksQuery(
+    {
+      currentPage,
+      itemsPerPage,
+      name: debounceText,
+      ...(selectTab === 'My Cards' && { authorId: currentUserId }),
+      maxCardsCount,
+      minCardsCount,
+      orderBy: sortOrder,
+    },
+    { skip: isLoadingMinMaxCardsData }
+  )
 
   const [updateDeck] = useUpdateDeckMutation()
   const [deleteDeck] = useDeleteDeckMutation()
