@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 
@@ -12,77 +11,86 @@ import s from './decks19.module.scss'
 import SvgTrashOutline from './../../assets/icons/TrashOutline'
 
 const tabsSwitcher = [
-  { disabled: false, text: 'My Cards', value: 'My Cards' },
-  { disabled: false, text: 'All Cards', value: 'All Cards' },
+  { disabled: false, text: 'My Cards', value: 'my' },
+  { disabled: false, text: 'All Cards', value: 'all' },
 ]
 
-export const Decks19 = () => {
+const useURLSearchParams = () => {
   const [searchParams, setSearchParams] = useSearchParams()
-  const search = searchParams.get('name') ?? ''
-  const [tabSwitcherValue, setTabSwitcherValue] = useState('All Cards')
-  const [itemsPerPage, setItemsPerPage] = useState(10)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [minCardsCount, setMinCardsCount] = useState(0)
-  const [maxCardsCount, setMaxCardsCount] = useState(25)
-  const [orderBy, setOrderBy] = useState('updated-asc')
-  const [currentUserId, setCurrentUserId] = useState('')
+
+  const setParam = (key: string, value: string) => {
+    if (value) {
+      searchParams.set(key, value)
+    } else {
+      searchParams.delete(key)
+    }
+    setSearchParams(searchParams)
+  }
+
+  const getParam = (key: string, defaultValue: string = '') => {
+    return searchParams.get(key) ?? defaultValue
+  }
+
+  return { getParam, searchParams, setParam, setSearchParams }
+}
+
+export const Decks19 = () => {
+  const { getParam, searchParams, setParam, setSearchParams } = useURLSearchParams()
+  const search = getParam('name')
+  const itemsPerPage = getParam('itemsPerPage', '10')
+  const currentPage = getParam('currentPage', '1')
+  const minCardsCount = getParam('minCardsCount', '0')
+  const maxCardsCount = getParam('maxCardsCount', '25')
+  const orderBy = getParam('orderBy', 'updated-asc')
+  const currentTabSwitcher = getParam('currentTabSwitcher', 'all')
+  const currentUserId = 'f2be95b9-4d07-4751-a775-bd612fc9553a'
+  const authorId = currentTabSwitcher === 'my' ? currentUserId : undefined
   const debouncedSearch = useDebounce(search, 1000)
+
   const { data: decks } = useGetDecksQuery({
-    authorId: currentUserId,
-    currentPage: currentPage,
-    itemsPerPage: itemsPerPage,
-    maxCardsCount: maxCardsCount,
-    minCardsCount: minCardsCount,
+    authorId: authorId,
+    currentPage: +currentPage,
+    itemsPerPage: +itemsPerPage,
+    maxCardsCount: +maxCardsCount,
+    minCardsCount: +minCardsCount,
     name: debouncedSearch,
     orderBy: orderBy,
   })
+
   const { control, reset } = useForm<{ name: string }>({
     defaultValues: { name: '' },
   })
   const handleSearchChange = (searchName: string) => {
-    setCurrentPage(1)
-    if (searchName.length) {
-      searchParams.set('name', searchName)
-    } else {
-      searchParams.delete('name')
-    }
-    setSearchParams(searchParams)
+    setParam('currentPage', '1')
+    setParam('name', searchName)
   }
   const handleItemsPerPage = (page: number) => {
-    setCurrentPage(1)
-    setItemsPerPage(page)
+    setParam('currentPage', '1')
+    setParam('itemsPerPage', String(page))
   }
   const handlePageChange = (page: number) => {
-    setCurrentPage(page)
+    setParam('currentPage', String(page))
   }
   const resetFilters = () => {
     reset()
     searchParams.delete('name')
+    searchParams.delete('currentPage')
+    searchParams.delete('minCardsCount')
+    searchParams.delete('maxCardsCount')
+    searchParams.delete('authorId')
+    searchParams.delete('currentTabSwitcher')
     setSearchParams(searchParams)
-    setCurrentPage(1)
-    setMinCardsCount(0)
-    setMaxCardsCount(25)
-    setTabSwitcherValue('All Cards')
-    setCurrentUserId('')
   }
   const handleTabSwitcherChange = (value: string) => {
-    setCurrentPage(1)
-    setTabSwitcherValue(value)
-    value === 'My Cards'
-      ? setCurrentUserId('f2be95b9-4d07-4751-a775-bd612fc9553a')
-      : setCurrentUserId('')
+    setParam('currentPage', '1')
+    setParam('currentTabSwitcher', value)
   }
-  const handleSliderChange = ([minCardsCount, maxCardsCount]: number[]) => {
-    setMinCardsCount(minCardsCount)
-    setMaxCardsCount(maxCardsCount)
+  const handleSliderChange = ([min, max]: number[]) => {
+    setParam('minCardsCount', String(min))
+    setParam('maxCardsCount', String(max))
   }
   const handleDataSortOrder = () => {
-    if (orderBy === 'updated-desc') {
-      setOrderBy('updated-asc')
-    }
-    if (orderBy === 'updated-asc') {
-      setOrderBy('updated-desc')
-    }
+    setParam('orderBy', orderBy === 'updated-desc' ? 'updated-asc' : 'updated-desc')
   }
 
   return (
@@ -105,14 +113,14 @@ export const Decks19 = () => {
           label={'Show decks cards'}
           onValueChange={handleTabSwitcherChange}
           tabs={tabsSwitcher}
-          value={tabSwitcherValue}
+          value={currentTabSwitcher}
         />
         <Slider
           label={'Number of cards'}
           max={25}
           min={0}
           onValueChange={handleSliderChange}
-          value={[minCardsCount, maxCardsCount]}
+          value={[+minCardsCount, +maxCardsCount]}
         />
         <Button onClick={resetFilters} variant={'secondary'}>
           <SvgTrashOutline />
@@ -121,18 +129,18 @@ export const Decks19 = () => {
       </div>
       <DecksTable
         className={s.table}
-        currentUserId={currentUserId}
+        currentUserId={authorId}
         decks={decks?.items}
         onDeleteClick={id => id}
         onEditClick={id => id}
         onIconClick={handleDataSortOrder}
       />
       <Pagination
-        currentPage={decks?.pagination.currentPage || 1}
+        currentPage={+currentPage}
         onPageChange={handlePageChange}
-        pageSize={decks?.pagination.itemsPerPage || 10}
+        pageSize={+itemsPerPage}
         setPageSize={handleItemsPerPage}
-        totalCount={decks?.pagination.totalItems || 55}
+        totalCount={decks?.pagination.totalItems ?? 1}
       />
     </Page>
   )
