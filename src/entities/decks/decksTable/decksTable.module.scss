@@ -1,5 +1,11 @@
 .button {
   all: unset;
+  cursor: pointer;
+  &:hover {
+    & svg {
+      background-color: var(--color-dark-900);
+    }
+  }
 }
 
 .withIcons {
@@ -7,6 +13,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  gap: 20px;
 
   & > a,
   button {

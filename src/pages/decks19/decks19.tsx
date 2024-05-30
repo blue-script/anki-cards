@@ -1,90 +1,139 @@
-import { Outlet } from 'react-router-dom'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { useSearchParams } from 'react-router-dom'
 
 import { DecksTable } from '@/entities'
-import { Button, Page, Pagination, Slider, TabSwitcher, TextField, Typography } from '@/shared'
+import { useGetDecksQuery } from '@/services/decks/decks.service'
+import { Button, FormTextField, Page, Pagination, Slider, TabSwitcher, Typography } from '@/shared'
+import { useDebounce } from '@/shared/hooks/useDebounce'
 
 import s from './decks19.module.scss'
 
 import SvgTrashOutline from './../../assets/icons/TrashOutline'
 
+const tabsSwitcher = [
+  { disabled: false, text: 'My Cards', value: 'My Cards' },
+  { disabled: false, text: 'All Cards', value: 'All Cards' },
+]
+
 export const Decks19 = () => {
-  const tabs = [
-    { disabled: false, text: 'My Cards', value: 'My Cards' },
-    { disabled: false, text: 'All Cards', value: 'All Cards' },
-  ]
-  const decks = [
-    {
-      author: {
-        id: 'string',
-        name: 'string',
-      },
-      cardsCount: 1,
-      cover: 'string',
-      created: 'string',
-      id: 'string',
-      isPrivate: false,
-      name: 'string',
-      updated: '2023-05-20T12:34:56',
-      userId: 'string',
-    },
-    {
-      author: {
-        id: 'string',
-        name: 'string',
-      },
-      cardsCount: 1,
-      cover: 'string',
-      created: 'string',
-      id: 'string',
-      isPrivate: false,
-      name: 'string',
-      updated: '2023-05-20T12:34:56',
-      userId: 'string',
-    },
-  ]
-  const pagination = {
-    currentPage: 1,
-    pageSize: 1,
-    siblingCount: 1,
-    totalCount: 4,
+  const [searchParams, setSearchParams] = useSearchParams()
+  const search = searchParams.get('name') ?? ''
+  const [tabSwitcherValue, setTabSwitcherValue] = useState('All Cards')
+  const [itemsPerPage, setItemsPerPage] = useState(10)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [minCardsCount, setMinCardsCount] = useState(0)
+  const [maxCardsCount, setMaxCardsCount] = useState(25)
+  const [orderBy, setOrderBy] = useState('updated-asc')
+  const [currentUserId, setCurrentUserId] = useState('')
+  const debouncedSearch = useDebounce(search, 1000)
+  const { data: decks } = useGetDecksQuery({
+    authorId: currentUserId,
+    currentPage: currentPage,
+    itemsPerPage: itemsPerPage,
+    maxCardsCount: maxCardsCount,
+    minCardsCount: minCardsCount,
+    name: debouncedSearch,
+    orderBy: orderBy,
+  })
+  const { control, reset } = useForm<{ name: string }>({
+    defaultValues: { name: '' },
+  })
+  const handleSearchChange = (searchName: string) => {
+    setCurrentPage(1)
+    if (searchName.length) {
+      searchParams.set('name', searchName)
+    } else {
+      searchParams.delete('name')
+    }
+    setSearchParams(searchParams)
+  }
+  const handleItemsPerPage = (page: number) => {
+    setCurrentPage(1)
+    setItemsPerPage(page)
+  }
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+  }
+  const resetFilters = () => {
+    reset()
+    searchParams.delete('name')
+    setSearchParams(searchParams)
+    setCurrentPage(1)
+    setMinCardsCount(0)
+    setMaxCardsCount(25)
+    setTabSwitcherValue('All Cards')
+    setCurrentUserId('')
+  }
+  const handleTabSwitcherChange = (value: string) => {
+    setCurrentPage(1)
+    setTabSwitcherValue(value)
+    value === 'My Cards'
+      ? setCurrentUserId('f2be95b9-4d07-4751-a775-bd612fc9553a')
+      : setCurrentUserId('')
+  }
+  const handleSliderChange = ([minCardsCount, maxCardsCount]: number[]) => {
+    setMinCardsCount(minCardsCount)
+    setMaxCardsCount(maxCardsCount)
+  }
+  const handleDataSortOrder = () => {
+    if (orderBy === 'updated-desc') {
+      setOrderBy('updated-asc')
+    }
+    if (orderBy === 'updated-asc') {
+      setOrderBy('updated-desc')
+    }
   }
 
   return (
-    <>
-      <Page mt={'36px'}>
-        <div className={s.header}>
-          <Typography option={'h1'}>Decks</Typography>
-          <Button className={s.widthButton} variant={'primary'}>
-            Add New Deck
-          </Button>
-        </div>
-        <div className={s.filter}>
-          <TextField variant={'search'} />
-          <TabSwitcher
-            label={'Show decks cards'}
-            onValueChange={value => value}
-            tabs={tabs}
-            value={'All Cards'}
-          />
-          <Slider label={'Number of cards'} />
-          <Button variant={'secondary'}>
-            <SvgTrashOutline />
-            Clear Filter
-          </Button>
-        </div>
-        <div className={s.table}>
-          <DecksTable decks={decks} onDeleteClick={id => id} onEditClick={id => id} />
-        </div>
-        <Pagination
-          currentPage={pagination.currentPage}
-          onPageChange={(value: number) => value}
-          pageSize={pagination.pageSize}
-          setPageSize={(value: number) => value}
-          siblingCount={pagination.siblingCount}
-          totalCount={pagination.totalCount}
+    <Page mt={'36px'}>
+      <div className={s.header}>
+        <Typography option={'h1'}>Decks</Typography>
+        <Button className={s.widthButton} variant={'primary'}>
+          Add New Deck
+        </Button>
+      </div>
+      <div className={s.filter}>
+        <FormTextField
+          control={control}
+          name={'name'}
+          onValueChange={handleSearchChange}
+          placeholder={'Input search'}
+          variant={'search'}
         />
-      </Page>
-      <Outlet />
-    </>
+        <TabSwitcher
+          label={'Show decks cards'}
+          onValueChange={handleTabSwitcherChange}
+          tabs={tabsSwitcher}
+          value={tabSwitcherValue}
+        />
+        <Slider
+          label={'Number of cards'}
+          max={25}
+          min={0}
+          onValueChange={handleSliderChange}
+          value={[minCardsCount, maxCardsCount]}
+        />
+        <Button onClick={resetFilters} variant={'secondary'}>
+          <SvgTrashOutline />
+          Clear Filter
+        </Button>
+      </div>
+      <DecksTable
+        className={s.table}
+        currentUserId={currentUserId}
+        decks={decks?.items}
+        onDeleteClick={id => id}
+        onEditClick={id => id}
+        onIconClick={handleDataSortOrder}
+      />
+      <Pagination
+        currentPage={decks?.pagination.currentPage || 1}
+        onPageChange={handlePageChange}
+        pageSize={decks?.pagination.itemsPerPage || 10}
+        setPageSize={handleItemsPerPage}
+        totalCount={decks?.pagination.totalItems || 55}
+      />
+    </Page>
   )
 }
