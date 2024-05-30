@@ -9,8 +9,8 @@ import s from '@/features/profile/profileAvatar/profileAvatar.module.scss'
 type Props<T extends FieldValues> = {
   children: ReactNode
   setValue: (
-    name: any,
-    value: any,
+    name: string,
+    value: File | null,
     options?: Partial<{ shouldDirty: boolean; shouldValidate: boolean }>
   ) => void
   variantButton?: 'primary' | 'secondary'

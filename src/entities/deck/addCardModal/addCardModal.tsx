@@ -80,7 +80,9 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
           <div>
             Answer:
             <FormTextField control={control} fullWidth label={'Answer'} name={'answer'} />
-            {/*{answerImg && <img alt={'Uploaded'} className={s.img} src={answerImg} />}*/}
+            {answerImg && (
+              <img alt={'Uploaded'} className={s.img} src={URL.createObjectURL(answerImg)} />
+            )}
           </div>
           <ImageUpload
             control={control}
