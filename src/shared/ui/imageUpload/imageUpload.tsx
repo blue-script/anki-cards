@@ -1,50 +1,58 @@
-import { ChangeEvent, ReactNode, useRef } from 'react'
-// import toast from 'react-hot-toast'
-
-// import toast from 'react-hot-toast'
+import { ChangeEvent, ReactNode } from 'react'
+import { FieldValues, UseControllerProps, useController } from 'react-hook-form'
+import toast from 'react-hot-toast'
 
 import { Button } from '@/shared'
 
 import s from '@/features/profile/profileAvatar/profileAvatar.module.scss'
 
-type Props = {
+type Props<T extends FieldValues> = {
   children: ReactNode
-  handleChangeImage: (value: string) => void
+  setValue: (
+    name: any,
+    value: any,
+    options?: Partial<{ shouldDirty: boolean; shouldValidate: boolean }>
+  ) => void
   variantButton?: 'primary' | 'secondary'
-}
+} & UseControllerProps<T>
 
-export const ImageUpload = ({ children, handleChangeImage, variantButton = 'primary' }: Props) => {
-  const inputRef = useRef<HTMLInputElement>(null)
+export const ImageUpload = <T extends FieldValues>({
+  children,
+  control,
+  name,
+  setValue,
+  variantButton = 'primary',
+}: Props<T>) => {
+  const {
+    field: { value, ...fieldWithoutRef },
+    fieldState: { error },
+  } = useController({ control, name })
 
-  const selectFileHandler = () => {
-    inputRef.current?.click()
+  const handleSelectFile = () => {
+    const fileInput = document.getElementById(name) as HTMLInputElement
+
+    if (fileInput) {
+      fileInput.click()
+    }
   }
 
-  const uploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
 
     if (file) {
-      handleChangeImage(URL.createObjectURL(file))
+      if (!file.type.match('image.*')) {
+        toast.error('Please select a valid image file.')
+        setValue(name, null)
+      } else {
+        setValue(name, file)
+      }
+    } else {
+      setValue(name, null)
     }
+  }
 
-    // if (file) {
-    //   if (!file.type.match('image.*')) {
-    //     toast.error('Please select a valid image file.')
-    //
-    //     return
-    //   }
-    //
-    //   const reader = new FileReader()
-    //
-    //   reader.onload = e => {
-    //     const newImage = e.target?.result as string
-    //
-    //     if (newImage) {
-    //       handleChangeImage(newImage)
-    //     }
-    //   }
-    //   reader.readAsDataURL(file)
-    // }
+  if (error?.message) {
+    toast.error(error.message)
   }
 
   return (
@@ -52,7 +60,7 @@ export const ImageUpload = ({ children, handleChangeImage, variantButton = 'prim
       <Button
         className={s.editAvatarButton}
         fullWidth
-        onClick={selectFileHandler}
+        onClick={handleSelectFile}
         type={'reset'}
         variant={variantButton}
       >
@@ -60,10 +68,11 @@ export const ImageUpload = ({ children, handleChangeImage, variantButton = 'prim
       </Button>
       <input
         accept={'image/*'}
-        onChange={uploadHandler}
-        ref={inputRef}
+        id={name}
         style={{ display: 'none' }}
         type={'file'}
+        {...fieldWithoutRef}
+        onChange={handleImageChange}
       />
     </>
   )
