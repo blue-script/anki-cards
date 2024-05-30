@@ -14,7 +14,7 @@ export type SelectProps<T> = {
   label?: string
   onValueChange?: (value: T) => void
   options: T[]
-  placeholder?: string
+  placeholder: number
   required?: boolean
   small?: boolean
   value?: string
@@ -64,7 +64,7 @@ export const Select = <T extends string>({
   label,
   onValueChange,
   options,
-  placeholder = '10',
+  placeholder = 10,
 }: SelectProps<T>) => {
   const [isOpen, setIsOpen] = useState(false)
   const iconColor = disabled ? '#4c4c4c' : '#fff'
@@ -87,7 +87,7 @@ export const Select = <T extends string>({
           className={clsx(s.selectTrigger, { [s.disabled]: disabled })}
           style={{ width: dynamicWidth }}
         >
-          <SelectValue placeholder={`${placeholder}`} />
+          <SelectValue placeholder={placeholder} />
           <SelectIcon asChild className={s.selectIcon}>
             {isOpen ? <ArrowIosUp color={iconColor} /> : <ArrowIosDownOutline color={iconColor} />}
           </SelectIcon>
