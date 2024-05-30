@@ -1,5 +1,5 @@
 import { ChangeEvent, ReactNode } from 'react'
-import { FieldValues, UseControllerProps, useController } from 'react-hook-form'
+import { FieldValues, Path, PathValue, UseControllerProps, useController } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button } from '@/shared'
@@ -9,11 +9,11 @@ import s from '@/features/profile/profileAvatar/profileAvatar.module.scss'
 type Props<T extends FieldValues> = {
   children: ReactNode
   setValue: (
-    name: string,
-    value: File | null,
+    name: Path<T>,
+    value: PathValue<T, Path<T>>,
     options?: Partial<{ shouldDirty: boolean; shouldValidate: boolean }>
   ) => void
-  variantButton?: 'primary' | 'secondary'
+  variantButton: 'primary' | 'secondary'
 } & UseControllerProps<T>
 
 export const ImageUpload = <T extends FieldValues>({
@@ -42,12 +42,12 @@ export const ImageUpload = <T extends FieldValues>({
     if (file) {
       if (!file.type.match('image.*')) {
         toast.error('Please select a valid image file.')
-        setValue(name, null)
+        setValue(name, null as PathValue<T, Path<T>>)
       } else {
-        setValue(name, file)
+        setValue(name, file as PathValue<T, Path<T>>)
       }
     } else {
-      setValue(name, null)
+      setValue(name, null as PathValue<T, Path<T>>)
     }
   }
 

@@ -14,11 +14,13 @@ import s from './addCardModal.module.scss'
 
 const addCardSchema = z.object({
   answer: z.string(),
-  answerImg: z.instanceof(File).optional(),
+  answerImg: z.instanceof(File).nullable().optional(),
   id: z.string(),
   question: z.string(),
-  questionImg: z.instanceof(File).optional(),
+  questionImg: z.instanceof(File).nullable().optional(),
 })
+
+type CreateCardSchema = z.infer<typeof addCardSchema>
 
 type Props = {
   onOpenChange: () => void
@@ -29,7 +31,7 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
   const { deckId } = useParams<{ deckId: string }>()
   const [createCard] = useCreateCardMutation()
 
-  const { control, handleSubmit, reset, setValue, watch } = useForm<CreateCardArgs>({
+  const { control, handleSubmit, reset, setValue, watch } = useForm<CreateCardSchema>({
     defaultValues: { answer: '', answerImg: null, id: deckId, question: '', questionImg: null },
     resolver: zodResolver(addCardSchema),
   })
@@ -42,8 +44,12 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
 
     formData.append('answer', data.answer)
     formData.append('question', data.question)
-    formData.append('questionImg', data.questionImg || '')
-    formData.append('answerImg', data.answerImg || '')
+    if (data.questionImg) {
+      formData.append('questionImg', data.questionImg)
+    }
+    if (data.answerImg) {
+      formData.append('answerImg', data.answerImg)
+    }
 
     createCard({ data: formData, id: deckId })
       .unwrap()
