@@ -57,7 +57,7 @@ export const DecksTable = ({
     <Table.TRoot className={className}>
       <Table.THead>
         <Table.TRow style={{ borderBottom: 'none' }}>
-          <Table.Th>Name</Table.Th>
+          <Table.Th style={{ width: '30%' }}>Name</Table.Th>
           <Table.Th>Cards</Table.Th>
           <Table.Th>
             <div className={s.orderWrapper}>
