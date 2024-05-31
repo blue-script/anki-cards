@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom'
+
 import { Edit2, MoreVerticalOutline, PlayCircleOutline, Trash } from '@/assets/icons'
 import { useDeleteDeckMutation } from '@/services/decks/decks.service'
 import { Dropdown, Typography } from '@/shared'
@@ -5,9 +7,15 @@ import { Dropdown, Typography } from '@/shared'
 type Props = { deckId: string }
 
 export const DropDownDeck = ({ deckId }: Props) => {
+  const navigate = useNavigate()
+
   const [deleteDeck] = useDeleteDeckMutation()
 
   const onDeleteDeck = () => deleteDeck({ id: deckId })
+
+  const onLearnDeck = () => {
+    navigate('learn')
+  }
 
   return (
     <Dropdown.Root modal={false}>
@@ -15,7 +23,7 @@ export const DropDownDeck = ({ deckId }: Props) => {
         <MoreVerticalOutline />
       </Dropdown.Trigger>
       <Dropdown.Content align={'end'}>
-        <Dropdown.Item>
+        <Dropdown.Item onClick={onLearnDeck}>
           <PlayCircleOutline />
           <Typography as={'span'} option={'caption'}>
             Learn
