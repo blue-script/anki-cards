@@ -60,16 +60,21 @@ export const DeckPage = () => {
     setOpen(!open)
   }
 
-  if (!deckId || error || deckError) {
-    return <div>{`Error: ${error || deckError}`}</div>
+  if (!deckId || !deckData || error || deckError) {
+    return <div>{`Error: ${error || deckError || 'not found deckId'}`}</div>
   }
 
-  const isOwner = true //deckData?.userId === deckData?.userId //some logic
+  const isOwner = deckData.userId === deckData.userId //some logic
   const cardsLength = cards?.length ?? 0
 
   return (
     <Page className={s.page} mt={'24px'}>
-      <DeckHeader cardsLength={cardsLength} deckId={deckId} isOwner={isOwner} />
+      <DeckHeader
+        cardsLength={cardsLength}
+        deckId={deckId}
+        deckName={deckData.name}
+        isOwner={isOwner}
+      />
 
       {cardsLength ? (
         <>
