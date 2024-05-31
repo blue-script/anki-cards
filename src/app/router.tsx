@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import {
   Navigate,
   Outlet,
@@ -7,22 +6,18 @@ import {
   createBrowserRouter,
 } from 'react-router-dom'
 
-import { LoginForm } from '@/features/auth/loginForm/loginForm'
 import { DeckPage } from '@/pages/deck/deckPage'
 import { DecksList } from '@/pages/decks/decksList/decksList'
 import { DecksPage } from '@/pages/decks/decksPage'
 import { Decks19 } from '@/pages/decks19/decks19'
 import { Learn } from '@/pages/learn/learn'
-import { useMeQuery } from '@/services/auth/auth.service'
+import { SignInPage } from '@/pages/signInPage'
 import { Layout } from '@/shared'
-
-const handleSubmit = (data: any) => {
-  console.log(data)
-}
+import { useAuthContext } from '@/shared/ui/layout/layout'
 
 const publicRoutes: RouteObject[] = [
   {
-    element: <LoginForm onSubmit={handleSubmit} />,
+    element: <SignInPage />,
     path: '/login',
   },
   {
@@ -59,11 +54,7 @@ const privateRoutes: RouteObject[] = [
 ]
 
 const PrivateRoutes = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-
-  const { data: authMeData, isLoading: isLoadingMe } = useMeQuery()
-
-  console.log(authMeData)
+  const { isAuthenticated } = useAuthContext()
 
   return isAuthenticated ? <Outlet /> : <Navigate to={'/login'} />
 }

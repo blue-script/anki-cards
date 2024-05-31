@@ -1,9 +1,20 @@
 export type User = {
-  avatar: string
-  id: string
+  avatar: null | string
+  created: string
   email: string
+  id: string
   isEmailVerified: boolean
   name: string
-  created: string
   updated: string
+}
+
+export type LoginArgs = {
+  email: string
+  password: string
+  rememberMe?: boolean
+}
+
+export type LoginResponse = {
+  accessToken: string
+  refreshToken: string
 }

@@ -4,10 +4,15 @@ export const flashcardsApi = createApi({
   baseQuery: retry(
     fetchBaseQuery({
       baseUrl: 'https://api.flashcards.andrii.es',
-      // credentials: 'include',
-      // prepareHeaders: headers => {
-      //   headers.append('x-auth-skip', 'true')
-      // },
+      //credentials: 'include',
+      prepareHeaders: headers => {
+        //headers.append('x-auth-skip', 'true')
+        const token = localStorage.getItem('accessToken')
+
+        if (token) {
+          headers.set('Authorization', `Bearer ${token}`)
+        }
+      },
     })
     // { maxRetries: 3 }
   ),

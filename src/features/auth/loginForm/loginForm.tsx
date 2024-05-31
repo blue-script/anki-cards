@@ -1,13 +1,11 @@
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
 
-import { Button, FormTextField, Typography } from '@/shared'
+import { Button, FormTextField } from '@/shared'
 import { FormCheckbox } from '@/shared/ui/form/formCheckbox'
+import { FormSelect } from '@/shared/ui/form/formSelect'
 import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-
-import s from './loginForm.module.scss'
 
 const loginSchema = z.object({
   TOS: z.boolean().optional(),
@@ -51,38 +49,18 @@ export const LoginForm = ({ onSubmit }: Props) => {
     <>
       {import.meta.env.DEV && <DevTool control={control} />}
 
-      <form className={s.form} onSubmit={handleSubmit(handleOnSubmit)}>
-        <Typography className={s.headingText} option={'h1'}>
-          Sign In
-        </Typography>
-        <div className={s.emailWrapper}>
-          <FormTextField control={control} fullWidth label={'Email'} name={'email'} />
-        </div>
-        <div className={s.passwordWrapper}>
-          <FormTextField
-            control={control}
-            fullWidth
-            label={'Password'}
-            name={'password'}
-            variant={'password'}
-          />
-        </div>
-        <FormCheckbox
-          className={s.checkBox}
+      <form onSubmit={handleSubmit(handleOnSubmit)} style={{ padding: '7px 15px' }}>
+        <FormTextField control={control} label={'email'} name={'email'} />
+        <FormTextField control={control} label={'password'} name={'password'} />
+        <FormCheckbox control={control} label={'Remember me'} name={'rememberMe'} />
+        <FormCheckbox control={control} label={'Accept terms of service'} name={'TOS'} />
+
+        <FormSelect
           control={control}
-          label={'Remember me'}
-          name={'rememberMe'}
+          name={'selectedValue'}
+          options={['first', 'second', 'third']}
         />
-        <Typography as={Link} className={s.forgotText} option={'body2'} to={'/forgotPassword'}>
-          Forgot Password ?
-        </Typography>
-        <Button className={s.buttonWrapper} fullWidth type={'submit'}>
-          Sign In
-        </Button>
-        <Typography className={s.dontText} option={'body2'}>{`Don't have an account?`}</Typography>
-        <Typography as={Link} className={s.signUpText} option={'h2'} to={'/signUp'}>
-          Sign Up
-        </Typography>
+        <Button type={'submit'}>Submit</Button>
       </form>
     </>
   )
