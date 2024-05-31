@@ -29,8 +29,21 @@ export const cardsService = flashcardsApi.injectEndpoints({
           url: `v1/decks/${id}/cards`,
         }),
       }),
+      updateCard: build.mutation<Card, any>({
+        invalidatesTags: ['Cards'],
+        query: ({ data, id }) => ({
+          body: data,
+          method: 'PATCH',
+          url: `v1/cards/${id}`,
+        }),
+      }),
     }
   },
 })
 
-export const { useCreateCardMutation, useDeleteCardMutation, useGetCardsQuery } = cardsService
+export const {
+  useCreateCardMutation,
+  useDeleteCardMutation,
+  useGetCardsQuery,
+  useUpdateCardMutation,
+} = cardsService

@@ -14,15 +14,15 @@ export type GradeType = 0 | 1 | 2 | 3 | 4 | 5
 
 export interface Card {
   answer: string
-  answerImg: string
-  answerVideo: string
+  answerImg: null | string
+  answerVideo: null | string
   created: string
   deckId: string
   grade: GradeType
   id: string
   question: string
-  questionImg: string
-  questionVideo: string
+  questionImg: null | string
+  questionVideo: null | string
   shots: number
   updated: string
   userId: string
@@ -37,12 +37,12 @@ export interface GetCardsArgs {
   question?: string
 }
 
-export interface CreateCardArgs {
+export interface CardArgs {
   answer: string
-  answerImg?: File | null
+  answerImg?: File | null | string
   answerVideo?: null | string
   id: string
   question: string
-  questionImg?: File | null
+  questionImg?: File | null | string
   questionVideo?: null | string
 }

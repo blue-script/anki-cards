@@ -2,7 +2,7 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 import { Edit2Outline, TrashOutline } from '@/assets/icons'
-import { CardTextOrImage } from '@/entities'
+import { CardTextOrImage, EditCardModal } from '@/entities'
 import { DeleteCardModal } from '@/entities/deck/deleteCardModal/deleteCardModal'
 import { useDeleteCardMutation } from '@/services/cards/cards.service'
 import { Card } from '@/services/cards/cards.types'
@@ -13,7 +13,6 @@ import s from './cardRow.module.scss'
 
 type Props = {
   isOwner: boolean
-  onEditClick: (id: string) => void
 } & Card
 
 export const CardRow = ({
@@ -22,21 +21,26 @@ export const CardRow = ({
   grade,
   id,
   isOwner,
-  onEditClick,
   question,
   questionImg,
   updated,
 }: Props) => {
-  const handleEditClick = (id: string) => onEditClick(id)
-
   const [deleteCard] = useDeleteCardMutation()
 
   const onDeleteCard = () => {
-    deleteCard({ id }).then(() => toast.success(`Delete card`))
+    deleteCard({ id })
+      .unwrap()
+      .then(() => toast.success(`Delete card`))
+      .catch(err => toast.error('Failed to delete deck:', err))
   }
   const [deleteModal, setDeleteModal] = useState<boolean>(false)
   const handleOpenChange = () => {
     setDeleteModal(prev => !prev)
+  }
+
+  const [editModal, setEditModal] = useState(false)
+  const handleEditOpenChange = () => {
+    setEditModal(prev => !prev)
   }
 
   return (
@@ -54,9 +58,19 @@ export const CardRow = ({
       <Table.Td className={s.nowrap}>
         {isOwner && (
           <div className={s.buttons}>
-            <Button className={s.button} onClick={() => handleEditClick(id)} variant={'secondary'}>
+            <Button className={s.button} onClick={handleEditOpenChange} variant={'secondary'}>
               <Edit2Outline />
             </Button>
+            <EditCardModal
+              answer={answer}
+              answerImg={answerImg}
+              cardId={id}
+              onOpenChange={handleEditOpenChange}
+              open={editModal}
+              question={question}
+              questionImg={questionImg}
+            />
+
             <Button className={s.button} onClick={handleOpenChange} variant={'secondary'}>
               <TrashOutline />
             </Button>

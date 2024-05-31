@@ -1,3 +1,5 @@
 export * from './addCardModal'
 export * from './cardsTable'
 export * from './deckHeader'
+export * from './deleteCardModal'
+export * from './editCardModal'
