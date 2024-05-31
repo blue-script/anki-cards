@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 
 import { Edit2, MoreVerticalOutline, PlayCircleOutline, Trash } from '@/assets/icons'
@@ -11,7 +12,15 @@ export const DropDownDeck = ({ deckId }: Props) => {
 
   const [deleteDeck] = useDeleteDeckMutation()
 
-  const onDeleteDeck = () => deleteDeck({ id: deckId })
+  const onDeleteDeck = () => {
+    deleteDeck({ id: deckId })
+      .unwrap()
+      .then(() => {
+        navigate('/decks')
+        toast.success('Deck deleted successfully.')
+      })
+      .catch(err => toast.error('Failed to delete deck:', err))
+  }
 
   const onLearnDeck = () => {
     navigate('learn')
