@@ -66,7 +66,7 @@ export const EditCardModal = ({
       formData.append('answerImg', data.answerImg)
     }
 
-    updateCard({ data: formData, id: cardId })
+    updateCard({ cardId, data: formData })
       .unwrap()
       .then(() => {
         reset()

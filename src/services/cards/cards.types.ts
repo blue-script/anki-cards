@@ -46,3 +46,13 @@ export interface CardArgs {
   questionImg?: File | null | string
   questionVideo?: null | string
 }
+
+export type UpdateCardArgs = {
+  cardId: string
+  data: FormData
+}
+
+export type CreateCardArgs = {
+  data: FormData
+  deckId: string
+}

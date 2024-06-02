@@ -39,6 +39,10 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
   const questionImgWatch = watch('questionImg')
   const answerImgWatch = watch('answerImg')
 
+  if (!deckId) {
+    return <div>Error</div>
+  }
+
   const submitHandler = handleSubmit((data: CardArgs) => {
     const formData = new FormData()
 
@@ -51,7 +55,7 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
       formData.append('answerImg', data.answerImg)
     }
 
-    createCard({ data: formData, id: deckId })
+    createCard({ data: formData, deckId })
       .unwrap()
       .then(() => {
         reset()
