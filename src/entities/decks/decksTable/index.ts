@@ -1,0 +1,1 @@
+export { DecksTable } from './decksTable'
