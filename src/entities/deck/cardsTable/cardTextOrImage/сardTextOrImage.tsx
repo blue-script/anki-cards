@@ -3,7 +3,7 @@ import { Typography } from '@/shared'
 import s from './сardTextOrImage.module.scss'
 
 type Props = {
-  img?: string
+  img?: null | string
   text: string
 }
 

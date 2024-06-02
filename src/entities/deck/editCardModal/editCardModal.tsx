@@ -3,65 +3,76 @@ import toast from 'react-hot-toast'
 import { useParams } from 'react-router-dom'
 
 import { Layer2 } from '@/assets/icons'
-import { useCreateCardMutation } from '@/services/cards/cards.service'
+import { useUpdateCardMutation } from '@/services/cards/cards.service'
 import { CardArgs } from '@/services/cards/cards.types'
 import { FormTextField, ImageUpload, Modal, Typography } from '@/shared'
 import { CountButton } from '@/shared/ui/modal/footer/footer'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
-import s from './addCardModal.module.scss'
+import s from './editCardModal.module.scss'
 
-const addCardSchema = z.object({
+const editCardSchema = z.object({
   answer: z.string(),
-  answerImg: z.instanceof(File).nullable().optional(),
+  answerImg: z
+    .union([z.instanceof(File), z.string()])
+    .nullable()
+    .optional(),
   id: z.string(),
   question: z.string(),
-  questionImg: z.instanceof(File).nullable().optional(),
+  questionImg: z
+    .union([z.instanceof(File), z.string()])
+    .nullable()
+    .optional(),
 })
 
-type CreateCardSchema = z.infer<typeof addCardSchema>
+type EditCardSchema = z.infer<typeof editCardSchema>
 
 type Props = {
+  cardId: string
   onOpenChange: () => void
   open: boolean
-}
+} & Partial<CardArgs>
 
-export const AddCardModal = ({ onOpenChange, open }: Props) => {
+export const EditCardModal = ({
+  answer,
+  answerImg,
+  cardId,
+  onOpenChange,
+  open,
+  question,
+  questionImg,
+}: Props) => {
   const { deckId } = useParams<{ deckId: string }>()
-  const [createCard] = useCreateCardMutation()
+  const [updateCard] = useUpdateCardMutation()
 
-  const { control, handleSubmit, reset, setValue, watch } = useForm<CreateCardSchema>({
-    defaultValues: { answer: '', answerImg: null, id: deckId, question: '', questionImg: null },
-    resolver: zodResolver(addCardSchema),
+  const { control, handleSubmit, reset, setValue, watch } = useForm<EditCardSchema>({
+    defaultValues: { answer, answerImg: answerImg, id: deckId, question, questionImg: questionImg },
+    resolver: zodResolver(editCardSchema),
   })
 
   const questionImgWatch = watch('questionImg')
   const answerImgWatch = watch('answerImg')
-
-  if (!deckId) {
-    return <div>Error</div>
-  }
 
   const submitHandler = handleSubmit((data: CardArgs) => {
     const formData = new FormData()
 
     formData.append('answer', data.answer)
     formData.append('question', data.question)
-    if (data.questionImg) {
+    if (data.questionImg instanceof File) {
       formData.append('questionImg', data.questionImg)
     }
-    if (data.answerImg) {
+    if (data.answerImg instanceof File) {
       formData.append('answerImg', data.answerImg)
     }
 
-    createCard({ data: formData, deckId })
+    updateCard({ cardId, data: formData })
       .unwrap()
       .then(() => {
         reset()
-        toast.success('Card added successfully!')
+        toast.success('Card edit successfully!')
       })
-      .catch(() => toast.error('Failed to add card'))
+      .catch(() => toast.error('Failed to edit card'))
       .finally(() => onOpenChange())
   })
 
@@ -73,7 +84,15 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
             Question:
             <FormTextField control={control} fullWidth label={'Question?'} name={'question'} />
             {questionImgWatch && (
-              <img alt={'Uploaded'} className={s.img} src={URL.createObjectURL(questionImgWatch)} />
+              <img
+                alt={'Uploaded'}
+                className={s.img}
+                src={
+                  typeof questionImgWatch === 'string'
+                    ? questionImgWatch
+                    : URL.createObjectURL(questionImgWatch)
+                }
+              />
             )}
           </div>
           <ImageUpload
@@ -91,7 +110,15 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
             Answer:
             <FormTextField control={control} fullWidth label={'Answer'} name={'answer'} />
             {answerImgWatch && (
-              <img alt={'Uploaded'} className={s.img} src={URL.createObjectURL(answerImgWatch)} />
+              <img
+                alt={'Uploaded'}
+                className={s.img}
+                src={
+                  typeof answerImgWatch === 'string'
+                    ? answerImgWatch
+                    : URL.createObjectURL(answerImgWatch)
+                }
+              />
             )}
           </div>
           <ImageUpload
@@ -108,7 +135,7 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
         </div>
         <Modal.Footer
           countButton={CountButton.Two}
-          firstButtonName={'Add New Card'}
+          firstButtonName={'Edit Card'}
           firstButtonType={'submit'}
           secondButtonHandler={onOpenChange}
           secondButtonName={'Cancel'}

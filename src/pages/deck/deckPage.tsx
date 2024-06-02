@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 
 import { AddCardModal, CardsTable, DeckHeader } from '@/entities'
@@ -56,9 +56,9 @@ export const DeckPage = () => {
 
   const [open, setOpen] = useState(false)
 
-  const onOpenChange = () => {
-    setOpen(!open)
-  }
+  const onOpenChange = useCallback(() => {
+    setOpen(open => !open)
+  }, [])
 
   if (!deckId || !deckData || error || deckError) {
     return <div>{`Error: ${error || deckError || 'not found deckId'}`}</div>
@@ -87,7 +87,7 @@ export const DeckPage = () => {
             variant={'search'}
           />
 
-          <CardsTable cards={cards} isOwner={isOwner} onEditClick={() => {}} />
+          <CardsTable cards={cards} isOwner={isOwner} />
         </>
       ) : (
         <>
