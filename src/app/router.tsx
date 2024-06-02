@@ -4,7 +4,6 @@ import {
   RouteObject,
   RouterProvider,
   createBrowserRouter,
-  useOutletContext,
 } from 'react-router-dom'
 
 import { DeckPage } from '@/pages/deck/deckPage'
@@ -28,7 +27,6 @@ const publicRoutes: RouteObject[] = [
         path: '/logout',
       },
     ],
-    element: <Outlet />,
   },
 ]
 
@@ -61,10 +59,10 @@ const privateRoutes: RouteObject[] = [
 
 const PrivateRoutes = () => {
   const { isAuthenticated } = useAuthContext()
-  const context = useOutletContext()
+  // const { data } = useMeQuery()
+  // const isAuthenticated = !!data
 
-  console.log(context)
-  console.log('in router', isAuthenticated)
+  console.log('PrivateRoutes isAuthenticated:', isAuthenticated)
 
   return isAuthenticated ? <Outlet /> : <Navigate to={'/login'} />
 }
@@ -79,6 +77,7 @@ export const router = createBrowserRouter([
       ...publicRoutes,
     ],
     element: <Layout />,
+    path: '/',
   },
 ])
 
