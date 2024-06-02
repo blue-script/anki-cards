@@ -11,28 +11,31 @@ import clsx from 'clsx'
 import s from './layout.module.scss'
 
 type Props = ComponentPropsWithoutRef<'div'>
-
 type AuthContext = {
   isAuthenticated: boolean
 }
 
-export const useAuthContext = () => {
+export function useAuthContext() {
   return useOutletContext<AuthContext>()
 }
 
 export const Layout = forwardRef<ElementRef<'div'>, Props>(({ className, ...rest }, ref) => {
   const classes = clsx(s.layout, className)
   const isLoading = useSelector(selectIsLoading)
-  const { data: meData, isError: isMeError, isLoading: isMeLoading } = useMeQuery()
-  const isAuthenticated = !isMeError && !isMeLoading
+
+  const { data: meData, isError: isErrorLoading, isLoading: isMeLoading } = useMeQuery()
+  const isAuthenticated = !isErrorLoading && !isMeLoading
+
+  console.log(meData)
+  console.log(isAuthenticated)
 
   return (
     <div className={classes} ref={ref} {...rest}>
       <Header data={meData} />
       <LinearProgress isLoading={isLoading} />
-      <main className={s.main}>
-        <Outlet context={{ isAuthenticated } satisfies AuthContext} />
-      </main>
+      {/*<main className={s.main}>*/}
+      <Outlet context={{ isAuthenticated } satisfies AuthContext} />
+      {/*</main>*/}
     </div>
   )
 })

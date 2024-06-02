@@ -13,12 +13,10 @@ type HeaderProps = {
 } & ComponentPropsWithoutRef<'header'>
 
 export const Header = ({ data }: HeaderProps) => {
-  console.log(data)
-
   return (
     <header className={s.header}>
       <img alt={'logo'} className={s.logo} src={logo} />
-      {data?.id === undefined ?? <Button variant={'secondary'}>Sign in</Button>}
+      {data === undefined && <Button variant={'primary'}>Sign in</Button>}
       {data?.id && (
         <Profile
           avatar={data?.avatar as string}

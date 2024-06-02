@@ -4,7 +4,7 @@ import { flashcardsApi } from '@/services/flashcardsApi'
 export const authService = flashcardsApi.injectEndpoints({
   endpoints: builder => ({
     login: builder.mutation<LoginResponse, LoginArgs>({
-      invalidatesTags: ['Me'],
+      //invalidatesTags: ['Me'],
       //async onQueryStarted(arg: LoginArgs, { queryFulfilled }) {
       async onQueryStarted(_, { queryFulfilled }) {
         const { data } = await queryFulfilled
@@ -13,8 +13,8 @@ export const authService = flashcardsApi.injectEndpoints({
           return
         }
 
-        localStorage.setItem('accessToken', data.accessToken)
-        localStorage.setItem('refreshToken', data.refreshToken)
+        localStorage.setItem('accessToken', data.accessToken.trim())
+        localStorage.setItem('refreshToken', data.refreshToken.trim())
       },
       query: body => ({
         body,

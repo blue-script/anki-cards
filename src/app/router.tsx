@@ -4,6 +4,7 @@ import {
   RouteObject,
   RouterProvider,
   createBrowserRouter,
+  useOutletContext,
 } from 'react-router-dom'
 
 import { DeckPage } from '@/pages/deck/deckPage'
@@ -17,12 +18,17 @@ import { useAuthContext } from '@/shared/ui/layout/layout'
 
 const publicRoutes: RouteObject[] = [
   {
-    element: <SignInPage />,
-    path: '/login',
-  },
-  {
-    element: <div>inside publicRoutes / logout</div>,
-    path: '/logout',
+    children: [
+      {
+        element: <SignInPage />,
+        path: '/login',
+      },
+      {
+        element: <div>inside publicRoutes / logout</div>,
+        path: '/logout',
+      },
+    ],
+    element: <Outlet />,
   },
 ]
 
@@ -55,25 +61,24 @@ const privateRoutes: RouteObject[] = [
 
 const PrivateRoutes = () => {
   const { isAuthenticated } = useAuthContext()
+  const context = useOutletContext()
+
+  console.log(context)
+  console.log('in router', isAuthenticated)
 
   return isAuthenticated ? <Outlet /> : <Navigate to={'/login'} />
 }
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     children: [
       {
         children: privateRoutes,
         element: <PrivateRoutes />,
       },
-      {
-        element: <h1>404</h1>,
-        path: '*',
-      },
       ...publicRoutes,
     ],
     element: <Layout />,
-    path: '/',
   },
 ])
 

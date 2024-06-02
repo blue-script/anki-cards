@@ -1,25 +1,28 @@
-import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react'
+import { baseQueryWithReauth } from '@/services/flashCardsBaseQuery'
+import { createApi } from '@reduxjs/toolkit/query/react'
 
 export const flashcardsApi = createApi({
-  baseQuery: retry(
-    fetchBaseQuery({
-      baseUrl: 'https://api.flashcards.andrii.es',
-      //credentials: 'include',
-      prepareHeaders: headers => {
-        //headers.append('x-auth-skip', 'true')
-        const token = localStorage.getItem('accessToken')
-
-        if (token) {
-          headers.set('Authorization', `Bearer ${token}`)
-        }
-      },
-    })
-    // { maxRetries: 3 }
-  ),
+  baseQuery: baseQueryWithReauth,
+  // baseQuery: fetchBaseQuery({
+  //   baseUrl: 'https://api.flashcards.andrii.es',
+  //   prepareHeaders: headers => {
+  //     const token = localStorage.getItem('accessToken')
+  //
+  //     if (headers.get('Authorization')) {
+  //       return headers
+  //     }
+  //
+  //     if (token) {
+  //       headers.set('Authorization', `Bearer ${token}`)
+  //     }
+  //   },
+  //   // credentials: 'include',
+  //   // prepareHeaders: headers => {
+  //   //   headers.append('x-auth-skip', 'true')
+  //   // },
+  // }),
   endpoints: () => ({}),
   keepUnusedDataFor: 1,
   reducerPath: 'flashcardsApi',
-  // refetchOnFocus: true,
-  // refetchOnReconnect: true,
   tagTypes: ['Decks', 'Cards', 'Me'],
 })
