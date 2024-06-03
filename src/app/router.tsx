@@ -6,6 +6,7 @@ import {
   createBrowserRouter,
 } from 'react-router-dom'
 
+import { LoginForm } from '@/features/auth/loginForm/loginForm'
 import { DeckPage } from '@/pages/deck/deckPage'
 import { DecksList } from '@/pages/decks/decksList/decksList'
 import { DecksPage } from '@/pages/decks/decksPage'
@@ -15,7 +16,7 @@ import { Layout } from '@/shared'
 
 const publicRoutes: RouteObject[] = [
   {
-    element: <div>inside publicRoutes / login</div>,
+    element: <LoginForm />,
     path: '/login',
   },
   {
