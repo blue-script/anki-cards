@@ -7,10 +7,13 @@ type Props = {
   text: string
 }
 
-export const CardTextOrImage = ({ img, text }: Props) => {
-  return img ? (
-    <img alt={text} className={s.questionImg} src={img} />
-  ) : (
-    <Typography option={'body2'}>{text}</Typography>
+export const CardTextImage = ({ img, text }: Props) => {
+  return (
+    <div className={s.container}>
+      {img && <img alt={text} className={s.img} src={img} />}
+      <Typography className={s.text} option={'body2'}>
+        {text}
+      </Typography>
+    </div>
   )
 }
