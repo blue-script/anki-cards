@@ -1,5 +1,10 @@
 import { router } from '@/app/router'
-import { BaseQueryFn, FetchArgs, FetchBaseQueryError, fetchBaseQuery } from '@reduxjs/toolkit/query'
+import {
+  BaseQueryFn,
+  FetchArgs,
+  FetchBaseQueryError,
+  fetchBaseQuery,
+} from '@reduxjs/toolkit/query/react'
 import { Mutex } from 'async-mutex'
 import { z } from 'zod'
 
@@ -8,9 +13,7 @@ const refreshTokenResponseSchema = z.object({
   refreshToken: z.string(),
 })
 
-// create a new mutex
 const mutex = new Mutex()
-
 const baseQuery = fetchBaseQuery({
   baseUrl: 'https://api.flashcards.andrii.es',
   prepareHeaders: headers => {
@@ -19,7 +22,6 @@ const baseQuery = fetchBaseQuery({
     if (headers.get('Authorization')) {
       return headers
     }
-
     if (token) {
       headers.set('Authorization', `Bearer ${token}`)
     }
@@ -31,14 +33,10 @@ export const baseQueryWithReauth: BaseQueryFn<
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
-  // wait until the mutex is available without locking it
   await mutex.waitForUnlock()
   let result = await baseQuery(args, api, extraOptions)
 
-  //console.log({ api, args, result })
-
   if (result.error && result.error.status === 401) {
-    // checking whether the mutex is locked
     if (!mutex.isLocked()) {
       const release = await mutex.acquire()
 
@@ -50,14 +48,12 @@ export const baseQueryWithReauth: BaseQueryFn<
             headers: {
               Authorization: `Bearer ${refreshToken}`,
             },
-            method: `POST`,
-            url: `/v2/auth/refresh-token`,
+            method: 'POST',
+            url: '/v2/auth/refresh-token',
           },
           api,
           extraOptions
         )
-
-        console.log({ refreshResult })
 
         if (refreshResult.data) {
           const refreshResultParsed = refreshTokenResponseSchema.parse(refreshResult.data)
@@ -68,15 +64,12 @@ export const baseQueryWithReauth: BaseQueryFn<
           // retry the initial query
           result = await baseQuery(args, api, extraOptions)
         } else {
-          //router.navigate('/login')
-          router.navigate('/login')
+          await router.navigate('/login')
         }
       } finally {
-        // release must be called once the mutex should be released again.
         release()
       }
     } else {
-      // wait until the mutex is available without locking it
       await mutex.waitForUnlock()
       result = await baseQuery(args, api, extraOptions)
     }

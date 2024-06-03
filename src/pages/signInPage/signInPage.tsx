@@ -1,8 +1,8 @@
 import toast from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 import { SignIn } from '@/features/auth/singInForm'
-import { useLoginMutation } from '@/services/auth/auth.service'
+import { useLoginMutation, useMeQuery } from '@/services/auth/auth.service'
 import { LoginArgs } from '@/services/auth/auth.types'
 import { Page } from '@/shared'
 
@@ -10,7 +10,7 @@ export const SignInPage = () => {
   const [signIn] = useLoginMutation()
   const navigate = useNavigate()
   //ohShit
-  //const { data } = useMeQuery()
+  const { data } = useMeQuery()
 
   const handleSignIn = async (data: LoginArgs) => {
     try {
@@ -29,9 +29,9 @@ export const SignInPage = () => {
   }
 
   //ohShit
-  // if (data) {
-  //   return <Navigate to={'/decks'} />
-  // }
+  if (data) {
+    return <Navigate to={'/'} />
+  }
 
   return (
     <Page mt={'33px'}>

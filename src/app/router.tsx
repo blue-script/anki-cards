@@ -29,6 +29,17 @@ const publicRoutes: RouteObject[] = [
     ],
   },
   // {
+  //   children: [
+  //     {
+  //       element: <SignInPage />,
+  //       path: '/login',
+  //     },
+  //   ],
+  //   element: <Outlet />,
+  // },
+
+  //
+  // {
   //   element: <SignInPage />,
   //   path: '/login',
   // },
@@ -65,14 +76,6 @@ const privateRoutes: RouteObject[] = [
   },
 ]
 
-const PrivateRoutes = () => {
-  const { isAuthenticated } = useAuthContext()
-
-  console.log('PrivateRoutes isAuthenticated:', isAuthenticated)
-
-  return isAuthenticated ? <Outlet /> : <Navigate to={'/login'} />
-}
-
 export const router = createBrowserRouter([
   {
     children: [
@@ -95,8 +98,18 @@ export const Router = () => {
   )
 }
 
+function PrivateRoutes() {
+  const { isAuthenticated } = useAuthContext()
+
+  console.log('PrivateRoutes isAuthenticated:', isAuthenticated)
+
+  return isAuthenticated ? <Outlet /> : <Navigate to={'/login'} />
+}
+
 //////////////////////////////////////////////////////////////////////////////////
 // import { ReactNode, createContext, useContext, useEffect, useState } from 'react'
+//
+// import { useMeQuery } from '@/services/auth/auth.service'
 //
 // interface AuthContextType {
 //   isAuthenticated: boolean
