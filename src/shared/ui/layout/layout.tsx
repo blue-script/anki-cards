@@ -23,10 +23,12 @@ export const Layout = forwardRef<ElementRef<'div'>, Props>(({ className, ...rest
   const classes = clsx(s.layout, className)
   const isLoading = useSelector(selectIsLoading)
 
-  const { data: meData, isError: isErrorLoading, isLoading: isMeLoading } = useMeQuery()
-  const isAuthenticated = !isErrorLoading && !isMeLoading
+  const { data: meData, isError, isLoading: isMeLoading } = useMeQuery()
+  const isAuthenticated = isError! && !isMeLoading
 
-  console.log('Layout isAuthenticated:', isAuthenticated)
+  if (isMeLoading) {
+    return <div>...loading layout me</div>
+  }
 
   return (
     <div className={classes} ref={ref} {...rest}>
