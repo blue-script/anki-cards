@@ -29,7 +29,7 @@ export const CardsHeader = () => {
           </Button>
         </Table.Th>
         <Table.Th>Grade</Table.Th>
-        <Table.Th></Table.Th>
+        <Table.Th className={s.empty}></Table.Th>
       </Table.TRow>
     </Table.THead>
   )
