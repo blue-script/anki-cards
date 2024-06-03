@@ -1,6 +1,12 @@
 import { router } from '@/app/router'
 import { BaseQueryFn, FetchArgs, FetchBaseQueryError, fetchBaseQuery } from '@reduxjs/toolkit/query'
 import { Mutex } from 'async-mutex'
+import { z } from 'zod'
+
+const refreshTokenResponseSchema = z.object({
+  accessToken: z.string(),
+  refreshToken: z.string(),
+})
 
 // create a new mutex
 const mutex = new Mutex()
@@ -39,7 +45,7 @@ export const baseQueryWithReauth: BaseQueryFn<
       try {
         const refreshToken = localStorage.getItem('refreshToken')
 
-        const refreshResult = (await baseQuery(
+        const refreshResult = await baseQuery(
           {
             headers: {
               Authorization: `Bearer ${refreshToken}`,
@@ -49,13 +55,15 @@ export const baseQueryWithReauth: BaseQueryFn<
           },
           api,
           extraOptions
-        )) as any
+        )
 
         console.log({ refreshResult })
 
         if (refreshResult.data) {
-          localStorage.setItem('accessToken', refreshResult.data.accessToken.trim())
-          localStorage.setItem('refreshToken', refreshResult.data.refreshToken.trim())
+          const refreshResultParsed = refreshTokenResponseSchema.parse(refreshResult.data)
+
+          localStorage.setItem('accessToken', refreshResultParsed.accessToken.trim())
+          localStorage.setItem('refreshToken', refreshResultParsed.refreshToken.trim())
 
           // retry the initial query
           result = await baseQuery(args, api, extraOptions)

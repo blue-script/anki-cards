@@ -8,10 +8,10 @@ import { Page } from '@/shared'
 
 export const SignInPage = () => {
   const [signIn] = useLoginMutation()
+  const navigate = useNavigate()
   //ohShit
   //const { data } = useMeQuery()
 
-  const navigate = useNavigate()
   const handleSignIn = async (data: LoginArgs) => {
     try {
       await signIn(data).unwrap()
@@ -19,6 +19,13 @@ export const SignInPage = () => {
     } catch (error: any) {
       toast.error(error?.data?.message ?? 'Could not sign in')
     }
+    //ohShit
+    // try {
+    //   signIn(data)
+    //   navigate('/')
+    // } catch (error: any) {
+    //   toast.error(error?.data?.message ?? 'Could not sign in')
+    // }
   }
 
   //ohShit

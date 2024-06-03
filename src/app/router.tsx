@@ -28,11 +28,19 @@ const publicRoutes: RouteObject[] = [
       },
     ],
   },
+  // {
+  //   element: <SignInPage />,
+  //   path: '/login',
+  // },
+  // {
+  //   element: <div>inside publicRoutes / logout</div>,
+  //   path: '/logout',
+  // },
 ]
 
 const privateRoutes: RouteObject[] = [
   {
-    element: <Navigate replace to={'/decks'} />,
+    element: <Navigate to={'/decks'} />,
     path: '/',
   },
   {
@@ -59,8 +67,6 @@ const privateRoutes: RouteObject[] = [
 
 const PrivateRoutes = () => {
   const { isAuthenticated } = useAuthContext()
-  // const { data } = useMeQuery()
-  // const isAuthenticated = !!data
 
   console.log('PrivateRoutes isAuthenticated:', isAuthenticated)
 
@@ -82,5 +88,47 @@ export const router = createBrowserRouter([
 ])
 
 export const Router = () => {
-  return <RouterProvider router={router} />
+  return (
+    //<AuthProvider>
+    <RouterProvider router={router} />
+    //</AuthProvider>
+  )
 }
+
+//////////////////////////////////////////////////////////////////////////////////
+// import { ReactNode, createContext, useContext, useEffect, useState } from 'react'
+//
+// interface AuthContextType {
+//   isAuthenticated: boolean
+// }
+//
+// const AuthContext = createContext<AuthContextType | undefined>(undefined)
+//
+// interface AuthProviderProps {
+//   children: ReactNode
+// }
+//
+// export const AuthProvider = ({ children }: AuthProviderProps) => {
+//   const [isAuthenticated, setIsAuthenticated] = useState(false)
+//   const { data, error } = useMeQuery()
+//
+//   useEffect(() => {
+//     if (data) {
+//       setIsAuthenticated(!!data)
+//     } else if (error) {
+//       setIsAuthenticated(false)
+//     }
+//   }, [data, error])
+//
+//   return <AuthContext.Provider value={{ isAuthenticated }}>{children}</AuthContext.Provider>
+// }
+//
+// export const useAuth = (): AuthContextType => {
+//   const context = useContext(AuthContext)
+//
+//   if (!context) {
+//     throw new Error('useAuth must be used within an AuthProvider')
+//   }
+//
+//   return context
+// }
