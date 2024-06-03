@@ -20,8 +20,8 @@ export const CardsHeader = () => {
   return (
     <Table.THead>
       <Table.TRow className={s.nowrap}>
-        <Table.Th>Question</Table.Th>
-        <Table.Th>Answer</Table.Th>
+        <Table.Th className={s.question}>Question</Table.Th>
+        <Table.Th className={s.answer}>Answer</Table.Th>
         <Table.Th className={s.wrapper}>
           Last Updated{' '}
           <Button className={s.button} onClick={handleOrderByToggle} variant={'secondary'}>
