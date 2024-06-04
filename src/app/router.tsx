@@ -28,15 +28,6 @@ const publicRoutes: RouteObject[] = [
       },
     ],
   },
-  // {
-  //   children: [
-  //     {
-  //       element: <SignInPage />,
-  //       path: '/login',
-  //     },
-  //   ],
-  //   element: <Outlet />,
-  // },
 
   //
   // {
