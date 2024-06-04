@@ -70,7 +70,7 @@ export const Pagination = (props: Props) => {
         </div>
       )}
 
-      <SelectCountPage setPageSize={setPageSize} />
+      <SelectCountPage placeholder={pageSize} setPageSize={setPageSize} />
     </div>
   )
 }

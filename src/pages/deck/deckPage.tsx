@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 
 import { AddCardModal, CardsTable, DeckHeader } from '@/entities'
@@ -56,20 +56,25 @@ export const DeckPage = () => {
 
   const [open, setOpen] = useState(false)
 
-  const onOpenChange = () => {
-    setOpen(!open)
+  const onOpenChange = useCallback(() => {
+    setOpen(open => !open)
+  }, [])
+
+  if (!deckId || !deckData || error || deckError) {
+    return <div>{`Error: ${error || deckError || 'not found deckId'}`}</div>
   }
 
-  if (!deckId || error || deckError) {
-    return <div>{`Error: ${error || deckError}`}</div>
-  }
-
-  const isOwner = true //deckData?.userId === deckData?.userId //some logic
+  const isOwner = deckData.userId === deckData.userId //some logic
   const cardsLength = cards?.length ?? 0
 
   return (
     <Page className={s.page} mt={'24px'}>
-      <DeckHeader cardsLength={cardsLength} deckId={deckId} isOwner={isOwner} />
+      <DeckHeader
+        cardsLength={cardsLength}
+        deckId={deckId}
+        deckName={deckData.name}
+        isOwner={isOwner}
+      />
 
       {cardsLength ? (
         <>
@@ -82,7 +87,7 @@ export const DeckPage = () => {
             variant={'search'}
           />
 
-          <CardsTable cards={cards} isOwner={isOwner} onEditClick={() => {}} />
+          <CardsTable cards={cards} isOwner={isOwner} />
         </>
       ) : (
         <>

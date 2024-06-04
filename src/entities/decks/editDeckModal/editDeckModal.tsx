@@ -2,16 +2,15 @@ import { ChangeEvent } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { ImageOutline } from '@/assets/icons'
-import { useCreateDeckMutation } from '@/services/decks/decks.service'
-import { CreateDeckArgs } from '@/services/decks/decks.types'
+import { useUpdateDeckMutation } from '@/services/decks/decks.service'
 import { Button, FormCheckbox, FormTextField, Modal } from '@/shared'
 import { CountButton } from '@/shared/ui/modal/footer/footer'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
-import s from './addNewDeckModal.module.scss'
+import s from './editDeckModal.module.scss'
 
-const newDeckSchema = z.object({
+const updateDeckSchema = z.object({
   cover: z
     .instanceof(File)
     .refine(file => ['image/jpeg', 'image/png'].includes(file.type), {
@@ -25,19 +24,21 @@ const newDeckSchema = z.object({
     .max(30, { message: 'Deck Name must not exceed 30 characters' }),
 })
 
-type FormValuesFromAddDeck = z.infer<typeof newDeckSchema>
+type FormValuesFromEditDeck = z.infer<typeof updateDeckSchema>
 
-type AddNewDeckModalProps = {
+type Props = {
+  deckId: string
+  name?: string
   open: boolean
   setOpen: (open: boolean) => void
   title?: string
 }
 
-export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) => {
-  const [createDeck] = useCreateDeckMutation()
-  const { control, handleSubmit, reset, setValue, watch } = useForm<FormValuesFromAddDeck>({
+export const EditDeckModal = ({ deckId, name, open, setOpen, title }: Props) => {
+  const [updateDeck] = useUpdateDeckMutation()
+  const { control, handleSubmit, reset, setValue, watch } = useForm<FormValuesFromEditDeck>({
     defaultValues: { cover: undefined, isPrivate: true, name: '' },
-    resolver: zodResolver(newDeckSchema),
+    resolver: zodResolver(updateDeckSchema),
   })
 
   const imagePath = watch('cover')
@@ -58,24 +59,28 @@ export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) 
     }
   }
 
-  const editFormClickHandler = (data: FormValuesFromAddDeck) => {
+  const editFormClickHandler = async (data: FormValuesFromEditDeck) => {
+    // Упаковываем преобразуем данные из формы в объект
     const formData = new FormData()
 
+    // Добавляем значения cover, name, isPrivate в formData
     if (data.cover) {
       formData.append('cover', data.cover)
     }
     formData.append('name', data.name)
     formData.append('isPrivate', String(data.isPrivate))
 
-    createDeck(formData as unknown as CreateDeckArgs)
-      .unwrap()
-      .then(() => {
-        reset()
-        setOpen(false)
-      })
-      .catch(error => {
-        console.error('Failed to create deck:', error)
-      })
+    // Отправка данных на сервер
+    try {
+      // Здесь мы преобразуем FormData в обычный объект с помощью Object.fromEntries(formData.entries())
+      // и передаем его вместе с deckId в функцию updateDeck.
+      // Метод unwrap используется для обработки успешного разрешения промиса.
+      await updateDeck({ id: deckId, ...Object.fromEntries(formData.entries()) }).unwrap()
+      reset()
+      setOpen(false)
+    } catch (error) {
+      console.error('Failed to update deck:', error)
+    }
   }
 
   return (
@@ -84,9 +89,9 @@ export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) 
         <FormTextField
           control={control}
           fullWidth
-          label={'Deck Name'}
+          label={'New deck Name'}
           name={'name'}
-          placeholder={'DeckName'}
+          placeholder={name}
         />
         <input
           accept={'image/*'}

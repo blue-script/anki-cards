@@ -19,9 +19,9 @@ type DecksTableProps = {
   className?: string
   currentUserId?: string
   decks: Deck[] | undefined
-  onDeleteClick: (id: string) => void
-  onEditClick: (id: string) => void
-  onIconClick?: () => void
+  onDeleteClick: (id: string, name: string) => void
+  onEditClick: (id: string, name: string) => void
+  onIconClick: () => void
 }
 
 export const DecksTable = ({
@@ -35,31 +35,29 @@ export const DecksTable = ({
   const [isAsc, setIsAsc] = useState(false)
 
   const handleDeleteClick = useCallback(
-    (id: string) => {
-      onDeleteClick(id)
+    (id: string, name: string) => {
+      onDeleteClick(id, name)
     },
     [onDeleteClick]
   )
 
   const handleEditClick = useCallback(
-    (id: string) => {
-      onEditClick(id)
+    (id: string, name: string) => {
+      onEditClick(id, name)
     },
     [onEditClick]
   )
 
   const handleSortClick = useCallback(() => {
     setIsAsc(prevIsAsc => !prevIsAsc)
-    if (onIconClick) {
-      onIconClick()
-    }
+    onIconClick()
   }, [onIconClick])
 
   return (
     <Table.TRoot className={className}>
       <Table.THead>
         <Table.TRow style={{ borderBottom: 'none' }}>
-          <Table.Th>Name</Table.Th>
+          <Table.Th style={{ width: '30%' }}>Name</Table.Th>
           <Table.Th>Cards</Table.Th>
           <Table.Th>
             <div className={s.orderWrapper}>
@@ -99,14 +97,14 @@ export const DecksTable = ({
                   <>
                     <Button
                       className={s.button}
-                      onClick={() => handleEditClick(deck.id)}
+                      onClick={() => handleEditClick(deck.id, deck.name)}
                       type={'button'}
                     >
                       <Edit2Outline />
                     </Button>
                     <Button
                       className={s.button}
-                      onClick={() => handleDeleteClick(deck.id)}
+                      onClick={() => handleDeleteClick(deck.id, deck.name)}
                       type={'button'}
                     >
                       <TrashOutline />
