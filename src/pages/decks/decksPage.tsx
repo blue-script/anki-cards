@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 
 import { DecksTable } from '@/entities/decks/decksTable/decksTable'
+import { useMeQuery } from '@/services/auth/auth.service'
 import {
   useCreateDeckMutation,
   useDeleteDeckMutation,
@@ -15,6 +16,8 @@ export function DecksPage() {
   const [createDeck] = useCreateDeckMutation()
   const [updateDeck] = useUpdateDeckMutation()
   const [deleteDeck] = useDeleteDeckMutation()
+
+  const { data: me } = useMeQuery()
 
   const { control, handleSubmit } = useForm<{ name: string }>({
     defaultValues: {
@@ -50,6 +53,10 @@ export function DecksPage() {
     return <div>{`Error ${error}`}</div>
   }
 
+  if (!decks || !me) {
+    return <div>Loading ...</div>
+  }
+
   return (
     <div
       style={{
@@ -70,7 +77,7 @@ export function DecksPage() {
         <Button>Create deck</Button>
       </form>
       <DecksTable
-        currentUserId={'f2be95b9-4d07-4751-a775-bd612fc9553a'}
+        currentUserId={me?.id}
         decks={decks?.items}
         onDeleteClick={id => {
           deleteDeck({ id })

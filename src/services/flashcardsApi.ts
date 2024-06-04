@@ -1,12 +1,23 @@
-import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react'
+import { fetchBaseQuery } from '@reduxjs/toolkit/query'
+import { createApi } from '@reduxjs/toolkit/query/react'
 
 export const flashcardsApi = createApi({
-  baseQuery: retry(
-    fetchBaseQuery({
-      baseUrl: 'https://api.flashcards.andrii.es',
-    }),
-    { maxRetries: 0 }
-  ),
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'https://api.flashcards.andrii.es',
+    prepareHeaders: headers => {
+      const token = localStorage.getItem('accessToken')
+
+      if (headers.get('Authorization')) {
+        return headers
+      }
+
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`)
+      }
+
+      return headers
+    },
+  }),
   endpoints: () => ({}),
   keepUnusedDataFor: 1,
   reducerPath: 'flashcardsApi',

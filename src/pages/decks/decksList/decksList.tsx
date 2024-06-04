@@ -5,6 +5,7 @@ import { useSearchParams } from 'react-router-dom'
 import { TrashOutline } from '@/assets/icons'
 import { DecksTable } from '@/entities/decks'
 import { AddNewDeckModal } from '@/entities/decks/addNewDeckModal/addNewDeckModal'
+import { useMeQuery } from '@/services/auth/auth.service'
 import {
   useDeleteDeckMutation,
   useGetDecksQuery,
@@ -20,8 +21,10 @@ type SelectTab = 'All Cards' | 'My Cards'
 export type SortOrder = 'updated-asc' | 'updated-desc'
 
 export const DecksList = () => {
+  const { data: me } = useMeQuery()
+
   const [selectTab, setSelectTab] = useState<SelectTab>('My Cards')
-  const currentUserId = 'f2be95b9-4d07-4751-a775-bd612fc9553a'
+  const currentUserId = me?.id
   const [searchParams, setSearchParams] = useSearchParams()
   const search = searchParams.get('search') ?? ''
   const [itemsPerPage, setItemsPerPage] = useState(10)

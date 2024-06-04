@@ -76,6 +76,9 @@ export const EditCardModal = ({
       .finally(() => onOpenChange())
   })
 
+  //  delete URL.createObjectURL
+  //  need URL.revokeObjectURL
+
   return (
     <Modal onOpenChange={onOpenChange} open={open} title={'Add New Card'}>
       <form onSubmit={submitHandler}>

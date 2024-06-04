@@ -6,17 +6,17 @@ import {
   createBrowserRouter,
 } from 'react-router-dom'
 
-import { LoginForm } from '@/features/auth/loginForm/loginForm'
 import { DeckPage } from '@/pages/deck/deckPage'
 import { DecksList } from '@/pages/decks/decksList/decksList'
 import { DecksPage } from '@/pages/decks/decksPage'
 import { Decks19 } from '@/pages/decks19/decks19'
 import { Learn } from '@/pages/learn/learn'
+import { SignInPage } from '@/pages/signIn/signInPage'
 import { Layout } from '@/shared'
 
 const publicRoutes: RouteObject[] = [
   {
-    element: <LoginForm />,
+    element: <SignInPage />,
     path: '/login',
   },
   {
@@ -62,7 +62,7 @@ const PrivateRoutes = () => {
   return isAuthenticated ? <Outlet /> : <Navigate to={'/login'} />
 }
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     children: [
       {
