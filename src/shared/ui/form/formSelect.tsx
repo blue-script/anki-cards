@@ -3,7 +3,7 @@ import { FieldValues, UseControllerProps, useController } from 'react-hook-form'
 import { Select, SelectProps } from '@/shared'
 
 type FormSelectProps<T extends FieldValues> = Omit<
-  SelectProps,
+  SelectProps<T>,
   'onBlur' | 'onValueChange' | 'value'
 > &
   UseControllerProps<T>
@@ -21,5 +21,14 @@ export const FormSelect = <T extends FieldValues>({
     name,
   })
 
-  return <Select {...rest} {...field} onValueChange={onChange} options={options} value={value} />
+  return (
+    <Select
+      {...rest}
+      {...field}
+      onValueChange={onChange}
+      options={options}
+      placeholder={1}
+      value={value}
+    />
+  )
 }
