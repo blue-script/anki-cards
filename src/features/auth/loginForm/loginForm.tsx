@@ -2,7 +2,6 @@ import { useForm } from 'react-hook-form'
 
 import { Button, FormTextField } from '@/shared'
 import { FormCheckbox } from '@/shared/ui/form/formCheckbox'
-import { FormSelect } from '@/shared/ui/form/formSelect'
 import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -55,11 +54,11 @@ export const LoginForm = ({ onSubmit }: Props) => {
         <FormCheckbox control={control} label={'Remember me'} name={'rememberMe'} />
         <FormCheckbox control={control} label={'Accept terms of service'} name={'TOS'} />
 
-        <FormSelect
-          control={control}
-          name={'selectedValue'}
-          options={['first', 'second', 'third']}
-        />
+        {/*<FormSelect*/}
+        {/*  control={control}*/}
+        {/*  name={'selectedValue'}*/}
+        {/*  options={['first', 'second', 'third']}*/}
+        {/*/>*/}
         <Button type={'submit'}>Submit</Button>
       </form>
     </>
