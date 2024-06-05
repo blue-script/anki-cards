@@ -19,7 +19,7 @@ export const Select1: Story = {
   args: {
     label: 'Select-box',
     options: availableOptions,
-    placeholder: 'Select',
+    placeholder: 1 || 'Select',
   },
 }
 
@@ -28,6 +28,6 @@ export const Select2: Story = {
     disabled: true,
     label: 'Select-box',
     options: availableOptions,
-    placeholder: 'Select',
+    placeholder: 1 || 'Select',
   },
 }
