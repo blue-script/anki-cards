@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { ImageOutline } from '@/assets/icons'
@@ -40,6 +40,8 @@ export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) 
     resolver: zodResolver(newDeckSchema),
   })
 
+  const [previewImage, setPreviewImage] = useState<string | undefined>(undefined)
+
   const imagePath = watch('cover')
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -47,6 +49,7 @@ export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) 
 
     if (file) {
       setValue('cover', file)
+      setPreviewImage(URL.createObjectURL(file))
     }
   }
 
@@ -58,7 +61,7 @@ export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) 
     }
   }
 
-  const editFormClickHandler = (data: FormValuesFromAddDeck) => {
+  const editFormClickHandler = async (data: FormValuesFromAddDeck) => {
     const formData = new FormData()
 
     if (data.cover) {
@@ -67,15 +70,14 @@ export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) 
     formData.append('name', data.name)
     formData.append('isPrivate', String(data.isPrivate))
 
-    createDeck(formData as unknown as CreateDeckArgs)
-      .unwrap()
-      .then(() => {
-        reset()
-        setOpen(false)
-      })
-      .catch(error => {
-        console.error('Failed to create deck:', error)
-      })
+    try {
+      await createDeck(formData as unknown as CreateDeckArgs).unwrap()
+      reset()
+      setOpen(false)
+      setPreviewImage(undefined) // Reset preview image after successful update
+    } catch (error) {
+      console.error('Failed to update deck:', error)
+    }
   }
 
   return (
@@ -99,6 +101,9 @@ export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) 
           <ImageOutline />
           {imagePath ? imagePath.name : 'Upload Image'}
         </Button>
+        {previewImage && (
+          <img alt={'Current cover'} className={s.currentCover} src={previewImage} />
+        )}
         <FormCheckbox
           className={s.privateBox}
           control={control}

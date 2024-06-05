@@ -52,6 +52,8 @@ export const Decks19 = () => {
   const [openDeleteDeckModal, setOpenDeleteDeckModal] = useState<boolean>(false)
   const [deckId, setDeckId] = useState<string>('')
   const [deckName, setDeckName] = useState<string>('')
+  const [deckCover, setDeckCover] = useState<string | undefined>(undefined)
+  const [deckIsPrivate, setDeckIsPrivate] = useState<boolean>(true)
 
   const { data: decks } = useGetDecksQuery({
     authorId: authorId,
@@ -102,10 +104,17 @@ export const Decks19 = () => {
     setOpenAddNewDeckModal(true)
     resetFilters()
   }
-  const handleEditDeck = (deckId: string, name: string) => {
+  const handleEditDeck = (
+    id: string,
+    name: string,
+    cover: string | undefined,
+    isPrivate: boolean
+  ) => {
     setOpenEditNewDeckModal(true)
-    setDeckId(deckId)
+    setDeckId(id)
     setDeckName(name)
+    setDeckCover(cover)
+    setDeckIsPrivate(isPrivate)
   }
   const handleDeleteDeck = (deckId: string, name: string) => {
     setOpenDeleteDeckModal(true)
@@ -124,7 +133,9 @@ export const Decks19 = () => {
       )}
       {openEditDeckModal && (
         <EditDeckModal
+          cover={deckCover}
           deckId={deckId}
+          isPrivate={deckIsPrivate}
           name={deckName}
           open={openEditDeckModal}
           setOpen={setOpenEditNewDeckModal}
@@ -174,7 +185,7 @@ export const Decks19 = () => {
       </div>
       <DecksTable
         className={s.table}
-        currentUserId={authorId}
+        currentUserId={currentUserId}
         decks={decks?.items}
         onDeleteClick={handleDeleteDeck}
         onEditClick={handleEditDeck}
