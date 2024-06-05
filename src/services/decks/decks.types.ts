@@ -104,3 +104,7 @@ export type NewGradeData = {
 //   message: string
 //   statusCode: number
 // }
+
+export type PatchResult = {
+  undo: () => void
+}

@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 
 import { AddNewDeckModal, DecksTable, DeleteDeckModal, EditDeckModal } from '@/entities'
+import { useMeQuery } from '@/services/auth/auth.service'
 import { useGetDecksQuery } from '@/services/decks/decks.service'
 import { Button, FormTextField, Page, Pagination, Slider, TabSwitcher, Typography } from '@/shared'
 import { useDebounce } from '@/shared/hooks/useDebounce'
@@ -36,6 +37,7 @@ const useURLSearchParams = () => {
 }
 
 export const Decks19 = () => {
+  const { data: me } = useMeQuery()
   const { getParam, searchParams, setParam, setSearchParams } = useURLSearchParams()
   const search = getParam('name')
   const itemsPerPage = getParam('itemsPerPage', '10')
@@ -44,7 +46,7 @@ export const Decks19 = () => {
   const maxCardsCount = getParam('maxCardsCount', '25')
   const orderBy = getParam('orderBy', 'updated-asc')
   const currentTabSwitcher = getParam('currentTabSwitcher', 'all')
-  const currentUserId = 'f2be95b9-4d07-4751-a775-bd612fc9553a'
+  const currentUserId = me?.id
   const authorId: string | undefined = currentTabSwitcher === 'my' ? currentUserId : undefined
   const debouncedSearch = useDebounce(search, 1000)
   const [openAddNewDeckModal, setOpenAddNewDeckModal] = useState<boolean>(false)

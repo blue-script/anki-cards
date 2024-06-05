@@ -19,7 +19,7 @@ export const flashcardsApi = createApi({
     },
   }),
   endpoints: () => ({}),
-  keepUnusedDataFor: 1,
+  keepUnusedDataFor: 20,
   reducerPath: 'flashcardsApi',
   tagTypes: ['Decks', 'Cards', 'Me'],
 })
