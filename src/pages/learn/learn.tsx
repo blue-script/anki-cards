@@ -44,7 +44,7 @@ export const Learn = () => {
 
     const newData: NewGradeData = {
       cardId: data.id,
-      grade: parseInt(selectedGrade),
+      grade: parseInt(selectedGrade) || 5,
     }
 
     await updateCardGrade({ id: deckId, ...newData })
