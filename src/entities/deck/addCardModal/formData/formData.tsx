@@ -1,18 +1,18 @@
 import { Control, UseFormSetValue } from 'react-hook-form'
 
 import { Layer2 } from '@/assets/icons'
-import { CreateCardSchema } from '@/entities/deck/addCardModal/addCardModal'
+import { FormAddCard } from '@/entities/deck/addCardModal/addCardModal'
 import { FormTextField, ImageUpload, Typography } from '@/shared'
 
 import s from './formData.module.scss'
 
 type Props = {
-  control: Control<CreateCardSchema>
+  control: Control<FormAddCard>
   imgName: 'answerImg' | 'questionImg'
   imgPreview: null | string
   imgWatch: File | null | string
   placeholder: string
-  setValue: UseFormSetValue<CreateCardSchema>
+  setValue: UseFormSetValue<FormAddCard>
   textName: 'answer' | 'question'
 }
 
@@ -29,7 +29,7 @@ export const FormData = ({
     <div className={s.container}>
       {placeholder}:
       <FormTextField control={control} fullWidth label={`${placeholder}?`} name={`${textName}`} />
-      {imgWatch && imgPreview && <img alt={'Uploaded'} className={s.img} src={imgPreview} />}
+      {imgPreview && <img alt={'Uploaded'} className={s.img} src={imgPreview} />}
       <ImageUpload
         className={s.topMargin}
         control={control}

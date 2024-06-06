@@ -14,14 +14,14 @@ import { z } from 'zod'
 import s from './addCardModal.module.scss'
 
 const addCardSchema = z.object({
-  answer: z.string(),
+  answer: z.string().min(3, 'The length of the answer must be more than 3 characters'),
   answerImg: z.union([z.instanceof(File), z.string()]).nullable(),
   id: z.string(),
-  question: z.string(),
+  question: z.string().min(3, 'The length of the question must be more than 3 characters'),
   questionImg: z.union([z.instanceof(File), z.string()]).nullable(),
 })
 
-export type CreateCardSchema = z.infer<typeof addCardSchema>
+export type FormAddCard = z.infer<typeof addCardSchema>
 
 type Props = {
   onOpenChange: () => void
@@ -36,7 +36,7 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
 
   const [createCard] = useCreateCardMutation()
 
-  const { control, handleSubmit, reset, setValue, watch } = useForm<CreateCardSchema>({
+  const { control, handleSubmit, reset, setValue, watch } = useForm<FormAddCard>({
     defaultValues: {
       answer: '',
       answerImg: null,
@@ -51,7 +51,6 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
   const answerImgWatch = watch('answerImg')
 
   useEffect(() => {
-    // questionImgPreview && URL.revokeObjectURL(questionImgPreview)
     if (questionImgWatch instanceof File) {
       setQuestionImgPreview(URL.createObjectURL(questionImgWatch))
     }
