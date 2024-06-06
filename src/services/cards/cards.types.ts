@@ -53,6 +53,6 @@ export type UpdateCardArgs = {
 }
 
 export type CreateCardArgs = {
-  data: FormData
+  data: CardArgs
   deckId: string
 }
