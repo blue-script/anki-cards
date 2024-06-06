@@ -14,8 +14,11 @@ export const SignInPage = () => {
 
   const handleSubmit = async (data: LoginArgs) => {
     try {
-      login(data).unwrap()
-      navigate('/')
+      login(data)
+        .unwrap()
+        .then(() => {
+          navigate('/')
+        })
     } catch (err: any) {
       toast.error(err)
     }

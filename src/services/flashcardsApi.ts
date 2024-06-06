@@ -1,25 +1,10 @@
-import { fetchBaseQuery } from '@reduxjs/toolkit/query'
+import { baseQueryWithReauth } from '@/services/ flashcardsBaseQuery'
 import { createApi } from '@reduxjs/toolkit/query/react'
 
 export const flashcardsApi = createApi({
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'https://api.flashcards.andrii.es',
-    prepareHeaders: headers => {
-      const token = localStorage.getItem('accessToken')
-
-      if (headers.get('Authorization')) {
-        return headers
-      }
-
-      if (token) {
-        headers.set('Authorization', `Bearer ${token}`)
-      }
-
-      return headers
-    },
-  }),
+  baseQuery: baseQueryWithReauth,
   endpoints: () => ({}),
-  keepUnusedDataFor: 20,
+  keepUnusedDataFor: 1,
   reducerPath: 'flashcardsApi',
   tagTypes: ['Decks', 'Cards', 'Me'],
 })

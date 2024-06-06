@@ -38,6 +38,7 @@ const useURLSearchParams = () => {
 
 export const Decks19 = () => {
   const { data: me } = useMeQuery()
+
   const { getParam, searchParams, setParam, setSearchParams } = useURLSearchParams()
   const search = getParam('name')
   const itemsPerPage = getParam('itemsPerPage', '10')
@@ -55,15 +56,20 @@ export const Decks19 = () => {
   const [deckId, setDeckId] = useState<string>('')
   const [deckName, setDeckName] = useState<string>('')
 
-  const { data: decks } = useGetDecksQuery({
-    authorId: authorId,
-    currentPage: +currentPage,
-    itemsPerPage: +itemsPerPage,
-    maxCardsCount: +maxCardsCount,
-    minCardsCount: +minCardsCount,
-    name: debouncedSearch,
-    orderBy: orderBy,
-  })
+  const { data: decks } = useGetDecksQuery(
+    {
+      authorId: authorId,
+      currentPage: +currentPage,
+      itemsPerPage: +itemsPerPage,
+      maxCardsCount: +maxCardsCount,
+      minCardsCount: +minCardsCount,
+      name: debouncedSearch,
+      orderBy: orderBy,
+    },
+    {
+      skip: !me,
+    }
+  )
 
   const { control, reset } = useForm<{ name: string }>({
     defaultValues: { name: '' },
@@ -113,6 +119,10 @@ export const Decks19 = () => {
     setOpenDeleteDeckModal(true)
     setDeckId(deckId)
     setDeckName(name)
+  }
+
+  if (!me) {
+    return <span>lodaing</span>
   }
 
   return (

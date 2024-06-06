@@ -10,7 +10,7 @@ export type LoginResponse = {
 }
 
 export type User = {
-  avatar: null | string
+  avatar: File | null
   created: string
   email: string
   id: string
