@@ -1,5 +1,15 @@
-.questionImg {
-  max-width: 120px;
-  max-height: 48px;
+.container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.img {
+  max-width: 70px;
+  max-height: 50px;
   object-fit: cover;
+}
+
+.text {
+  margin: 0;
 }
