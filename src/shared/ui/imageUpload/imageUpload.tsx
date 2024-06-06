@@ -4,10 +4,9 @@ import toast from 'react-hot-toast'
 
 import { Button } from '@/shared'
 
-import s from '@/features/profile/profileAvatar/profileAvatar.module.scss'
-
 type Props<T extends FieldValues> = {
   children: ReactNode
+  className?: string
   setValue: (
     name: Path<T>,
     value: PathValue<T, Path<T>>,
@@ -18,6 +17,7 @@ type Props<T extends FieldValues> = {
 
 export const ImageUpload = <T extends FieldValues>({
   children,
+  className,
   control,
   name,
   setValue,
@@ -58,7 +58,7 @@ export const ImageUpload = <T extends FieldValues>({
   return (
     <>
       <Button
-        className={s.editAvatarButton}
+        className={className}
         fullWidth
         onClick={handleSelectFile}
         type={'reset'}
