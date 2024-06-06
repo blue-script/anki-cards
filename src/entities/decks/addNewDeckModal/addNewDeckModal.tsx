@@ -64,7 +64,7 @@ export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) 
   const editFormClickHandler = async (data: FormValuesFromAddDeck) => {
     const formData = new FormData()
 
-    if (data.cover) {
+    if (data.cover instanceof File) {
       formData.append('cover', data.cover)
     }
     formData.append('name', data.name)

@@ -59,10 +59,10 @@ export const decksService = flashcardsApi.injectEndpoints({
       }),
       updateDeck: builder.mutation<Deck, UpdateDeckArgs>({
         invalidatesTags: ['Decks'],
-        query: ({ id, ...body }) => ({
+        query: ({ body, deckId }) => ({
           body,
           method: 'PATCH',
-          url: `v1/decks/${id}`,
+          url: `v1/decks/${deckId}`,
         }),
       }),
       updateRandomCard: builder.mutation<RandomCardResponse, UpdateGradeArgs>({

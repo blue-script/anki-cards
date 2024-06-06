@@ -44,7 +44,11 @@ export interface CreateDeckArgs {
   name: string
 }
 
-export type UpdateDeckArgs = { id: string } & Partial<CreateDeckArgs>
+export type UpdateDeckArgs = {
+  body: FormData
+  deckId: string
+}
+
 export type DeleteDeckArgs = { id: string }
 
 export type LearnDeckArgs = {

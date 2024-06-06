@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form'
 
 import { ImageOutline } from '@/assets/icons'
 import { useUpdateDeckMutation } from '@/services/decks/decks.service'
-import { UpdateDeckArgs } from '@/services/decks/decks.types'
 import { Button, FormCheckbox, FormTextField, Modal } from '@/shared'
 import { CountButton } from '@/shared/ui/modal/footer/footer'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -74,18 +73,14 @@ export const EditDeckModal = ({ cover, deckId, isPrivate, name, open, setOpen, t
   const editFormClickHandler = async (data: FormValuesFromEditDeck) => {
     const formData = new FormData()
 
-    if (data.cover) {
+    if (data.cover instanceof File) {
       formData.append('cover', data.cover)
     }
     formData.append('name', data.name)
     formData.append('isPrivate', String(data.isPrivate))
 
     try {
-      await updateDeck({
-        id: deckId,
-        ...Object.fromEntries(formData.entries()),
-      } as UpdateDeckArgs).unwrap()
-      // await updateDeck({ id: deckId, ...formData } as unknown as UpdateDeckArgs).unwrap()
+      await updateDeck({ body: formData, deckId }).unwrap()
       reset()
       setOpen(false)
       setPreviewImage(undefined) // Reset preview image after successful update
