@@ -27,23 +27,19 @@ export const decksService = flashcardsApi.injectEndpoints({
           try {
             const { data } = await queryFulfilled
 
-            console.log(data, 'niw')
-
             invalidateBy.forEach(({ originalArgs }) => {
               dispatch(
                 decksService.util.updateQueryData('getDecks', originalArgs, draft => {
                   if (originalArgs.currentPage !== 1) {
                     return
                   }
-
                   draft.items.unshift(data)
-                  alert('new')
                   draft.items.pop()
                 })
               )
             })
           } catch (e) {
-            console.warn(e)
+            console.log(e)
           }
         },
         query: args => ({
