@@ -3,11 +3,10 @@ import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useParams } from 'react-router-dom'
 
-import { Layer2 } from '@/assets/icons'
 import { FormData } from '@/entities/deck/addCardModal/formData/formData'
 import { useCreateCardMutation } from '@/services/cards/cards.service'
 import { CardArgs } from '@/services/cards/cards.types'
-import { FormTextField, ImageUpload, Modal, Typography } from '@/shared'
+import { Modal } from '@/shared'
 import { CountButton } from '@/shared/ui/modal/footer/footer'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -101,22 +100,15 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
             setValue={setValue}
             textName={'question'}
           />
-          <div>
-            Answer:
-            <FormTextField control={control} fullWidth label={'Answer'} name={'answer'} />
-            {answerImgPreview && <img alt={'Uploaded'} className={s.img} src={answerImgPreview} />}
-          </div>
-          <ImageUpload
+          <FormData
             control={control}
-            name={'answerImg'}
+            imgName={'answerImg'}
+            imgPreview={answerImgPreview}
+            imgWatch={answerImgWatch}
+            placeholder={'Answer'}
             setValue={setValue}
-            variantButton={'secondary'}
-          >
-            <Layer2 />
-            <Typography option={'subtitle2'}>
-              {answerImgWatch ? 'Change Image' : 'Upload Image'}
-            </Typography>
-          </ImageUpload>
+            textName={'answer'}
+          />
         </div>
         <Modal.Footer
           countButton={CountButton.Two}
