@@ -14,6 +14,6 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    isLoading: true,
+    isLoading: 'loading',
   },
 }

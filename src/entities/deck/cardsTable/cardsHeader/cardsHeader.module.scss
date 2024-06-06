@@ -2,32 +2,37 @@
   white-space: nowrap;
 }
 
-.wrapper {
+.update {
   display: flex;
   gap: 4px;
   align-items: center;
 }
 
-.button {
-  all: unset;
-
-  cursor: pointer;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  line-height: unset;
-
-  .rotate90 {
-    transform: rotate(90deg);
+.arrowClass {
+  path {
+    fill: white;
   }
+}
 
-  .rotate270 {
-    transform: rotate(-90deg);
-  }
+.rotate90 {
+  transform: rotate(90deg);
+}
 
-  &:hover:enabled {
-    background-color: unset;
-  }
+.rotate270 {
+  transform: rotate(-90deg);
+}
+
+.question {
+  width: 25%;
+}
+
+.answer {
+  width: 25%;
+}
+
+.grade {
+}
+
+.empty {
+  flex-grow: 0;
 }

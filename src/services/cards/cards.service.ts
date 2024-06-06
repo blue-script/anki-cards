@@ -13,8 +13,19 @@ export const cardsService = flashcardsApi.injectEndpoints({
       createCard: build.mutation<Card, CreateCardArgs>({
         invalidatesTags: ['Cards'],
         query: ({ data, deckId }) => {
+          const formData = new FormData()
+
+          formData.append('answer', data.answer)
+          formData.append('question', data.question)
+          if (data.questionImg) {
+            formData.append('questionImg', data.questionImg)
+          }
+          if (data.answerImg) {
+            formData.append('answerImg', data.answerImg)
+          }
+
           return {
-            body: data,
+            body: formData,
             method: 'POST',
             url: `v1/decks/${deckId}/cards`,
           }

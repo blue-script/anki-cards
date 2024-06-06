@@ -14,8 +14,8 @@ import s from './editDeckModal.module.scss'
 const updateDeckSchema = z.object({
   cover: z
     .instanceof(File)
-    .refine(file => ['image/jpeg', 'image/png'].includes(file.type), {
-      message: 'Must be a .jpeg or .png file.',
+    .refine(file => ['image/jpeg', 'image/png', 'image/webp'].includes(file.type), {
+      message: 'Must be a .jpeg or .png or .webp file.',
     })
     .optional(),
   isPrivate: z.boolean(),
@@ -28,7 +28,7 @@ const updateDeckSchema = z.object({
 type FormValuesFromEditDeck = z.infer<typeof updateDeckSchema>
 
 type Props = {
-  cover?: string
+  cover: string | undefined
   deckId: string
   isPrivate: boolean
   name: string
@@ -40,7 +40,7 @@ type Props = {
 export const EditDeckModal = ({ cover, deckId, isPrivate, name, open, setOpen, title }: Props) => {
   const [updateDeck] = useUpdateDeckMutation()
   const { control, handleSubmit, reset, setValue, watch } = useForm<FormValuesFromEditDeck>({
-    defaultValues: { cover: undefined, isPrivate, name: name || '' },
+    defaultValues: { cover: undefined, isPrivate, name },
     resolver: zodResolver(updateDeckSchema),
   })
 
@@ -84,7 +84,7 @@ export const EditDeckModal = ({ cover, deckId, isPrivate, name, open, setOpen, t
       await updateDeck({
         id: deckId,
         ...Object.fromEntries(formData.entries()),
-      } as unknown as UpdateDeckArgs).unwrap()
+      } as UpdateDeckArgs).unwrap()
       // await updateDeck({ id: deckId, ...formData } as unknown as UpdateDeckArgs).unwrap()
       reset()
       setOpen(false)

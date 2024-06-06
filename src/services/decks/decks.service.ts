@@ -1,6 +1,7 @@
 import {
   CreateDeckArgs,
   Deck,
+  DeckMinMaxCardsResponse,
   DecksListResponse,
   DeleteDeckArgs,
   GetDeckArgs,
@@ -46,6 +47,9 @@ export const decksService = flashcardsApi.injectEndpoints({
           url: `v2/decks`,
         }),
       }),
+      getMinMaxCards: builder.query<DeckMinMaxCardsResponse, void>({
+        query: () => `v2/decks/min-max-cards`,
+      }),
       learnRandomCard: builder.query<RandomCardResponse, LearnDeckArgs>({
         providesTags: ['Cards'],
         query: ({ id }) => ({
@@ -78,6 +82,7 @@ export const {
   useDeleteDeckMutation,
   useGetDeckByIdQuery,
   useGetDecksQuery,
+  useGetMinMaxCardsQuery,
   useLearnRandomCardQuery,
   useUpdateDeckMutation,
   useUpdateRandomCardMutation,

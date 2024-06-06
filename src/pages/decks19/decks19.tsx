@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 
 import { AddNewDeckModal, DecksTable, DeleteDeckModal, EditDeckModal } from '@/entities'
-import { useGetDecksQuery } from '@/services/decks/decks.service'
+import { useGetDecksQuery, useGetMinMaxCardsQuery } from '@/services/decks/decks.service'
 import { Button, FormTextField, Page, Pagination, Slider, TabSwitcher, Typography } from '@/shared'
 import { useDebounce } from '@/shared/hooks/useDebounce'
 
@@ -36,12 +36,13 @@ const useURLSearchParams = () => {
 }
 
 export const Decks19 = () => {
+  const { data: minMaxCardsData } = useGetMinMaxCardsQuery()
   const { getParam, searchParams, setParam, setSearchParams } = useURLSearchParams()
   const search = getParam('name')
   const itemsPerPage = getParam('itemsPerPage', '10')
   const currentPage = getParam('currentPage', '1')
-  const minCardsCount = getParam('minCardsCount', '0')
-  const maxCardsCount = getParam('maxCardsCount', '25')
+  const minCardsCount = getParam('minCardsCount', String(minMaxCardsData?.min ?? 0))
+  const maxCardsCount = getParam('maxCardsCount', String(minMaxCardsData?.max ?? 25))
   const orderBy = getParam('orderBy', 'updated-asc')
   const currentTabSwitcher = getParam('currentTabSwitcher', 'all')
   const currentUserId = 'f2be95b9-4d07-4751-a775-bd612fc9553a'
@@ -94,6 +95,7 @@ export const Decks19 = () => {
     setParam('currentTabSwitcher', value)
   }
   const handleSliderChange = ([min, max]: number[]) => {
+    setParam('currentPage', '1')
     setParam('minCardsCount', String(min))
     setParam('maxCardsCount', String(max))
   }
@@ -121,6 +123,8 @@ export const Decks19 = () => {
     setDeckId(deckId)
     setDeckName(name)
   }
+
+  console.log(minCardsCount, maxCardsCount)
 
   return (
     <Page mt={'36px'}>
@@ -173,8 +177,8 @@ export const Decks19 = () => {
         />
         <Slider
           label={'Number of cards'}
-          max={25}
-          min={0}
+          max={minMaxCardsData?.max ?? 25}
+          min={minMaxCardsData?.min ?? 0}
           onValueChange={handleSliderChange}
           value={[+minCardsCount, +maxCardsCount]}
         />

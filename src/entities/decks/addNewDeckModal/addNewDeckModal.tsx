@@ -14,8 +14,8 @@ import s from './addNewDeckModal.module.scss'
 const newDeckSchema = z.object({
   cover: z
     .instanceof(File)
-    .refine(file => ['image/jpeg', 'image/png'].includes(file.type), {
-      message: 'Must be a .jpeg or .png file.',
+    .refine(file => ['image/jpeg', 'image/png', 'image/webp'].includes(file.type), {
+      message: 'Must be a .jpeg or .png or .webp file.',
     })
     .optional(),
   isPrivate: z.boolean(),
