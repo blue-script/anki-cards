@@ -124,8 +124,6 @@ export const Decks19 = () => {
     setDeckName(name)
   }
 
-  console.log(minCardsCount, maxCardsCount)
-
   return (
     <Page mt={'36px'}>
       {openAddNewDeckModal && (
