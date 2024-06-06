@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { ImageOutline } from '@/assets/icons'
@@ -13,8 +13,8 @@ import s from './editDeckModal.module.scss'
 const updateDeckSchema = z.object({
   cover: z
     .instanceof(File)
-    .refine(file => ['image/jpeg', 'image/png'].includes(file.type), {
-      message: 'Must be a .jpeg or .png file.',
+    .refine(file => ['image/jpeg', 'image/png', 'image/webp'].includes(file.type), {
+      message: 'Must be a .jpeg or .png or .webp file.',
     })
     .optional(),
   isPrivate: z.boolean(),
@@ -27,19 +27,29 @@ const updateDeckSchema = z.object({
 type FormValuesFromEditDeck = z.infer<typeof updateDeckSchema>
 
 type Props = {
+  cover: string | undefined
   deckId: string
-  name?: string
+  isPrivate: boolean
+  name: string
   open: boolean
   setOpen: (open: boolean) => void
   title?: string
 }
 
-export const EditDeckModal = ({ deckId, name, open, setOpen, title }: Props) => {
+export const EditDeckModal = ({ cover, deckId, isPrivate, name, open, setOpen, title }: Props) => {
   const [updateDeck] = useUpdateDeckMutation()
   const { control, handleSubmit, reset, setValue, watch } = useForm<FormValuesFromEditDeck>({
-    defaultValues: { cover: undefined, isPrivate: true, name: '' },
+    defaultValues: { cover: undefined, isPrivate, name },
     resolver: zodResolver(updateDeckSchema),
   })
+
+  const [previewImage, setPreviewImage] = useState<string | undefined>(cover)
+
+  useEffect(() => {
+    setValue('name', name || '')
+    setValue('isPrivate', isPrivate)
+    setPreviewImage(cover)
+  }, [name, isPrivate, cover, setValue])
 
   const imagePath = watch('cover')
 
@@ -48,6 +58,7 @@ export const EditDeckModal = ({ deckId, name, open, setOpen, title }: Props) => 
 
     if (file) {
       setValue('cover', file)
+      setPreviewImage(URL.createObjectURL(file))
     }
   }
 
@@ -60,24 +71,19 @@ export const EditDeckModal = ({ deckId, name, open, setOpen, title }: Props) => 
   }
 
   const editFormClickHandler = async (data: FormValuesFromEditDeck) => {
-    // Упаковываем преобразуем данные из формы в объект
     const formData = new FormData()
 
-    // Добавляем значения cover, name, isPrivate в formData
-    if (data.cover) {
+    if (data.cover instanceof File) {
       formData.append('cover', data.cover)
     }
     formData.append('name', data.name)
     formData.append('isPrivate', String(data.isPrivate))
 
-    // Отправка данных на сервер
     try {
-      // Здесь мы преобразуем FormData в обычный объект с помощью Object.fromEntries(formData.entries())
-      // и передаем его вместе с deckId в функцию updateDeck.
-      // Метод unwrap используется для обработки успешного разрешения промиса.
-      await updateDeck({ id: deckId, ...Object.fromEntries(formData.entries()) }).unwrap()
+      await updateDeck({ body: formData, deckId }).unwrap()
       reset()
       setOpen(false)
+      setPreviewImage(undefined) // Reset preview image after successful update
     } catch (error) {
       console.error('Failed to update deck:', error)
     }
@@ -91,7 +97,7 @@ export const EditDeckModal = ({ deckId, name, open, setOpen, title }: Props) => 
           fullWidth
           label={'New deck Name'}
           name={'name'}
-          placeholder={name}
+          value={name}
         />
         <input
           accept={'image/*'}
@@ -102,8 +108,12 @@ export const EditDeckModal = ({ deckId, name, open, setOpen, title }: Props) => 
         />
         <Button className={s.uploadBtn} fullWidth onClick={handleUploadClick} variant={'secondary'}>
           <ImageOutline />
-          {imagePath ? imagePath.name : 'Upload Image'}
+          {imagePath && imagePath.name}
+          {!imagePath && previewImage ? 'Change Image' : 'Upload Image'}
         </Button>
+        {previewImage && (
+          <img alt={'Current cover'} className={s.currentCover} src={previewImage} />
+        )}
         <FormCheckbox
           className={s.privateBox}
           control={control}

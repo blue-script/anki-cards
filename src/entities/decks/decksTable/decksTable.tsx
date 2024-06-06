@@ -20,7 +20,7 @@ type DecksTableProps = {
   currentUserId?: string
   decks: Deck[] | undefined
   onDeleteClick: (id: string, name: string) => void
-  onEditClick: (id: string, name: string) => void
+  onEditClick: (id: string, name: string, cover: string | undefined, isPrivate: boolean) => void
   onIconClick: () => void
 }
 
@@ -42,8 +42,8 @@ export const DecksTable = ({
   )
 
   const handleEditClick = useCallback(
-    (id: string, name: string) => {
-      onEditClick(id, name)
+    (id: string, name: string, cover: string | undefined, isPrivate: boolean) => {
+      onEditClick(id, name, cover, isPrivate)
     },
     [onEditClick]
   )
@@ -97,7 +97,9 @@ export const DecksTable = ({
                   <>
                     <Button
                       className={s.button}
-                      onClick={() => handleEditClick(deck.id, deck.name)}
+                      onClick={() =>
+                        handleEditClick(deck.id, deck.name, deck.cover, deck.isPrivate)
+                      }
                       type={'button'}
                     >
                       <Edit2Outline />
