@@ -31,6 +31,7 @@ export const FormData = ({
       <FormTextField control={control} fullWidth label={`${placeholder}?`} name={`${textName}`} />
       {imgWatch && imgPreview && <img alt={'Uploaded'} className={s.img} src={imgPreview} />}
       <ImageUpload
+        className={s.topMargin}
         control={control}
         name={`${imgName}`}
         setValue={setValue}
