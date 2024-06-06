@@ -14,7 +14,7 @@ export type SelectProps<T> = {
   label?: string
   onValueChange?: (value: T) => void
   options: T[]
-  placeholder: number
+  placeholder?: number
   required?: boolean
   small?: boolean
   value?: string

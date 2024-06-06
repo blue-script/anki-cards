@@ -7,15 +7,15 @@ import {
 } from 'react-router-dom'
 
 import { DeckPage } from '@/pages/deck/deckPage'
-import { DecksList } from '@/pages/decks/decksList/decksList'
 import { DecksPage } from '@/pages/decks/decksPage'
 import { Decks19 } from '@/pages/decks19/decks19'
 import { Learn } from '@/pages/learn/learn'
+import { SignInPage } from '@/pages/signIn/signInPage'
 import { Layout } from '@/shared'
 
 const publicRoutes: RouteObject[] = [
   {
-    element: <div>inside publicRoutes / login</div>,
+    element: <SignInPage />,
     path: '/login',
   },
   {
@@ -30,7 +30,7 @@ const privateRoutes: RouteObject[] = [
     path: '/',
   },
   {
-    element: <DecksList />,
+    element: <Decks19 />,
     path: '/decks',
   },
   {
@@ -61,7 +61,7 @@ const PrivateRoutes = () => {
   return isAuthenticated ? <Outlet /> : <Navigate to={'/login'} />
 }
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     children: [
       {

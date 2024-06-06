@@ -18,10 +18,8 @@ const updateDeckSchema = z.object({
     })
     .optional(),
   isPrivate: z.boolean(),
-  name: z
-    .string()
-    .min(3, { message: 'Deck Name must be at least 3 characters long' })
-    .max(30, { message: 'Deck Name must not exceed 30 characters' }),
+  name: z.string().min(3, { message: 'Deck Name must be at least 3 characters long' }),
+  // .max(30, { message: 'Deck Name must not exceed 30 characters' }),
 })
 
 type FormValuesFromEditDeck = z.infer<typeof updateDeckSchema>

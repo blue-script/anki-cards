@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 
 import { AddNewDeckModal, DecksTable, DeleteDeckModal, EditDeckModal } from '@/entities'
+import { useMeQuery } from '@/services/auth/auth.service'
 import { useGetDecksQuery } from '@/services/decks/decks.service'
 import { Button, FormTextField, Page, Pagination, Slider, TabSwitcher, Typography } from '@/shared'
 import { useDebounce } from '@/shared/hooks/useDebounce'
@@ -36,6 +37,8 @@ const useURLSearchParams = () => {
 }
 
 export const Decks19 = () => {
+  const { data: me } = useMeQuery()
+
   const { getParam, searchParams, setParam, setSearchParams } = useURLSearchParams()
   const search = getParam('name')
   const itemsPerPage = getParam('itemsPerPage', '10')
@@ -44,7 +47,7 @@ export const Decks19 = () => {
   const maxCardsCount = getParam('maxCardsCount', '25')
   const orderBy = getParam('orderBy', 'updated-asc')
   const currentTabSwitcher = getParam('currentTabSwitcher', 'all')
-  const currentUserId = 'f2be95b9-4d07-4751-a775-bd612fc9553a'
+  const currentUserId = me?.id
   const authorId: string | undefined = currentTabSwitcher === 'my' ? currentUserId : undefined
   const debouncedSearch = useDebounce(search, 1000)
   const [openAddNewDeckModal, setOpenAddNewDeckModal] = useState<boolean>(false)
@@ -53,15 +56,20 @@ export const Decks19 = () => {
   const [deckId, setDeckId] = useState<string>('')
   const [deckName, setDeckName] = useState<string>('')
 
-  const { data: decks } = useGetDecksQuery({
-    authorId: authorId,
-    currentPage: +currentPage,
-    itemsPerPage: +itemsPerPage,
-    maxCardsCount: +maxCardsCount,
-    minCardsCount: +minCardsCount,
-    name: debouncedSearch,
-    orderBy: orderBy,
-  })
+  const { data: decks } = useGetDecksQuery(
+    {
+      authorId: authorId,
+      currentPage: +currentPage,
+      itemsPerPage: +itemsPerPage,
+      maxCardsCount: +maxCardsCount,
+      minCardsCount: +minCardsCount,
+      name: debouncedSearch,
+      orderBy: orderBy,
+    },
+    {
+      skip: !me,
+    }
+  )
 
   const { control, reset } = useForm<{ name: string }>({
     defaultValues: { name: '' },
@@ -111,6 +119,10 @@ export const Decks19 = () => {
     setOpenDeleteDeckModal(true)
     setDeckId(deckId)
     setDeckName(name)
+  }
+
+  if (!me) {
+    return <span>lodaing</span>
   }
 
   return (

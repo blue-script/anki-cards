@@ -30,12 +30,6 @@ const schema = z.object({
     .max(25, { message: 'Password must not exceed 25 characters' })
     .refine(password => /[a-z]/.test(password), {
       message: 'Password must include a lowercase letter',
-    })
-    .refine(password => /[A-Z]/.test(password), {
-      message: 'Password must include an uppercase letter',
-    })
-    .refine(password => /[!@#$%^&*()]/.test(password), {
-      message: 'Password must include one of the special characters',
     }),
   rememberMe: z.boolean().optional(),
 })
