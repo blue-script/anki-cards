@@ -31,7 +31,7 @@ export const DecksList = () => {
   const debounceText = useDebounce<string>(search, 500)
   const [sortOrder, setSortOrder] = useState<SortOrder>('updated-desc')
   const [open, setOpen] = useState<boolean>(false)
-
+  const formData = new FormData()
   const { data: decks } = useGetDecksQuery({
     currentPage,
     itemsPerPage,
@@ -121,7 +121,7 @@ export const DecksList = () => {
               currentUserId={currentUserId}
               decks={decks?.items}
               onDeleteClick={id => deleteDeck({ id })}
-              onEditClick={id => updateDeck({ id, name: 'hotPeppers new deck' })}
+              onEditClick={deckId => updateDeck({ body: formData, deckId })}
               onIconClick={handleSortOrderToggle}
             />
           </div>
