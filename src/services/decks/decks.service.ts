@@ -1,12 +1,12 @@
 import {
   CreateDeckArgs,
   Deck,
-  DeckMinMaxCardsResponse,
   DecksListResponse,
   DeleteDeckArgs,
   GetDeckArgs,
   GetDeckResponse,
   GetDecksArgs,
+  GetMinMaxCardsResponse,
   LearnDeckArgs,
   RandomCardResponse,
   UpdateDeckArgs,
@@ -19,6 +19,29 @@ export const decksService = flashcardsApi.injectEndpoints({
     return {
       createDeck: builder.mutation<Deck, CreateDeckArgs>({
         invalidatesTags: ['Decks'],
+        async onQueryStarted(_, { dispatch, getState, queryFulfilled }) {
+          const invalidateBy = decksService.util.selectInvalidatedBy(getState(), [
+            { type: 'Decks' },
+          ])
+
+          try {
+            const { data } = await queryFulfilled
+
+            invalidateBy.forEach(({ originalArgs }) => {
+              dispatch(
+                decksService.util.updateQueryData('getDecks', originalArgs, draft => {
+                  if (originalArgs.currentPage !== 1) {
+                    return
+                  }
+                  draft.items.unshift(data)
+                  draft.items.pop()
+                })
+              )
+            })
+          } catch (e) {
+            console.warn(e)
+          }
+        },
         query: args => ({
           body: args,
           method: 'POST',
@@ -47,8 +70,8 @@ export const decksService = flashcardsApi.injectEndpoints({
           url: `v2/decks`,
         }),
       }),
-      getMinMaxCards: builder.query<DeckMinMaxCardsResponse, void>({
-        query: () => `v2/decks/min-max-cards`,
+      getMinMaxCards: builder.query<GetMinMaxCardsResponse, void>({
+        query: () => 'v2/decks/min-max-cards',
       }),
       learnRandomCard: builder.query<RandomCardResponse, LearnDeckArgs>({
         providesTags: ['Cards'],
@@ -59,7 +82,37 @@ export const decksService = flashcardsApi.injectEndpoints({
       }),
       updateDeck: builder.mutation<Deck, UpdateDeckArgs>({
         invalidatesTags: ['Decks'],
-        query: ({ body, deckId }) => ({
+        async onQueryStarted({ deckId, ...args }, { dispatch, getState, queryFulfilled }) {
+          const patchResult: any[] = []
+
+          const invalidateBy = decksService.util.selectInvalidatedBy(getState(), [
+            { type: 'Decks' },
+          ])
+
+          invalidateBy.forEach(({ originalArgs }) => {
+            patchResult.push(
+              dispatch(
+                decksService.util.updateQueryData('getDecks', originalArgs, draft => {
+                  const itemToUpdateIndex = draft.items.findIndex(deck => deck.id === deckId)
+
+                  if (itemToUpdateIndex === -1) {
+                    return
+                  }
+
+                  Object.assign(draft.items[itemToUpdateIndex], args)
+                })
+              )
+            )
+          })
+          try {
+            await queryFulfilled
+          } catch (e) {
+            patchResult.forEach(patchResult => {
+              patchResult.undo()
+            })
+          }
+        },
+        query: ({ deckId, ...body }) => ({
           body,
           method: 'PATCH',
           url: `v1/decks/${deckId}`,
@@ -83,6 +136,7 @@ export const {
   useGetDeckByIdQuery,
   useGetDecksQuery,
   useGetMinMaxCardsQuery,
+  useLazyGetDecksQuery,
   useLearnRandomCardQuery,
   useUpdateDeckMutation,
   useUpdateRandomCardMutation,
