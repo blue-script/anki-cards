@@ -7,20 +7,16 @@ import {
 } from 'react-router-dom'
 
 import { DeckPage } from '@/pages/deck/deckPage'
-import { DecksList } from '@/pages/decks/decksList/decksList'
-import { DecksPage } from '@/pages/decks/decksPage'
-import { Decks19 } from '@/pages/decks19/decks19'
+import { DecksPage } from '@/pages/decksPage/decksPage'
 import { Learn } from '@/pages/learn/learn'
+import { SignInPage } from '@/pages/signInPage'
 import { Layout } from '@/shared'
+import { useAuthContext } from '@/shared/ui/layout/layout'
 
 const publicRoutes: RouteObject[] = [
   {
-    element: <div>inside publicRoutes / login</div>,
+    element: <SignInPage />,
     path: '/login',
-  },
-  {
-    element: <div>inside publicRoutes / logout</div>,
-    path: '/logout',
   },
 ]
 
@@ -30,7 +26,7 @@ const privateRoutes: RouteObject[] = [
     path: '/',
   },
   {
-    element: <DecksList />,
+    element: <DecksPage />,
     path: '/decks',
   },
   {
@@ -42,35 +38,17 @@ const privateRoutes: RouteObject[] = [
     path: '/decks/:deckId/learn',
   },
   {
-    element: <Decks19 />,
-    path: '/decks19',
-  },
-  {
     element: <Learn />,
-    path: '/decks19/:deckId/learn',
-  },
-  {
-    element: <DecksPage />,
-    path: '/news',
+    path: '/decksPage/:deckId/learn',
   },
 ]
 
-const PrivateRoutes = () => {
-  const isAuthenticated = true
-
-  return isAuthenticated ? <Outlet /> : <Navigate to={'/login'} />
-}
-
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     children: [
       {
         children: privateRoutes,
         element: <PrivateRoutes />,
-      },
-      {
-        element: <h1>404</h1>,
-        path: '*',
       },
       ...publicRoutes,
     ],
@@ -81,4 +59,10 @@ const router = createBrowserRouter([
 
 export const Router = () => {
   return <RouterProvider router={router} />
+}
+
+function PrivateRoutes() {
+  const { isAuthenticated } = useAuthContext()
+
+  return isAuthenticated ? <Outlet /> : <Navigate to={'/login'} />
 }

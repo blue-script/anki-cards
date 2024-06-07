@@ -12,6 +12,16 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
+const userStoryData = {
+  avatar: null,
+  created: '',
+  email: 'test@test.gmail.com',
+  id: '123-456-789',
+  isEmailVerified: false,
+  name: 'testAcc',
+  updated: 'string',
+}
+
 export const Default: Story = {
-  args: {},
+  args: { data: userStoryData },
 }
