@@ -18,10 +18,6 @@ const publicRoutes: RouteObject[] = [
     element: <SignInPage />,
     path: '/login',
   },
-  {
-    element: <div>inside publicRoutes / logout</div>,
-    path: '/logout',
-  },
 ]
 
 const privateRoutes: RouteObject[] = [
@@ -62,57 +58,11 @@ export const router = createBrowserRouter([
 ])
 
 export const Router = () => {
-  return (
-    //<AuthProvider>
-    <RouterProvider router={router} />
-    //</AuthProvider>
-  )
+  return <RouterProvider router={router} />
 }
 
 function PrivateRoutes() {
   const { isAuthenticated } = useAuthContext()
 
-  //console.log('PrivateRoutes isAuthenticated:', isAuthenticated)
-
   return isAuthenticated ? <Outlet /> : <Navigate to={'/login'} />
 }
-
-//////////////////////////////////////////////////////////////////////////////////
-// import { ReactNode, createContext, useContext, useEffect, useState } from 'react'
-//
-// import { useMeQuery } from '@/services/auth/auth.service'
-//
-// interface AuthContextType {
-//   isAuthenticated: boolean
-// }
-//
-// const AuthContext = createContext<AuthContextType | undefined>(undefined)
-//
-// interface AuthProviderProps {
-//   children: ReactNode
-// }
-//
-// export const AuthProvider = ({ children }: AuthProviderProps) => {
-//   const [isAuthenticated, setIsAuthenticated] = useState(false)
-//   const { data, error } = useMeQuery()
-//
-//   useEffect(() => {
-//     if (data) {
-//       setIsAuthenticated(!!data)
-//     } else if (error) {
-//       setIsAuthenticated(false)
-//     }
-//   }, [data, error])
-//
-//   return <AuthContext.Provider value={{ isAuthenticated }}>{children}</AuthContext.Provider>
-// }
-//
-// export const useAuth = (): AuthContextType => {
-//   const context = useContext(AuthContext)
-//
-//   if (!context) {
-//     throw new Error('useAuth must be used within an AuthProvider')
-//   }
-//
-//   return context
-// }

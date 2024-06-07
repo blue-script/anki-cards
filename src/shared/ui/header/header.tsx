@@ -1,5 +1,5 @@
 import { ComponentPropsWithoutRef } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { LogOut, PersonOutline } from '@/assets/icons'
 import logo from '@/assets/img/logo.png'
@@ -37,6 +37,14 @@ type ProfileProps = {
 }
 
 export const Profile = ({ avatar, email, id, name }: ProfileProps) => {
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('refreshToken')
+    navigate('/login')
+  }
+
   return (
     <>
       <Dropdown.Root modal={false}>
@@ -68,9 +76,9 @@ export const Profile = ({ avatar, email, id, name }: ProfileProps) => {
           <Dropdown.Separator />
           <Dropdown.Item>
             <LogOut />
-            <Typography as={Link} option={'caption'} to={'/logout'}>
+            <Button onClick={handleLogout} variant={'link'}>
               Sign Out
-            </Typography>
+            </Button>
           </Dropdown.Item>
         </Dropdown.Content>
       </Dropdown.Root>

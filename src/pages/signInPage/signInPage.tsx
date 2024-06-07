@@ -1,34 +1,30 @@
 import toast from 'react-hot-toast'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { SignIn } from '@/features/auth/singInForm'
-import { useLoginMutation, useMeQuery } from '@/services/auth/auth.service'
+import { useLoginMutation } from '@/services/auth/auth.service'
 import { LoginArgs } from '@/services/auth/auth.types'
 import { Page } from '@/shared'
 
 export const SignInPage = () => {
-  const [signIn] = useLoginMutation()
+  const [login] = useLoginMutation()
   const navigate = useNavigate()
-  //ohShit
-  const { data } = useMeQuery()
 
-  const handleSignIn = async (data: LoginArgs) => {
+  const handleSubmit = async (data: LoginArgs) => {
     try {
-      await signIn(data).unwrap()
-      navigate('/')
-    } catch (error: any) {
-      toast.error(error?.data?.message ?? 'Could not sign in')
+      login(data)
+        .unwrap()
+        .then(() => {
+          navigate('/')
+        })
+    } catch (err: any) {
+      toast.error(err)
     }
   }
 
-  //ohShit
-  if (data) {
-    return <Navigate to={'/'} />
-  }
-
   return (
-    <Page mt={'33px'}>
-      <SignIn onSubmit={handleSignIn} />
+    <Page mt={'32px'}>
+      <SignIn onSubmit={handleSubmit} />
     </Page>
   )
 }
