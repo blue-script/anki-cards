@@ -1,6 +1,10 @@
 .card {
+  display: flex;
+  flex-direction: column;
+
   width: 100%;
   max-width: 420px;
+  margin: 0 auto;
   padding: 33px 36px 25px;
 }
 
@@ -14,20 +18,15 @@
   margin-bottom: 48px;
 }
 
-.bgInput {
-}
-
-.checkbox {
-}
-
 .title {
-  text-align: center;
   margin-bottom: 51px;
+  text-align: center;
 }
 
 .recoverPasswordLink,
 .recoverPasswordLink:visited {
   cursor: pointer;
+
   display: flex;
   justify-content: flex-end;
 
@@ -51,9 +50,12 @@
 
 .signUpLink {
   cursor: pointer;
+
   display: flex;
   justify-content: center;
+
   margin: 10px 0;
+
   font-size: var(--font-size-m);
   font-weight: var(--font-weight-bold);
   color: var(--color-accent-500);
