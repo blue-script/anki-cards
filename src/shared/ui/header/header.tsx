@@ -32,11 +32,11 @@ export const Header = ({ data }: HeaderProps) => {
 type ProfileProps = {
   avatar: string
   email: string
-  id: string
+  id?: string
   name: string
 }
 
-export const Profile = ({ avatar, email, id, name }: ProfileProps) => {
+export const Profile = ({ avatar, email, name }: ProfileProps) => {
   const navigate = useNavigate()
 
   const handleLogout = () => {
@@ -70,13 +70,13 @@ export const Profile = ({ avatar, email, id, name }: ProfileProps) => {
           <Dropdown.Item>
             <PersonOutline />
             <Typography as={'span'} option={'caption'}>
-              {id}
+              My Profile
             </Typography>
           </Dropdown.Item>
           <Dropdown.Separator />
           <Dropdown.Item>
             <LogOut />
-            <Button onClick={handleLogout} variant={'link'}>
+            <Button className={s.btnLogout} onClick={handleLogout} variant={'link'}>
               Sign Out
             </Button>
           </Dropdown.Item>

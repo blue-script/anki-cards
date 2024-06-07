@@ -27,7 +27,7 @@ export const Layout = forwardRef<ElementRef<'div'>, Props>(({ className, ...rest
   const isAuthenticated = !isError && !isMeLoading //login -> true
 
   if (isMeLoading) {
-    return <div>...loading layout me</div>
+    return <LinearProgress isLoading={'loading'} />
   }
 
   return (
