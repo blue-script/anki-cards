@@ -7,9 +7,7 @@ import {
 } from 'react-router-dom'
 
 import { DeckPage } from '@/pages/deck/deckPage'
-import { DecksList } from '@/pages/decks/decksList/decksList'
-import { DecksPage } from '@/pages/decks/decksPage'
-import { Decks19 } from '@/pages/decks19/decks19'
+import { DecksPage } from '@/pages/decksPage/decksPage'
 import { Learn } from '@/pages/learn/learn'
 import { SignInPage } from '@/pages/signInPage'
 import { Layout } from '@/shared'
@@ -17,36 +15,22 @@ import { useAuthContext } from '@/shared/ui/layout/layout'
 
 const publicRoutes: RouteObject[] = [
   {
-    children: [
-      {
-        element: <SignInPage />,
-        path: '/login',
-      },
-      {
-        element: <div>inside publicRoutes / logout</div>,
-        path: '/logout',
-      },
-    ],
+    element: <SignInPage />,
+    path: '/login',
   },
-
-  //
-  // {
-  //   element: <SignInPage />,
-  //   path: '/login',
-  // },
-  // {
-  //   element: <div>inside publicRoutes / logout</div>,
-  //   path: '/logout',
-  // },
+  {
+    element: <div>inside publicRoutes / logout</div>,
+    path: '/logout',
+  },
 ]
 
 const privateRoutes: RouteObject[] = [
   {
-    element: <Navigate to={'/decks'} />,
+    element: <Navigate replace to={'/decks'} />,
     path: '/',
   },
   {
-    element: <DecksList />,
+    element: <DecksPage />,
     path: '/decks',
   },
   {
@@ -58,16 +42,8 @@ const privateRoutes: RouteObject[] = [
     path: '/decks/:deckId/learn',
   },
   {
-    element: <Decks19 />,
-    path: '/decks19',
-  },
-  {
     element: <Learn />,
-    path: '/decks19/:deckId/learn',
-  },
-  {
-    element: <DecksPage />,
-    path: '/news',
+    path: '/decksPage/:deckId/learn',
   },
 ]
 
@@ -96,7 +72,7 @@ export const Router = () => {
 function PrivateRoutes() {
   const { isAuthenticated } = useAuthContext()
 
-  console.log('PrivateRoutes isAuthenticated:', isAuthenticated)
+  //console.log('PrivateRoutes isAuthenticated:', isAuthenticated)
 
   return isAuthenticated ? <Outlet /> : <Navigate to={'/login'} />
 }

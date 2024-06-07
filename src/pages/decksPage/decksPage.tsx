@@ -7,7 +7,7 @@ import { useGetDecksQuery } from '@/services/decks/decks.service'
 import { Button, FormTextField, Page, Pagination, Slider, TabSwitcher, Typography } from '@/shared'
 import { useDebounce } from '@/shared/hooks/useDebounce'
 
-import s from './decks19.module.scss'
+import s from './decksPage.module.scss'
 
 import SvgTrashOutline from './../../assets/icons/TrashOutline'
 
@@ -35,7 +35,7 @@ const useURLSearchParams = () => {
   return { getParam, searchParams, setParam, setSearchParams }
 }
 
-export const Decks19 = () => {
+export const DecksPage = () => {
   const { getParam, searchParams, setParam, setSearchParams } = useURLSearchParams()
   const search = getParam('name')
   const itemsPerPage = getParam('itemsPerPage', '10')

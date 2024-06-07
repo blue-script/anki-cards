@@ -26,7 +26,7 @@ export const Layout = forwardRef<ElementRef<'div'>, Props>(({ className, ...rest
   const { data: meData, isError, isLoading: isMeLoading } = useMeQuery()
   const isAuthenticated = !isError && !isMeLoading
 
-  console.log('isAuthenticated', isAuthenticated)
+  //console.log('isAuthenticated', isAuthenticated)
 
   if (isMeLoading) {
     return <div>...loading layout me</div>

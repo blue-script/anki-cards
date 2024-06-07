@@ -12,7 +12,7 @@ import {
 } from '@/services/decks/decks.service'
 import { Button, FormTextField, Select, TextField, Typography } from '@/shared'
 
-export function DecksPage() {
+export function DecksDraft() {
   const [searchParams, setSearchParams] = useSearchParams()
   const search = searchParams.get('search') ?? ''
   const [itemsPerPage, setItemsPerPage] = useState(10)
@@ -83,6 +83,7 @@ export function DecksPage() {
       <Select
         onValueChange={numOfItems => handleItemsPerPage(numOfItems)}
         options={['10', '20', '30', '50', '100']}
+        placeholder={10}
       />
       <form onSubmit={onSubmit}>
         <FormTextField control={control} label={'New deck name'} name={'name'} />
