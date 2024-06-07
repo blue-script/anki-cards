@@ -49,7 +49,11 @@ export interface CreateDeckArgs {
   name: string
 }
 
-export type UpdateDeckArgs = { id: string } & Partial<CreateDeckArgs>
+export type UpdateDeckArgs = {
+  body: FormData
+  deckId: string
+}
+
 export type DeleteDeckArgs = { id: string }
 
 export type LearnDeckArgs = {
@@ -97,6 +101,11 @@ export interface RandomCardResponse {
 export type NewGradeData = {
   cardId: string
   grade: number
+}
+
+export type DeckMinMaxCardsResponse = {
+  max: number
+  min: number
 }
 
 // Error Message

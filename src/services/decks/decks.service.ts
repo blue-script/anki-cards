@@ -13,7 +13,6 @@ import {
   UpdateGradeArgs,
 } from '@/services/decks/decks.types'
 import { flashcardsApi } from '@/services/flashcardsApi'
-import { current } from '@reduxjs/toolkit'
 
 export const decksService = flashcardsApi.injectEndpoints({
   endpoints: builder => {
@@ -40,7 +39,7 @@ export const decksService = flashcardsApi.injectEndpoints({
               )
             })
           } catch (e) {
-            console.log(e)
+            console.warn(e)
           }
         },
         query: args => ({
@@ -83,7 +82,7 @@ export const decksService = flashcardsApi.injectEndpoints({
       }),
       updateDeck: builder.mutation<Deck, UpdateDeckArgs>({
         invalidatesTags: ['Decks'],
-        async onQueryStarted({ id, ...args }, { dispatch, getState, queryFulfilled }) {
+        async onQueryStarted({ deckId, ...args }, { dispatch, getState, queryFulfilled }) {
           const patchResult: any[] = []
 
           const invalidateBy = decksService.util.selectInvalidatedBy(getState(), [
@@ -94,11 +93,7 @@ export const decksService = flashcardsApi.injectEndpoints({
             patchResult.push(
               dispatch(
                 decksService.util.updateQueryData('getDecks', originalArgs, draft => {
-                  console.log(current(draft))
-
-                  const itemToUpdateIndex = draft.items.findIndex(deck => deck.id === id)
-
-                  console.log(itemToUpdateIndex)
+                  const itemToUpdateIndex = draft.items.findIndex(deck => deck.id === deckId)
 
                   if (itemToUpdateIndex === -1) {
                     return
@@ -109,9 +104,6 @@ export const decksService = flashcardsApi.injectEndpoints({
               )
             )
           })
-
-          console.log('invalidateBy', invalidateBy)
-
           try {
             await queryFulfilled
           } catch (e) {
@@ -120,10 +112,10 @@ export const decksService = flashcardsApi.injectEndpoints({
             })
           }
         },
-        query: ({ id, ...body }) => ({
+        query: ({ deckId, ...body }) => ({
           body,
           method: 'PATCH',
-          url: `v1/decks/${id}`,
+          url: `v1/decks/${deckId}`,
         }),
       }),
       updateRandomCard: builder.mutation<RandomCardResponse, UpdateGradeArgs>({

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 import { Edit2Outline, TrashOutline } from '@/assets/icons'
-import { CardTextOrImage, EditCardModal } from '@/entities'
+import { CardTextImage, EditCardModal } from '@/entities'
 import { DeleteCardModal } from '@/entities/deck/deleteCardModal/deleteCardModal'
 import { useDeleteCardMutation } from '@/services/cards/cards.service'
 import { Card } from '@/services/cards/cards.types'
@@ -46,10 +46,10 @@ export const CardRow = ({
   return (
     <Table.TRow>
       <Table.Td>
-        <CardTextOrImage img={questionImg} text={question} />
+        <CardTextImage img={questionImg} text={question} />
       </Table.Td>
       <Table.Td>
-        <CardTextOrImage img={answerImg} text={answer} />
+        <CardTextImage img={answerImg} text={answer} />
       </Table.Td>
       <Table.Td>{new Date(updated).toLocaleDateString('ru-ru')}</Table.Td>
       <Table.Td className={clsx(s.stars, s.nowrap)}>

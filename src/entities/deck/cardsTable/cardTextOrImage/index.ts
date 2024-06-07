@@ -1,1 +1,1 @@
-export { CardTextOrImage } from './сardTextOrImage'
+export { CardTextImage } from './сardTextOrImage'

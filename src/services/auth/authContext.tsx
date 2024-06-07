@@ -18,10 +18,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const { data, isError, isLoading } = useMeQuery()
   const isAuthenticated = !!data
 
-  useEffect(() => {
-    console.log('useMeQuery data:', data)
-    console.log('isAuthenticated:', isAuthenticated)
-  }, [data, isAuthenticated])
+  useEffect(() => {}, [data, isAuthenticated])
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, isError, isLoading }}>

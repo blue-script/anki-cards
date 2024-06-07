@@ -22,6 +22,7 @@ export type SortOrder = 'updated-asc' | 'updated-desc'
 
 export const DecksList = () => {
   const { data: minMaxCardsData, isLoading: isLoadingMinMaxCardsData } = useGetMinMaxCardsQuery()
+  const formData = new FormData()
 
   const [selectTab, setSelectTab] = useState<SelectTab>('My Cards')
   const currentUserId = 'f2be95b9-4d07-4751-a775-bd612fc9553a'
@@ -127,7 +128,7 @@ export const DecksList = () => {
               currentUserId={currentUserId}
               decks={decks?.items}
               onDeleteClick={id => deleteDeck({ id })}
-              onEditClick={id => updateDeck({ id, name: 'hotPeppers new deck' })}
+              onEditClick={deckId => updateDeck({ body: formData, deckId })}
               onIconClick={handleSortOrderToggle}
             />
           </div>

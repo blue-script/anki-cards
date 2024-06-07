@@ -14,6 +14,7 @@ export type TextFieldProps = {
   fullWidth?: boolean
   label?: string
   onValueChange?: (value: string) => void
+  value?: string
   variant?: 'input' | 'password' | 'search'
 } & ComponentPropsWithoutRef<'input'>
 
@@ -29,11 +30,13 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       onChange,
       onValueChange,
       placeholder = '',
+      value = '',
       variant = 'input',
       ...rest
     }: TextFieldProps,
     ref
   ) => {
+    const [editValue, setEditValue] = useState(value)
     const finalInputClassName = clsx(
       s.input,
       s[variant],
@@ -51,9 +54,12 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     const [showPassword, setShowPassword] = useState(false)
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+      const newValue = e.target.value
+
+      setEditValue(newValue)
       onChange?.(e)
       // weak point cause rerender on each symbol typing
-      onValueChange?.(e.target.value)
+      onValueChange?.(newValue)
     }
 
     const showPasswordHandler = () => {
@@ -73,6 +79,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
             placeholder={placeholder}
             ref={ref}
             type={variant === 'password' && !showPassword ? 'password' : 'text'}
+            value={editValue}
             {...rest}
           />
           {variant === 'password' && (

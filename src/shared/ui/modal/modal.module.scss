@@ -11,7 +11,8 @@
 
 .content {
   position: fixed;
-  top: 40%;
+  z-index: 1001;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 
@@ -34,7 +35,9 @@
 
 .overlay[data-state='open'] {
   position: fixed;
+  z-index: 1000;
   inset: 0;
+
   opacity: 0.8;
   background-color: var(--color-dark-900);
 }

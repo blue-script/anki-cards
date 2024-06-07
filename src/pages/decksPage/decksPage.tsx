@@ -124,7 +124,9 @@ export const DecksPage = () => {
       )}
       {openEditDeckModal && (
         <EditDeckModal
+          cover={''}
           deckId={deckId}
+          isPrivate
           name={deckName}
           open={openEditDeckModal}
           setOpen={setOpenEditNewDeckModal}
