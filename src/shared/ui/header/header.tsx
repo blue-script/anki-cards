@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef } from 'react'
+import { ComponentPropsWithoutRef, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { LogOut, PersonOutline } from '@/assets/icons'
@@ -15,16 +15,21 @@ type HeaderProps = {
 
 export const Header = ({ data }: HeaderProps) => {
   const navigate = useNavigate()
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!data)
+
+  useEffect(() => {
+    setIsAuthenticated(!!data)
+  }, [data])
   const handleClick = () => {
     navigate('/')
   }
 
   return (
     <header className={s.header}>
-      {!localStorage.getItem('accessToken') ? (
+      {!isAuthenticated ? (
         <img alt={'logo'} className={s.logo} src={logo} />
       ) : (
-        <Button onClick={handleClick}>
+        <Button className={s.button} onClick={handleClick} variant={'secondary'}>
           <img alt={'logo'} className={s.logo} src={logo} />
         </Button>
       )}
@@ -36,6 +41,7 @@ export const Header = ({ data }: HeaderProps) => {
           email={data?.email as string}
           id={data?.id as string}
           name={data?.name as string}
+          setIsAuthenticated={setIsAuthenticated}
         />
       )}
     </header>
@@ -47,14 +53,16 @@ type ProfileProps = {
   email: string
   id?: string
   name: string
+  setIsAuthenticated: (isAuthenticated: boolean) => void
 }
 
-export const Profile = ({ avatar, email, name }: ProfileProps) => {
+export const Profile = ({ avatar, email, name, setIsAuthenticated }: ProfileProps) => {
   const [logout] = useLogoutMutation()
 
   const navigate = useNavigate()
   const handleLogout = async () => {
     await logout()
+    setIsAuthenticated(false)
     navigate('/login')
   }
 
