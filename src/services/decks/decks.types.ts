@@ -103,11 +103,6 @@ export type NewGradeData = {
   grade: number
 }
 
-export type DeckMinMaxCardsResponse = {
-  max: number
-  min: number
-}
-
 // Error Message
 // export type ApiError = {
 //   data: DataErrorType

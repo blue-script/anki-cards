@@ -112,7 +112,7 @@ export const decksService = flashcardsApi.injectEndpoints({
             })
           }
         },
-        query: ({ deckId, ...body }) => ({
+        query: ({ body, deckId }) => ({
           body,
           method: 'PATCH',
           url: `v1/decks/${deckId}`,
