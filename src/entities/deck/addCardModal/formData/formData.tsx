@@ -25,15 +25,26 @@ export const FormData = ({
   setValue,
   textName,
 }: Props) => {
+  const onDelete = () => {
+    setValue(imgName, null)
+  }
+
   return (
     <div className={s.container}>
       {placeholder}:
       <FormTextField control={control} fullWidth label={`${placeholder}?`} name={`${textName}`} />
-      {imgPreview && <img alt={'Uploaded'} className={s.img} src={imgPreview} />}
+      {imgPreview && (
+        <>
+          <img alt={'Uploaded'} className={s.img} src={imgPreview} />
+          <button onClick={onDelete} type={'button'}>
+            Delete
+          </button>
+        </>
+      )}
       <ImageUpload
         className={s.topMargin}
         control={control}
-        name={`${imgName}`}
+        name={imgName}
         setValue={setValue}
         variantButton={'secondary'}
       >

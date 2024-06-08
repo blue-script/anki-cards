@@ -53,22 +53,26 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
   useEffect(() => {
     if (questionImgWatch instanceof File) {
       setQuestionImgPreview(URL.createObjectURL(questionImgWatch))
+    } else {
+      setQuestionImgPreview('')
     }
 
     return () => {
       questionImgPreview && URL.revokeObjectURL(questionImgPreview)
     }
-  }, [questionImgWatch, questionImgPreview])
+  }, [questionImgWatch])
 
   useEffect(() => {
     if (answerImgWatch instanceof File) {
       setAnswerImgPreview(URL.createObjectURL(answerImgWatch))
+    } else {
+      setAnswerImgPreview('')
     }
 
     return () => {
       answerImgPreview && URL.revokeObjectURL(answerImgPreview)
     }
-  }, [answerImgWatch, answerImgPreview])
+  }, [answerImgWatch])
 
   if (!deckId) {
     return <div>Error</div>
