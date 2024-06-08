@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 
 import { ImageOutline } from '@/assets/icons'
 import { useCreateDeckMutation } from '@/services/decks/decks.service'
@@ -75,6 +76,7 @@ export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) 
       reset()
       setOpen(false)
       setPreviewImage(undefined) // Reset preview image after successful update
+      toast.success('Deck added successfully!')
     } catch (error) {
       console.error('Failed to update deck:', error)
     }
