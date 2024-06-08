@@ -1,4 +1,5 @@
-import { ComponentPropsWithoutRef } from 'react'
+import { ComponentPropsWithoutRef, useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 
 import { LogOut, PersonOutline } from '@/assets/icons'
@@ -15,27 +16,38 @@ type HeaderProps = {
 
 export const Header = ({ data }: HeaderProps) => {
   const navigate = useNavigate()
+  const [headerData, setHeaderData] = useState<User | undefined>(data)
+
+  useEffect(() => {
+    setHeaderData(data)
+  }, [data])
+
   const handleClick = () => {
     navigate('/')
   }
 
+  const resetHeaderData = () => {
+    setHeaderData(undefined)
+  }
+
   return (
     <header className={s.header}>
-      {!localStorage.getItem('accessToken') ? (
+      {!headerData ? (
         <img alt={'logo'} className={s.logo} src={logo} />
       ) : (
-        <Button onClick={handleClick}>
+        <Button className={s.button} onClick={handleClick} variant={'link'}>
           <img alt={'logo'} className={s.logo} src={logo} />
         </Button>
       )}
 
-      {data === undefined && <Button variant={'primary'}>Sign in</Button>}
-      {data?.id && (
+      {!headerData && <Button variant={'primary'}>Sign in</Button>}
+      {headerData && (
         <Profile
-          avatar={data?.avatar as string}
-          email={data?.email as string}
-          id={data?.id as string}
-          name={data?.name as string}
+          avatar={headerData?.avatar as string}
+          email={headerData?.email as string}
+          id={headerData?.id as string}
+          name={headerData?.name as string}
+          resetHeaderData={resetHeaderData}
         />
       )}
     </header>
@@ -47,15 +59,24 @@ type ProfileProps = {
   email: string
   id?: string
   name: string
+  resetHeaderData: () => void
 }
 
-export const Profile = ({ avatar, email, name }: ProfileProps) => {
+export const Profile = ({ avatar, email, name, resetHeaderData }: ProfileProps) => {
   const [logout] = useLogoutMutation()
 
   const navigate = useNavigate()
   const handleLogout = async () => {
-    await logout()
-    navigate('/login')
+    try {
+      await logout().unwrap()
+    } catch (err: any) {
+      if (err.status !== 401) {
+        toast.error(err.message)
+      }
+    } finally {
+      resetHeaderData()
+      navigate('/login', { replace: true })
+    }
   }
 
   return (
