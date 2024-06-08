@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 
 import { AddNewDeckModal, DecksTable, DeleteDeckModal, EditDeckModal } from '@/entities'
 import { useMeQuery } from '@/services/auth/auth.service'
-import { useGetDecksQuery } from '@/services/decks/decks.service'
+import { useGetDecksQuery, useGetMinMaxCardsQuery } from '@/services/decks/decks.service'
 import { Button, FormTextField, Page, Pagination, Slider, TabSwitcher, Typography } from '@/shared'
 import { useDebounce } from '@/shared/hooks/useDebounce'
 
@@ -37,13 +37,14 @@ const useURLSearchParams = () => {
 }
 
 export const DecksPage = () => {
+  const { data: minMaxCardsData } = useGetMinMaxCardsQuery()
   const { getParam, searchParams, setParam, setSearchParams } = useURLSearchParams()
   const { data: me } = useMeQuery()
   const search = getParam('name')
   const itemsPerPage = getParam('itemsPerPage', '10')
   const currentPage = getParam('currentPage', '1')
-  const minCardsCount = getParam('minCardsCount', '0')
-  const maxCardsCount = getParam('maxCardsCount', '25')
+  const minCardsCount = getParam('minCardsCount', String(minMaxCardsData?.min ?? 0))
+  const maxCardsCount = getParam('maxCardsCount', String(minMaxCardsData?.max ?? 25))
   const orderBy = getParam('orderBy', 'updated-asc')
   const currentTabSwitcher = getParam('currentTabSwitcher', 'all')
   const currentUserId = me?.id
@@ -54,6 +55,8 @@ export const DecksPage = () => {
   const [openDeleteDeckModal, setOpenDeleteDeckModal] = useState<boolean>(false)
   const [deckId, setDeckId] = useState<string>('')
   const [deckName, setDeckName] = useState<string>('')
+  const [deckCover, setDeckCover] = useState<string | undefined>(undefined)
+  const [deckIsPrivate, setDeckIsPrivate] = useState<boolean>(true)
 
   const { data: decks } = useGetDecksQuery({
     authorId: authorId,
@@ -94,6 +97,7 @@ export const DecksPage = () => {
     setParam('currentTabSwitcher', value)
   }
   const handleSliderChange = ([min, max]: number[]) => {
+    setParam('currentPage', '1')
     setParam('minCardsCount', String(min))
     setParam('maxCardsCount', String(max))
   }
@@ -104,10 +108,17 @@ export const DecksPage = () => {
     setOpenAddNewDeckModal(true)
     resetFilters()
   }
-  const handleEditDeck = (deckId: string, name: string) => {
+  const handleEditDeck = (
+    id: string,
+    name: string,
+    cover: string | undefined,
+    isPrivate: boolean
+  ) => {
     setOpenEditNewDeckModal(true)
-    setDeckId(deckId)
+    setDeckId(id)
     setDeckName(name)
+    setDeckCover(cover)
+    setDeckIsPrivate(isPrivate)
   }
   const handleDeleteDeck = (deckId: string, name: string) => {
     setOpenDeleteDeckModal(true)
@@ -126,9 +137,9 @@ export const DecksPage = () => {
       )}
       {openEditDeckModal && (
         <EditDeckModal
-          cover={''}
+          cover={deckCover}
           deckId={deckId}
-          isPrivate
+          isPrivate={deckIsPrivate}
           name={deckName}
           open={openEditDeckModal}
           setOpen={setOpenEditNewDeckModal}
@@ -166,8 +177,8 @@ export const DecksPage = () => {
         />
         <Slider
           label={'Number of cards'}
-          max={25}
-          min={0}
+          max={minMaxCardsData?.max ?? 25}
+          min={minMaxCardsData?.min ?? 0}
           onValueChange={handleSliderChange}
           value={[+minCardsCount, +maxCardsCount]}
         />
@@ -178,7 +189,7 @@ export const DecksPage = () => {
       </div>
       <DecksTable
         className={s.table}
-        currentUserId={authorId}
+        currentUserId={currentUserId}
         decks={decks?.items}
         onDeleteClick={handleDeleteDeck}
         onEditClick={handleEditDeck}
