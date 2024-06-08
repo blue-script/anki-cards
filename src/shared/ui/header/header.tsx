@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { LogOut, PersonOutline } from '@/assets/icons'
 import logo from '@/assets/img/logo.png'
+import { useLogoutMutation } from '@/services/auth/auth.service'
 import { User } from '@/services/auth/auth.types'
 import { Button, Dropdown, Typography } from '@/shared'
 
@@ -13,9 +14,21 @@ type HeaderProps = {
 } & ComponentPropsWithoutRef<'header'>
 
 export const Header = ({ data }: HeaderProps) => {
+  const navigate = useNavigate()
+  const handleClick = () => {
+    navigate('/')
+  }
+
   return (
     <header className={s.header}>
-      <img alt={'logo'} className={s.logo} src={logo} />
+      {!localStorage.getItem('accessToken') ? (
+        <img alt={'logo'} className={s.logo} src={logo} />
+      ) : (
+        <Button onClick={handleClick}>
+          <img alt={'logo'} className={s.logo} src={logo} />
+        </Button>
+      )}
+
       {data === undefined && <Button variant={'primary'}>Sign in</Button>}
       {data?.id && (
         <Profile
@@ -37,11 +50,11 @@ type ProfileProps = {
 }
 
 export const Profile = ({ avatar, email, name }: ProfileProps) => {
-  const navigate = useNavigate()
+  const [logout] = useLogoutMutation()
 
-  const handleLogout = () => {
-    localStorage.removeItem('accessToken')
-    localStorage.removeItem('refreshToken')
+  const navigate = useNavigate()
+  const handleLogout = async () => {
+    await logout()
     navigate('/login')
   }
 
