@@ -18,3 +18,9 @@ export type LoginResponse = {
   accessToken: string
   refreshToken: string
 }
+export type LogoutResponse = {
+  message: string
+  path: string
+  statusCode: number
+  timestamp: string
+}

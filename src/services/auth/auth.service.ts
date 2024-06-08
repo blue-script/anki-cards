@@ -1,4 +1,4 @@
-import { LoginArgs, LoginResponse, User } from '@/services/auth/auth.types'
+import { LoginArgs, LoginResponse, LogoutResponse, User } from '@/services/auth/auth.types'
 import { flashcardsApi } from '@/services/flashcardsApi'
 
 export const authService = flashcardsApi.injectEndpoints({
@@ -24,11 +24,27 @@ export const authService = flashcardsApi.injectEndpoints({
         url: `v1/auth/login`,
       }),
     }),
+    logout: builder.mutation<LogoutResponse, void>({
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        const { data } = await queryFulfilled
+
+        if (!data) {
+          return
+        }
+
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('refreshToken')
+
+        dispatch(authService.util.resetApiState())
+        dispatch(authService.util.invalidateTags(['Me']))
+      },
+      query: () => ({ method: 'POST', url: 'v2/auth/logout' }),
+    }),
     me: builder.query<User, void>({
       providesTags: ['Me'],
-      query: () => 'v1/auth/me',
+      query: () => ({ method: 'GET', url: 'v1/auth/me' }),
     }),
   }),
 })
 
-export const { useLoginMutation, useMeQuery } = authService
+export const { useLoginMutation, useLogoutMutation, useMeQuery } = authService
