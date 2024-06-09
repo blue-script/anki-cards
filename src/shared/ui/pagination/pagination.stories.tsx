@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 
 import { useState } from 'react'
 
-import { Pagination } from '@/shared/ui/pagination/index'
+import { Pagination } from '@/shared'
 
 const meta: Meta<typeof Pagination> = {
   component: Pagination,
