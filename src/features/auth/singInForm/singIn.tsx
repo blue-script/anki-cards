@@ -66,6 +66,12 @@ export const SignIn = ({ onSubmit }: Props) => {
         <Typography className={s.title} option={'h1'}>
           Sign In
         </Typography>
+        <Typography className={s.testInfo} option={'caption'}>
+          <span>Use common test account credentials:</span>
+          <span>Email: test@test.com</span>
+          <span>Password: test</span>
+          <span>Please, check Remember me</span>
+        </Typography>
         <form onSubmit={handleFormSubmitted}>
           <div className={s.form}>
             <div className={s.textField}>
