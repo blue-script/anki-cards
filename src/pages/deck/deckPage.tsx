@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 
 import { AddCardModal, CardsTable, DeckHeader } from '@/entities'
+import { useMeQuery } from '@/services/auth/auth.service'
 import { useGetCardsQuery } from '@/services/cards/cards.service'
 import { useGetDeckByIdQuery } from '@/services/decks/decks.service'
 import { Button, Page, Pagination, TextField, Typography } from '@/shared'
@@ -12,6 +13,7 @@ import s from './deckPage.module.scss'
 const defaultNumberPage = 1
 
 export const DeckPage = () => {
+  const { data: me } = useMeQuery()
   const { deckId } = useParams<{ deckId: string }>()
 
   const [searchParams, setSearchParams] = useSearchParams()
@@ -43,12 +45,15 @@ export const DeckPage = () => {
     isLoading: isDeckLoading,
   } = useGetDeckByIdQuery({ id: deckId ?? '' })
 
+  const [order, setOrder] = useState('')
+  const changeOrder = (value: string) => setOrder(value)
+
   const { cards, error, pagination } = useGetCardsQuery(
     {
       currentPage: currentPage,
       id: deckId ?? '',
       itemsPerPage: pageSize,
-      orderBy: 'updated-desc',
+      orderBy: order || null,
       question: debounceText,
     },
     {
@@ -68,7 +73,7 @@ export const DeckPage = () => {
     return <div>{`Error: ${error || deckError || 'not found deckId'}`}</div>
   }
 
-  const isOwner = deckData?.userId === deckData?.userId //some logic
+  const isOwner = me?.id === deckData?.userId
   const cardsLength = cards?.length ?? 0
 
   if (isDeckLoading) {
@@ -95,7 +100,7 @@ export const DeckPage = () => {
             variant={'search'}
           />
 
-          <CardsTable cards={cards} isOwner={isOwner} />
+          <CardsTable cards={cards} changeOrder={changeOrder} isOwner={isOwner} />
         </>
       ) : (
         <>
