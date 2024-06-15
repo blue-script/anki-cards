@@ -37,7 +37,11 @@ export const DeckPage = () => {
     setCurrentPage(value)
   }
 
-  const { data: deckData, error: deckError } = useGetDeckByIdQuery({ id: deckId ?? '' })
+  const {
+    data: deckData,
+    error: deckError,
+    isLoading: isDeckLoading,
+  } = useGetDeckByIdQuery({ id: deckId ?? '' })
 
   const { cards, error, pagination } = useGetCardsQuery(
     {
@@ -60,23 +64,27 @@ export const DeckPage = () => {
     setOpen(open => !open)
   }, [])
 
-  if (!deckId || !deckData || error || deckError) {
+  if (!deckId || error || deckError) {
     return <div>{`Error: ${error || deckError || 'not found deckId'}`}</div>
   }
 
-  const isOwner = deckData.userId === deckData.userId //some logic
+  const isOwner = deckData?.userId === deckData?.userId //some logic
   const cardsLength = cards?.length ?? 0
+
+  if (isDeckLoading) {
+    return <div>Loading...</div>
+  }
 
   return (
     <Page className={s.page} mt={'24px'}>
       <DeckHeader
         cardsLength={cardsLength}
         deckId={deckId}
-        deckName={deckData.name}
+        deckName={deckData?.name ?? 'Unnamed Deck'}
         isOwner={isOwner}
       />
 
-      {cardsLength ? (
+      {cardsLength || searchParams ? (
         <>
           {deckData?.cover && <img alt={'deck-img'} className={s.image} src={deckData.cover} />}
 
