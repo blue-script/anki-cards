@@ -48,7 +48,7 @@ export const DeckPage = () => {
       currentPage: currentPage,
       id: deckId ?? '',
       itemsPerPage: pageSize,
-      orderBy: 'question-asc',
+      orderBy: 'updated-desc',
       question: debounceText,
     },
     {
