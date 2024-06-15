@@ -1,8 +1,12 @@
 .nowrap {
   white-space: nowrap;
+
+  div {
+    cursor: pointer;
+  }
 }
 
-.update {
+.th {
   display: flex;
   gap: 4px;
   align-items: center;
@@ -12,6 +16,10 @@
   path {
     fill: white;
   }
+}
+
+.arrowNone {
+  display: none;
 }
 
 .rotate90 {
@@ -28,9 +36,6 @@
 
 .answer {
   width: 25%;
-}
-
-.grade {
 }
 
 .empty {

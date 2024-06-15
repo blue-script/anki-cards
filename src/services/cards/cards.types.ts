@@ -33,7 +33,7 @@ export interface GetCardsArgs {
   currentPage?: number
   id: string
   itemsPerPage?: number
-  orderBy?: string | undefined
+  orderBy?: null | string
   question?: string
 }
 
