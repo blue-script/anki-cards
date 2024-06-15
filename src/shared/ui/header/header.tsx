@@ -2,6 +2,7 @@ import { ComponentPropsWithoutRef, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { LogOut, PersonOutline } from '@/assets/icons'
+import defaultAvatar from '@/assets/img/default-profile.png'
 import logo from '@/assets/img/logo.png'
 import { useLogoutMutation } from '@/services/auth/auth.service'
 import { User } from '@/services/auth/auth.types'
@@ -37,7 +38,7 @@ export const Header = ({ data }: HeaderProps) => {
       {data === undefined && <Button variant={'primary'}>Sign in</Button>}
       {data?.id && (
         <Profile
-          avatar={data?.avatar as string}
+          avatar={data?.avatar ?? defaultAvatar}
           email={data?.email as string}
           id={data?.id as string}
           name={data?.name as string}
