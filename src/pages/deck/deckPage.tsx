@@ -84,7 +84,7 @@ export const DeckPage = () => {
         isOwner={isOwner}
       />
 
-      {cardsLength || searchParams ? (
+      {cardsLength || searchParams.get('search') ? (
         <>
           {deckData?.cover && <img alt={'deck-img'} className={s.image} src={deckData.cover} />}
 
