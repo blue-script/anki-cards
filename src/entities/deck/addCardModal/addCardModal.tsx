@@ -60,7 +60,7 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
     return () => {
       questionImgPreview && URL.revokeObjectURL(questionImgPreview)
     }
-  }, [questionImgWatch])
+  }, [questionImgWatch, questionImgPreview])
 
   useEffect(() => {
     if (answerImgWatch instanceof File) {
@@ -72,7 +72,7 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
     return () => {
       answerImgPreview && URL.revokeObjectURL(answerImgPreview)
     }
-  }, [answerImgWatch])
+  }, [answerImgWatch, answerImgPreview])
 
   if (!deckId) {
     return <div>Error</div>

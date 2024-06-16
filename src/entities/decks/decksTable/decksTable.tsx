@@ -1,5 +1,5 @@
-import { useCallback, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useCallback } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 
 import {
   ArrowIosDownOutline,
@@ -15,24 +15,45 @@ import { TableCellContent } from '@/shared/ui/table/tableCellContent'
 
 import s from './decksTable.module.scss'
 
-type DecksTableProps = {
+type Props = {
   className?: string
   currentUserId?: string
   decks: Deck[] | undefined
+  headerColumns?: Column[]
   onDeleteClick: (id: string, name: string) => void
   onEditClick: (id: string, name: string, cover: string | undefined, isPrivate: boolean) => void
-  onIconClick: () => void
+  onIconClick: (sort: string) => void
 }
-
+type Column = {
+  key: string
+  sortable?: boolean
+  title: string
+}
 export const DecksTable = ({
   className,
   currentUserId,
   decks,
+  headerColumns,
   onDeleteClick,
   onEditClick,
   onIconClick,
-}: DecksTableProps) => {
-  const [isAsc, setIsAsc] = useState(false)
+}: Props) => {
+  const [searchParams] = useSearchParams()
+  const sortOrder = searchParams.get('orderBy')?.split('-')[0] || 'updated'
+  const sortAsc = searchParams.get('orderBy')?.split('-')[1] || 'desc'
+
+  const handleSort = useCallback(
+    (key: string) => {
+      let newIsAsc = sortAsc
+
+      if (sortOrder === key) {
+        // Изменяем направление сортировки при повторном клике на ту же колонку
+        newIsAsc = sortAsc === 'desc' ? 'asc' : 'desc'
+      }
+      onIconClick(`${key}-${newIsAsc}`)
+    },
+    [onIconClick, sortOrder, sortAsc]
+  )
 
   const handleDeleteClick = useCallback(
     (id: string, name: string) => {
@@ -48,29 +69,29 @@ export const DecksTable = ({
     [onEditClick]
   )
 
-  const handleSortClick = useCallback(() => {
-    setIsAsc(prevIsAsc => !prevIsAsc)
-    onIconClick()
-  }, [onIconClick])
-
   return (
     <Table.TRoot className={className}>
       <Table.THead>
-        <Table.TRow style={{ borderBottom: 'none' }}>
-          <Table.Th style={{ width: '30%' }}>Name</Table.Th>
-          <Table.Th>Cards</Table.Th>
-          <Table.Th>
-            <div className={s.orderWrapper}>
-              Last Updated
-              {isAsc ? (
-                <ArrowIosUp color={'#fff'} onClick={handleSortClick} />
-              ) : (
-                <ArrowIosDownOutline color={'#fff'} onClick={handleSortClick} />
-              )}
-            </div>
-          </Table.Th>
-          <Table.Th>Created By</Table.Th>
-          <Table.Th></Table.Th>
+        <Table.TRow className={s.tRowWrapper}>
+          {headerColumns &&
+            headerColumns.map(({ key, sortable, title }) => (
+              <Table.Th
+                className={!(sortable === false) ? s.thWrapperHover : ''}
+                key={key}
+                onClick={() => handleSort(key)}
+              >
+                <div className={s.orderWrapper}>
+                  {title}
+                  {sortable !== false &&
+                    sortOrder === key &&
+                    (sortAsc === 'desc' ? (
+                      <ArrowIosDownOutline color={'#fff'} />
+                    ) : (
+                      <ArrowIosUp color={'#fff'} />
+                    ))}
+                </div>
+              </Table.Th>
+            ))}
         </Table.TRow>
       </Table.THead>
       <Table.TBody>
@@ -78,7 +99,7 @@ export const DecksTable = ({
           const isCurrentUser = currentUserId === deck.userId
 
           return (
-            <Table.TRow key={deck.id}>
+            <Table.TRow className={s.tRowWrapperHover} key={deck.id}>
               <Table.Td>
                 <TableCellContent
                   href={`decks/${deck.id}`}
