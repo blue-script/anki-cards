@@ -12,6 +12,29 @@ export const cardsService = flashcardsApi.injectEndpoints({
     return {
       createCard: build.mutation<Card, CreateCardArgs>({
         invalidatesTags: ['Cards'],
+        async onQueryStarted(_, { dispatch, getState, queryFulfilled }) {
+          const invalidateBy = cardsService.util.selectInvalidatedBy(getState(), [
+            { type: 'Cards' },
+          ])
+
+          try {
+            const { data } = await queryFulfilled
+
+            invalidateBy.forEach(({ originalArgs }) => {
+              dispatch(
+                cardsService.util.updateQueryData('getCards', originalArgs, draft => {
+                  if (originalArgs.currentPage !== 1) {
+                    return
+                  }
+                  draft.items.unshift(data)
+                  draft.items.pop()
+                })
+              )
+            })
+          } catch (e) {
+            console.warn(e)
+          }
+        },
         query: ({ data, deckId }) => {
           const formData = new FormData()
 
@@ -48,6 +71,36 @@ export const cardsService = flashcardsApi.injectEndpoints({
       }),
       updateCard: build.mutation<Card, UpdateCardArgs>({
         invalidatesTags: ['Cards'],
+        async onQueryStarted({ cardId, ...args }, { dispatch, getState, queryFulfilled }) {
+          const patchResult: any[] = []
+
+          const invalidateBy = cardsService.util.selectInvalidatedBy(getState(), [
+            { type: 'Cards' },
+          ])
+
+          invalidateBy.forEach(({ originalArgs }) => {
+            patchResult.push(
+              dispatch(
+                cardsService.util.updateQueryData('getCards', originalArgs, draft => {
+                  const itemToUpdateIndex = draft.items.findIndex(card => card.id === cardId)
+
+                  if (itemToUpdateIndex === -1) {
+                    return
+                  }
+
+                  Object.assign(draft.items[itemToUpdateIndex], args)
+                })
+              )
+            )
+          })
+          try {
+            await queryFulfilled
+          } catch (e) {
+            patchResult.forEach(patchResult => {
+              patchResult.undo()
+            })
+          }
+        },
         query: ({ cardId, data }) => ({
           body: data,
           method: 'PATCH',
