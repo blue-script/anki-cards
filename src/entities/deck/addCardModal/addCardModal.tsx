@@ -62,7 +62,7 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
     } else {
       setQuestionImgPreview(null)
     }
-  }, [questionImgWatch])
+  }, [questionImgWatch, questionImgPreview])
 
   useEffect(() => {
     if (answerImgWatch instanceof File) {
@@ -76,7 +76,7 @@ export const AddCardModal = ({ onOpenChange, open }: Props) => {
     } else {
       setAnswerImgPreview(null)
     }
-  }, [answerImgWatch])
+  }, [answerImgWatch, answerImgPreview])
 
   if (!deckId) {
     return <div>Error</div>

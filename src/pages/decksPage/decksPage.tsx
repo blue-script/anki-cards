@@ -11,7 +11,13 @@ import { useDebounce } from '@/shared/hooks/useDebounce'
 import s from './decksPage.module.scss'
 
 import SvgTrashOutline from './../../assets/icons/TrashOutline'
-
+const decksTableColumns = [
+  { key: 'name', title: 'Name' },
+  { key: 'cardsCount', title: 'Cards' },
+  { key: 'updated', title: 'Last Updated' },
+  { key: 'created', title: 'Created By' },
+  { key: 'controls', sortable: false, title: '' },
+]
 const tabsSwitcher = [
   { disabled: false, text: 'My Cards', value: 'my' },
   { disabled: false, text: 'All Cards', value: 'all' },
@@ -45,7 +51,7 @@ export const DecksPage = () => {
   const currentPage = getParam('currentPage', '1')
   const minCardsCount = getParam('minCardsCount', String(minMaxCardsData?.min ?? 0))
   const maxCardsCount = getParam('maxCardsCount', String(minMaxCardsData?.max ?? 25))
-  const orderBy = getParam('orderBy', 'updated-asc')
+  const orderBy = getParam('orderBy', 'updated-desc')
   const currentTabSwitcher = getParam('currentTabSwitcher', 'all')
   const currentUserId = me?.id
   const authorId: string | undefined = currentTabSwitcher === 'my' ? currentUserId : undefined
@@ -57,7 +63,6 @@ export const DecksPage = () => {
   const [deckName, setDeckName] = useState<string>('')
   const [deckCover, setDeckCover] = useState<string | undefined>(undefined)
   const [deckIsPrivate, setDeckIsPrivate] = useState<boolean>(true)
-
   const { data: decks } = useGetDecksQuery({
     authorId: authorId,
     currentPage: +currentPage,
@@ -92,6 +97,9 @@ export const DecksPage = () => {
     searchParams.delete('currentTabSwitcher')
     setSearchParams(searchParams)
   }
+  const handleResetOrderBy = () => {
+    setParam('orderBy', 'updated-desc')
+  }
   const handleTabSwitcherChange = (value: string) => {
     setParam('currentPage', '1')
     setParam('currentTabSwitcher', value)
@@ -101,8 +109,8 @@ export const DecksPage = () => {
     setParam('minCardsCount', String(min))
     setParam('maxCardsCount', String(max))
   }
-  const handleDataSortOrder = () => {
-    setParam('orderBy', orderBy === 'updated-desc' ? 'updated-asc' : 'updated-desc')
+  const handleDataSortOrder = (sort: string) => {
+    setParam('orderBy', sort)
   }
   const handleAddNewDeckModal = () => {
     setOpenAddNewDeckModal(true)
@@ -131,6 +139,7 @@ export const DecksPage = () => {
       {openAddNewDeckModal && (
         <AddNewDeckModal
           open={openAddNewDeckModal}
+          resetOrderBy={handleResetOrderBy}
           setOpen={setOpenAddNewDeckModal}
           title={'Add new deck'}
         />
@@ -191,6 +200,7 @@ export const DecksPage = () => {
         className={s.table}
         currentUserId={currentUserId}
         decks={decks?.items}
+        headerColumns={decksTableColumns}
         onDeleteClick={handleDeleteDeck}
         onEditClick={handleEditDeck}
         onIconClick={handleDataSortOrder}

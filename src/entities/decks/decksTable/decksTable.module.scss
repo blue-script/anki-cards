@@ -35,7 +35,24 @@
   }
 }
 
-.firstColumn {
-  min-width: 18vw;
-  max-width: 18vw;
+.tRowWrapper {
+  border-bottom: none;
+  > *:first-child {
+    width: 30%;
+  }
+}
+.thWrapperHover {
+  transition: 0.3s;
+
+  &:hover {
+    cursor: pointer;
+    background-color: var(--color-dark-300);
+  }
+}
+.tRowWrapperHover {
+  transition: 0.3s;
+
+  &:hover {
+    background-color: var(--color-dark-700);
+  }
 }

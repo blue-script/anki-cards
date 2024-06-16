@@ -30,11 +30,12 @@ type FormValuesFromAddDeck = z.infer<typeof newDeckSchema>
 
 type AddNewDeckModalProps = {
   open: boolean
+  resetOrderBy?: () => void
   setOpen: (open: boolean) => void
   title?: string
 }
 
-export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) => {
+export const AddNewDeckModal = ({ open, resetOrderBy, setOpen, title }: AddNewDeckModalProps) => {
   const [createDeck] = useCreateDeckMutation()
   const { control, handleSubmit, reset, setValue, watch } = useForm<FormValuesFromAddDeck>({
     defaultValues: { cover: undefined, isPrivate: true, name: '' },
@@ -63,6 +64,9 @@ export const AddNewDeckModal = ({ open, setOpen, title }: AddNewDeckModalProps) 
   }
 
   const editFormClickHandler = async (data: FormValuesFromAddDeck) => {
+    if (resetOrderBy) {
+      resetOrderBy()
+    }
     const formData = new FormData()
 
     if (data.cover instanceof File) {
