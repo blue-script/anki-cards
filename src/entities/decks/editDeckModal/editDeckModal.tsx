@@ -1,30 +1,16 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 
 import { ImageOutline } from '@/assets/icons'
+import { FormValuesFromDeck, deckSchema } from '@/entities/decks/hook/schemas'
+import { useModalKeyEvents } from '@/entities/decks/hook/useModalKeyEvents'
 import { useUpdateDeckMutation } from '@/services/decks/decks.service'
 import { Button, FormCheckbox, FormTextField, Modal } from '@/shared'
 import { CountButton } from '@/shared/ui/modal/footer/footer'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 
 import s from './editDeckModal.module.scss'
-
-const updateDeckSchema = z.object({
-  cover: z
-    .instanceof(File)
-    .refine(file => ['image/jpeg', 'image/png', 'image/webp'].includes(file.type), {
-      message: 'Must be a .jpeg or .png or .webp file.',
-    })
-    .optional(),
-  isPrivate: z.boolean(),
-  name: z
-    .string()
-    .min(3, { message: 'Deck Name must be at least 3 characters long' })
-    .max(30, { message: 'Deck Name must not exceed 30 characters' }),
-})
-
-type FormValuesFromEditDeck = z.infer<typeof updateDeckSchema>
 
 type Props = {
   cover: string | undefined
@@ -38,9 +24,9 @@ type Props = {
 
 export const EditDeckModal = ({ cover, deckId, isPrivate, name, open, setOpen, title }: Props) => {
   const [updateDeck] = useUpdateDeckMutation()
-  const { control, handleSubmit, reset, setValue, watch } = useForm<FormValuesFromEditDeck>({
+  const { control, handleSubmit, reset, setValue, watch } = useForm<FormValuesFromDeck>({
     defaultValues: { cover: undefined, isPrivate, name },
-    resolver: zodResolver(updateDeckSchema),
+    resolver: zodResolver(deckSchema),
   })
 
   const [previewImage, setPreviewImage] = useState<string | undefined>(cover)
@@ -70,7 +56,7 @@ export const EditDeckModal = ({ cover, deckId, isPrivate, name, open, setOpen, t
     }
   }
 
-  const editFormClickHandler = async (data: FormValuesFromEditDeck) => {
+  const editFormClickHandler = async (data: FormValuesFromDeck) => {
     const formData = new FormData()
 
     if (data.cover instanceof File) {
@@ -84,10 +70,17 @@ export const EditDeckModal = ({ cover, deckId, isPrivate, name, open, setOpen, t
       reset()
       setOpen(false)
       setPreviewImage(undefined) // Reset preview image after successful update
+      toast.success('Deck edit successfully!')
     } catch (error) {
-      console.error('Failed to update deck:', error)
+      toast.error(`Failed to edit deck`)
     }
   }
+
+  useModalKeyEvents({
+    onEnter: handleSubmit(editFormClickHandler),
+    onEscape: () => setOpen(false),
+    open,
+  })
 
   return (
     <form>

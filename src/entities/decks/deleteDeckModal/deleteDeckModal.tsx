@@ -1,3 +1,6 @@
+import toast from 'react-hot-toast'
+
+import { useModalKeyEvents } from '@/entities/decks/hook/useModalKeyEvents'
 import { useDeleteDeckMutation } from '@/services/decks/decks.service'
 import { Modal, Typography } from '@/shared'
 import { CountButton } from '@/shared/ui/modal/footer/footer'
@@ -18,10 +21,17 @@ export const DeleteDeckModal = ({ deckId, name, open, setOpen, title }: Props) =
     try {
       await deleteDeck({ id: deckId }).unwrap()
       setOpen(false)
+      toast.success('Deck removed successfully!')
     } catch (error) {
-      console.error('Failed to delete deck:', error)
+      toast.error(`Failed to removed deck`)
     }
   }
+
+  useModalKeyEvents({
+    onEnter: handleDeleteDeck,
+    onEscape: () => setOpen(false),
+    open,
+  })
 
   return (
     <Modal onOpenChange={() => setOpen(!open)} open={open} title={title}>
