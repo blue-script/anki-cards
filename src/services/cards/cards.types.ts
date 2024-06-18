@@ -49,7 +49,7 @@ export interface CardArgs {
 
 export type UpdateCardArgs = {
   cardId: string
-  data: FormData
+  data: CardArgs
 }
 
 export type CreateCardArgs = {

@@ -71,41 +71,54 @@ export const cardsService = flashcardsApi.injectEndpoints({
       }),
       updateCard: build.mutation<Card, UpdateCardArgs>({
         invalidatesTags: ['Cards'],
-        async onQueryStarted({ cardId, ...args }, { dispatch, getState, queryFulfilled }) {
-          const patchResult: any[] = []
+        // async onQueryStarted({ cardId, ...args }, { dispatch, getState, queryFulfilled }) {
+        //   const patchResult: any[] = []
+        //
+        //   const invalidateBy = cardsService.util.selectInvalidatedBy(getState(), [
+        //     { type: 'Cards' },
+        //   ])
+        //
+        //   invalidateBy.forEach(({ originalArgs }) => {
+        //     patchResult.push(
+        //       dispatch(
+        //         cardsService.util.updateQueryData('getCards', originalArgs, draft => {
+        //           const itemToUpdateIndex = draft.items.findIndex(card => card.id === cardId)
+        //
+        //           if (itemToUpdateIndex === -1) {
+        //             return
+        //           }
+        //
+        //           Object.assign(draft.items[itemToUpdateIndex], args)
+        //         })
+        //       )
+        //     )
+        //   })
+        //   try {
+        //     await queryFulfilled
+        //   } catch (e) {
+        //     patchResult.forEach(patchResult => {
+        //       patchResult.undo()
+        //     })
+        //   }
+        // },
+        query: ({ cardId, data }) => {
+          const formData = new FormData()
 
-          const invalidateBy = cardsService.util.selectInvalidatedBy(getState(), [
-            { type: 'Cards' },
-          ])
+          formData.append('answer', data.answer)
+          formData.append('question', data.question)
+          if (data.questionImg instanceof File) {
+            formData.append('questionImg', data.questionImg)
+          }
+          if (data.answerImg instanceof File) {
+            formData.append('answerImg', data.answerImg)
+          }
 
-          invalidateBy.forEach(({ originalArgs }) => {
-            patchResult.push(
-              dispatch(
-                cardsService.util.updateQueryData('getCards', originalArgs, draft => {
-                  const itemToUpdateIndex = draft.items.findIndex(card => card.id === cardId)
-
-                  if (itemToUpdateIndex === -1) {
-                    return
-                  }
-
-                  Object.assign(draft.items[itemToUpdateIndex], args)
-                })
-              )
-            )
-          })
-          try {
-            await queryFulfilled
-          } catch (e) {
-            patchResult.forEach(patchResult => {
-              patchResult.undo()
-            })
+          return {
+            body: formData,
+            method: 'PATCH',
+            url: `v1/cards/${cardId}`,
           }
         },
-        query: ({ cardId, data }) => ({
-          body: data,
-          method: 'PATCH',
-          url: `v1/cards/${cardId}`,
-        }),
       }),
     }
   },

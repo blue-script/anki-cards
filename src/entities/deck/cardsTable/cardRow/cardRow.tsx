@@ -2,7 +2,8 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 import { Edit2Outline, TrashOutline } from '@/assets/icons'
-import { CardTextImage, EditCardModal } from '@/entities'
+import { CardTextImage } from '@/entities'
+import { CardModal } from '@/entities/deck/cardModal/cardModal'
 import { DeleteCardModal } from '@/entities/deck/deleteCardModal/deleteCardModal'
 import { useDeleteCardMutation } from '@/services/cards/cards.service'
 import { Card } from '@/services/cards/cards.types'
@@ -61,7 +62,7 @@ export const CardRow = ({
             <Button className={s.button} onClick={handleEditOpenChange} variant={'secondary'}>
               <Edit2Outline />
             </Button>
-            <EditCardModal
+            <CardModal
               answer={answer}
               answerImg={answerImg}
               cardId={id}
