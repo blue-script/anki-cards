@@ -3,43 +3,28 @@ import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { ImageOutline } from '@/assets/icons'
+import { FormValuesFromDeck, deckSchema } from '@/entities/decks/hook/schemas'
+import { useModalKeyEvents } from '@/entities/decks/hook/useModalKeyEvents'
 import { useCreateDeckMutation } from '@/services/decks/decks.service'
 import { CreateDeckArgs } from '@/services/decks/decks.types'
 import { Button, FormCheckbox, FormTextField, Modal } from '@/shared'
 import { CountButton } from '@/shared/ui/modal/footer/footer'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 
 import s from './addNewDeckModal.module.scss'
 
-const newDeckSchema = z.object({
-  cover: z
-    .instanceof(File)
-    .refine(file => ['image/jpeg', 'image/png', 'image/webp'].includes(file.type), {
-      message: 'Must be a .jpeg or .png or .webp file.',
-    })
-    .optional(),
-  isPrivate: z.boolean(),
-  name: z
-    .string()
-    .min(3, { message: 'Deck Name must be at least 3 characters long' })
-    .max(30, { message: 'Deck Name must not exceed 30 characters' }),
-})
-
-type FormValuesFromAddDeck = z.infer<typeof newDeckSchema>
-
-type AddNewDeckModalProps = {
+type Props = {
   open: boolean
   resetOrderBy?: () => void
   setOpen: (open: boolean) => void
   title?: string
 }
 
-export const AddNewDeckModal = ({ open, resetOrderBy, setOpen, title }: AddNewDeckModalProps) => {
+export const AddNewDeckModal = ({ open, resetOrderBy, setOpen, title }: Props) => {
   const [createDeck] = useCreateDeckMutation()
-  const { control, handleSubmit, reset, setValue, watch } = useForm<FormValuesFromAddDeck>({
+  const { control, handleSubmit, reset, setValue, watch } = useForm<FormValuesFromDeck>({
     defaultValues: { cover: undefined, isPrivate: true, name: '' },
-    resolver: zodResolver(newDeckSchema),
+    resolver: zodResolver(deckSchema),
   })
 
   const [previewImage, setPreviewImage] = useState<string | undefined>(undefined)
@@ -63,7 +48,7 @@ export const AddNewDeckModal = ({ open, resetOrderBy, setOpen, title }: AddNewDe
     }
   }
 
-  const editFormClickHandler = async (data: FormValuesFromAddDeck) => {
+  const addFormClickHandler = async (data: FormValuesFromDeck) => {
     if (resetOrderBy) {
       resetOrderBy()
     }
@@ -82,9 +67,15 @@ export const AddNewDeckModal = ({ open, resetOrderBy, setOpen, title }: AddNewDe
       setPreviewImage(undefined) // Reset preview image after successful update
       toast.success('Deck added successfully!')
     } catch (error) {
-      console.error('Failed to update deck:', error)
+      toast.error(`Failed to add deck`)
     }
   }
+
+  useModalKeyEvents({
+    onEnter: handleSubmit(addFormClickHandler),
+    onEscape: () => setOpen(false),
+    open,
+  })
 
   return (
     <form>
@@ -118,7 +109,7 @@ export const AddNewDeckModal = ({ open, resetOrderBy, setOpen, title }: AddNewDe
         />
         <Modal.Footer
           countButton={CountButton.Two}
-          firstButtonHandler={handleSubmit(editFormClickHandler)}
+          firstButtonHandler={handleSubmit(addFormClickHandler)}
           firstButtonName={title}
           secondButtonHandler={() => setOpen(!open)}
           secondButtonName={'Cancel'}
