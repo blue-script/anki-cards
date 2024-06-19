@@ -22,5 +22,7 @@ export const FormTextField = <T extends FieldValues>({
     name,
   })
 
-  return <TextField {...rest} {...field} errorMessage={error?.message} value={value} />
+  return (
+    <TextField {...rest} {...field} errorMessage={error?.message} value={value ?? field.value} />
+  )
 }

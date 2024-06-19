@@ -108,9 +108,13 @@ export const cardsService = flashcardsApi.injectEndpoints({
           formData.append('question', data.question)
           if (data.questionImg instanceof File) {
             formData.append('questionImg', data.questionImg)
+          } else if (data.questionImg === null) {
+            formData.append('questionImg', '')
           }
           if (data.answerImg instanceof File) {
             formData.append('answerImg', data.answerImg)
+          } else if (data.answerImg === null) {
+            formData.append('answerImg', '')
           }
 
           return {

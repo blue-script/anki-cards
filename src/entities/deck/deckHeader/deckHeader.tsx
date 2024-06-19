@@ -78,7 +78,7 @@ const OwnerContent = ({ cardsLength, deckId, deckName, onOpenChange, open }: Own
       {cardsLength > 0 && (
         <>
           <Button onClick={onOpenChange}>Add New Card</Button>
-          <CardModal onOpenChange={onOpenChange} open={open} />
+          {open && <CardModal onOpenChange={onOpenChange} open={open} />}
         </>
       )}
     </div>

@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useParams } from 'react-router-dom'
 
-import { FormData } from '@/entities/deck/addCardModal/formData/formData'
+import { FormData } from '@/entities/deck/cardModal/formData/formData'
 import { useCreateCardMutation, useUpdateCardMutation } from '@/services/cards/cards.service'
 import { CardArgs } from '@/services/cards/cards.types'
 import { Modal } from '@/shared'
@@ -40,9 +40,6 @@ export const CardModal = ({
 }: Props) => {
   const { deckId } = useParams<{ deckId: string }>()
 
-  const [questionImgPreview, setQuestionImgPreview] = useState<null | string>('')
-  const [answerImgPreview, setAnswerImgPreview] = useState<null | string>('')
-
   const [createCard] = useCreateCardMutation()
   const [updateCard] = useUpdateCardMutation()
 
@@ -60,6 +57,9 @@ export const CardModal = ({
   const questionImgWatch = watch('questionImg')
   const answerImgWatch = watch('answerImg')
 
+  const [questionImgPreview, setQuestionImgPreview] = useState<null | string>('')
+  const [answerImgPreview, setAnswerImgPreview] = useState<null | string>('')
+
   useEffect(() => {
     if (questionImgWatch instanceof File) {
       const previewUrl = URL.createObjectURL(questionImgWatch)
@@ -69,10 +69,12 @@ export const CardModal = ({
       return () => {
         URL.revokeObjectURL(previewUrl)
       }
-    } else {
+    } else if (questionImgWatch === null) {
       setQuestionImgPreview(null)
+    } else {
+      setQuestionImgPreview(questionImgWatch)
     }
-  }, [questionImgWatch])
+  }, [questionImgWatch, questionImg])
 
   useEffect(() => {
     if (answerImgWatch instanceof File) {
@@ -83,17 +85,18 @@ export const CardModal = ({
       return () => {
         URL.revokeObjectURL(previewUrl)
       }
-    } else {
+    } else if (answerImgWatch === null) {
       setAnswerImgPreview(null)
+    } else {
+      setAnswerImgPreview(answerImgWatch)
     }
-  }, [answerImgWatch])
+  }, [answerImgWatch, answerImg])
 
   if (!deckId) {
     return <div>Error</div>
   }
 
   const submitHandler = handleSubmit(async (data: CardArgs) => {
-    console.log(data)
     try {
       if (cardId) {
         await updateCard({ cardId, data })

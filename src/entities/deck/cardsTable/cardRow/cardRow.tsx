@@ -62,15 +62,17 @@ export const CardRow = ({
             <Button className={s.button} onClick={handleEditOpenChange} variant={'secondary'}>
               <Edit2Outline />
             </Button>
-            <CardModal
-              answer={answer}
-              answerImg={answerImg}
-              cardId={id}
-              onOpenChange={handleEditOpenChange}
-              open={editModal}
-              question={question}
-              questionImg={questionImg}
-            />
+            {editModal && (
+              <CardModal
+                answer={answer}
+                answerImg={answerImg}
+                cardId={id}
+                onOpenChange={handleEditOpenChange}
+                open={editModal}
+                question={question}
+                questionImg={questionImg}
+              />
+            )}
 
             <Button className={s.button} onClick={handleOpenChange} variant={'secondary'}>
               <TrashOutline />
