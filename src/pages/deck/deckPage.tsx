@@ -1,7 +1,8 @@
 import { useCallback, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 
-import { AddCardModal, CardsTable, DeckHeader } from '@/entities'
+import { CardsTable, DeckHeader } from '@/entities'
+import { CardModal } from '@/entities/deck/cardModal/cardModal'
 import { useMeQuery } from '@/services/auth/auth.service'
 import { useGetCardsQuery } from '@/services/cards/cards.service'
 import { useGetDeckByIdQuery } from '@/services/decks/decks.service'
@@ -110,7 +111,7 @@ export const DeckPage = () => {
           {isOwner && (
             <>
               <Button onClick={onOpenChange}>Add New Card</Button>
-              <AddCardModal onOpenChange={onOpenChange} open={open} />
+              {open && <CardModal onOpenChange={onOpenChange} open={open} />}
             </>
           )}
         </>
