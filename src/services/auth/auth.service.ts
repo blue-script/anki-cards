@@ -1,4 +1,10 @@
-import { LoginArgs, LoginResponse, LogoutResponse, User } from '@/services/auth/auth.types'
+import {
+  LoginArgs,
+  LoginResponse,
+  LogoutResponse,
+  UpdateMeArgs,
+  User,
+} from '@/services/auth/auth.types'
 import { flashcardsApi } from '@/services/flashcardsApi'
 
 export const authService = flashcardsApi.injectEndpoints({
@@ -44,7 +50,15 @@ export const authService = flashcardsApi.injectEndpoints({
       providesTags: ['Me'],
       query: () => ({ method: 'GET', url: 'v1/auth/me' }),
     }),
+    meEdit: builder.mutation<User, UpdateMeArgs>({
+      invalidatesTags: ['Me'],
+      query: body => ({
+        body,
+        method: 'POST',
+        url: 'v1/auth/me',
+      }),
+    }),
   }),
 })
 
-export const { useLoginMutation, useLogoutMutation, useMeQuery } = authService
+export const { useLoginMutation, useLogoutMutation, useMeEditMutation, useMeQuery } = authService

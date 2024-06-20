@@ -21,6 +21,7 @@ export const Header = ({ data }: HeaderProps) => {
   useEffect(() => {
     setIsAuthenticated(!!data)
   }, [data])
+
   const handleClick = () => {
     navigate('/')
   }
@@ -67,6 +68,10 @@ export const Profile = ({ avatar, email, name, setIsAuthenticated }: ProfileProp
     navigate('/login')
   }
 
+  const handleProfile = () => {
+    navigate('/my_profile')
+  }
+
   return (
     <>
       <Dropdown.Root modal={false}>
@@ -91,9 +96,11 @@ export const Profile = ({ avatar, email, name, setIsAuthenticated }: ProfileProp
           <Dropdown.Separator />
           <Dropdown.Item>
             <PersonOutline />
-            <Typography as={'span'} option={'caption'}>
-              My Profile
-            </Typography>
+            <Button onClick={handleProfile} variant={'link'}>
+              <Typography as={'span'} option={'caption'}>
+                My Profile
+              </Typography>
+            </Button>
           </Dropdown.Item>
           <Dropdown.Separator />
           <Dropdown.Item>
