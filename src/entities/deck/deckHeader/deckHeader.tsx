@@ -50,12 +50,17 @@ type FriendContentProps = {
 }
 
 const FriendContent = ({ deckName }: FriendContentProps) => {
+  const navigate = useNavigate()
+  const onLearnDeck = () => {
+    navigate('learn')
+  }
+
   return (
     <div className={s.ownerContainer}>
       <div className={s.owner}>
         <Typography option={'h1'}>{deckName}</Typography>
       </div>
-      <Button>Learn to Deck</Button>
+      <Button onClick={onLearnDeck}>Learn to Deck</Button>
     </div>
   )
 }
