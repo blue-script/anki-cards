@@ -1,5 +1,6 @@
 import { Edit2 } from '@/assets/icons'
 import SvgLayers from '@/assets/icons/Layers'
+import { useMeEditMutation } from '@/services/auth/auth.service'
 import { Button, Typography } from '@/shared'
 import { FormTextField } from '@/shared/ui'
 
@@ -24,6 +25,8 @@ export const ProfileBody = ({
   onNameChange,
   setBodyStatusHandler,
 }: Props) => {
+  const [meEdit] = useMeEditMutation()
+
   const logoutHandler = () => {
     onLogout()
   }
@@ -33,6 +36,7 @@ export const ProfileBody = ({
 
   const changeNameHandler = (data: FormValues) => {
     onNameChange(data.name)
+    meEdit({ name: data.name })
   }
 
   const { control, handleSubmit } = useProfileBody({ name: name })
@@ -61,11 +65,11 @@ export const ProfileBody = ({
         className={s.newName}
         control={control}
         fullWidth
-        label={'Nickmame'}
+        label={'Nickname'}
         name={'name'}
       />
 
-      <Button fullWidth type={'submit'} variant={'primary'}>
+      <Button fullWidth onClick={changeBodyStatusHandler} type={'submit'} variant={'primary'}>
         Save Changes
       </Button>
     </form>

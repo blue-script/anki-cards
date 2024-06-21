@@ -43,11 +43,26 @@ export const authService = flashcardsApi.injectEndpoints({
     }),
     meEdit: builder.mutation<User, UpdateMeArgs>({
       invalidatesTags: ['Me'],
-      query: body => ({
-        body,
-        method: 'PATCH',
-        url: 'v1/auth/me',
-      }),
+      query: body => {
+        console.log(body.avatar)
+
+        const formData = new FormData()
+
+        if (body.name) {
+          formData.append('name', body.name)
+        }
+
+        if (body.avatar) {
+          formData.append('avatar', body.avatar)
+          console.log(formData.get('avatar'))
+        }
+
+        return {
+          body: formData,
+          method: 'PATCH',
+          url: 'v1/auth/me',
+        }
+      },
     }),
   }),
 })
