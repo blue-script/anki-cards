@@ -16,7 +16,7 @@ export const MyProfile = () => {
   }
 
   if (!data) {
-    return null // or some fallback UI
+    return null
   }
 
   const handleLogout = async () => {
@@ -35,10 +35,10 @@ export const MyProfile = () => {
     }
   }
 
-  const handleAvatarChange = async (newAvatar: string) => {
+  const handleAvatarChange = async (base64Avatar: string) => {
     if (data) {
       try {
-        await editMe({ avatar: newAvatar, name: data.name })
+        await editMe({ avatar: base64Avatar, name: data.name })
       } catch (error) {
         console.error('Failed to update profile:', error)
       }
