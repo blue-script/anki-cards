@@ -24,3 +24,8 @@ export type LogoutResponse = {
   statusCode: number
   timestamp: string
 }
+
+export type UpdateMeArgs = {
+  avatar: null | string
+  name: string
+}

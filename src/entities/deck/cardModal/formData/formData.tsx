@@ -1,18 +1,18 @@
 import { Control, UseFormSetValue } from 'react-hook-form'
 
-import { Layer2 } from '@/assets/icons'
-import { FormAddCard } from '@/entities/deck/addCardModal/addCardModal'
+import { Layer2, Trash } from '@/assets/icons'
+import { FormCard } from '@/entities/deck/cardModal/cardModal'
 import { FormTextField, ImageUpload, Typography } from '@/shared'
 
 import s from './formData.module.scss'
 
 type Props = {
-  control: Control<FormAddCard>
+  control: Control<FormCard>
   imgName: 'answerImg' | 'questionImg'
   imgPreview: null | string
   imgWatch: File | null | string
   placeholder: string
-  setValue: UseFormSetValue<FormAddCard>
+  setValue: UseFormSetValue<FormCard>
   textName: 'answer' | 'question'
 }
 
@@ -34,12 +34,12 @@ export const FormData = ({
       {placeholder}:
       <FormTextField control={control} fullWidth label={`${placeholder}?`} name={`${textName}`} />
       {imgPreview && (
-        <>
-          <img alt={'Uploaded'} className={s.img} src={imgPreview} />
-          <button onClick={onDelete} type={'button'}>
-            Delete
+        <div className={s.imageContainer}>
+          <button className={s.deleteImage} onClick={onDelete} type={'button'}>
+            <Trash />
           </button>
-        </>
+          <img alt={'Uploaded'} className={s.img} src={imgPreview} />
+        </div>
       )}
       <ImageUpload
         className={s.topMargin}

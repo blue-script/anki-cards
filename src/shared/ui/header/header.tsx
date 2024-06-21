@@ -1,8 +1,8 @@
 import { ComponentPropsWithoutRef, useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 
 import { LogOut, PersonOutline } from '@/assets/icons'
+import defaultAvatar from '@/assets/img/default-profile.png'
 import logo from '@/assets/img/logo.png'
 import { useLogoutMutation } from '@/services/auth/auth.service'
 import { User } from '@/services/auth/auth.types'
@@ -16,38 +16,34 @@ type HeaderProps = {
 
 export const Header = ({ data }: HeaderProps) => {
   const navigate = useNavigate()
-  const [headerData, setHeaderData] = useState<User | undefined>(data)
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!data)
 
   useEffect(() => {
-    setHeaderData(data)
+    setIsAuthenticated(!!data)
   }, [data])
 
   const handleClick = () => {
     navigate('/')
   }
 
-  const resetHeaderData = () => {
-    setHeaderData(undefined)
-  }
-
   return (
     <header className={s.header}>
-      {!headerData ? (
+      {!isAuthenticated ? (
         <img alt={'logo'} className={s.logo} src={logo} />
       ) : (
-        <Button className={s.button} onClick={handleClick} variant={'link'}>
+        <Button className={s.button} onClick={handleClick} variant={'secondary'}>
           <img alt={'logo'} className={s.logo} src={logo} />
         </Button>
       )}
 
-      {!headerData && <Button variant={'primary'}>Sign in</Button>}
-      {headerData && (
+      {data === undefined && <Button variant={'primary'}>Sign in</Button>}
+      {data?.id && (
         <Profile
-          avatar={headerData?.avatar as string}
-          email={headerData?.email as string}
-          id={headerData?.id as string}
-          name={headerData?.name as string}
-          resetHeaderData={resetHeaderData}
+          avatar={data?.avatar ?? defaultAvatar}
+          email={data?.email as string}
+          id={data?.id as string}
+          name={data?.name as string}
+          setIsAuthenticated={setIsAuthenticated}
         />
       )}
     </header>
@@ -59,24 +55,21 @@ type ProfileProps = {
   email: string
   id?: string
   name: string
-  resetHeaderData: () => void
+  setIsAuthenticated: (isAuthenticated: boolean) => void
 }
 
-export const Profile = ({ avatar, email, name, resetHeaderData }: ProfileProps) => {
+export const Profile = ({ avatar, email, name, setIsAuthenticated }: ProfileProps) => {
   const [logout] = useLogoutMutation()
 
   const navigate = useNavigate()
   const handleLogout = async () => {
-    try {
-      await logout().unwrap()
-    } catch (err: any) {
-      if (err.status !== 401) {
-        toast.error(err.message)
-      }
-    } finally {
-      resetHeaderData()
-      navigate('/login', { replace: true })
-    }
+    await logout()
+    setIsAuthenticated(false)
+    navigate('/login')
+  }
+
+  const handleProfile = () => {
+    navigate('/my_profile')
   }
 
   return (
@@ -103,9 +96,11 @@ export const Profile = ({ avatar, email, name, resetHeaderData }: ProfileProps) 
           <Dropdown.Separator />
           <Dropdown.Item>
             <PersonOutline />
-            <Typography as={'span'} option={'caption'}>
-              My Profile
-            </Typography>
+            <Button className={s.profileBtn} onClick={handleProfile} variant={'link'}>
+              <Typography as={'span'} option={'caption'}>
+                My Profile
+              </Typography>
+            </Button>
           </Dropdown.Item>
           <Dropdown.Separator />
           <Dropdown.Item>

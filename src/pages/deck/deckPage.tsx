@@ -1,7 +1,9 @@
 import { useCallback, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 
-import { AddCardModal, CardsTable, DeckHeader } from '@/entities'
+import { CardsTable, DeckHeader } from '@/entities'
+import { CardModal } from '@/entities/deck/cardModal/cardModal'
+import { useMeQuery } from '@/services/auth/auth.service'
 import { useGetCardsQuery } from '@/services/cards/cards.service'
 import { useGetDeckByIdQuery } from '@/services/decks/decks.service'
 import { Button, Page, Pagination, TextField, Typography } from '@/shared'
@@ -12,6 +14,7 @@ import s from './deckPage.module.scss'
 const defaultNumberPage = 1
 
 export const DeckPage = () => {
+  const { data: me } = useMeQuery()
   const { deckId } = useParams<{ deckId: string }>()
 
   const [searchParams, setSearchParams] = useSearchParams()
@@ -37,14 +40,21 @@ export const DeckPage = () => {
     setCurrentPage(value)
   }
 
-  const { data: deckData, error: deckError } = useGetDeckByIdQuery({ id: deckId ?? '' })
+  const {
+    data: deckData,
+    error: deckError,
+    isLoading: isDeckLoading,
+  } = useGetDeckByIdQuery({ id: deckId ?? '' })
+
+  const [order, setOrder] = useState('')
+  const changeOrder = (value: string) => setOrder(value)
 
   const { cards, error, pagination } = useGetCardsQuery(
     {
       currentPage: currentPage,
       id: deckId ?? '',
       itemsPerPage: pageSize,
-      orderBy: 'question-asc',
+      orderBy: order || null,
       question: debounceText,
     },
     {
@@ -60,23 +70,27 @@ export const DeckPage = () => {
     setOpen(open => !open)
   }, [])
 
-  if (!deckId || !deckData || error || deckError) {
+  if (!deckId || error || deckError) {
     return <div>{`Error: ${error || deckError || 'not found deckId'}`}</div>
   }
 
-  const isOwner = deckData.userId === deckData.userId //some logic
+  const isOwner = me?.id === deckData?.userId
   const cardsLength = cards?.length ?? 0
+
+  if (isDeckLoading) {
+    return <div>Loading...</div>
+  }
 
   return (
     <Page className={s.page} mt={'24px'}>
       <DeckHeader
         cardsLength={cardsLength}
         deckId={deckId}
-        deckName={deckData.name}
+        deckName={deckData?.name ?? 'Unnamed Deck'}
         isOwner={isOwner}
       />
 
-      {cardsLength ? (
+      {cardsLength || searchParams.get('search') ? (
         <>
           {deckData?.cover && <img alt={'deck-img'} className={s.image} src={deckData.cover} />}
 
@@ -87,7 +101,7 @@ export const DeckPage = () => {
             variant={'search'}
           />
 
-          <CardsTable cards={cards} isOwner={isOwner} />
+          <CardsTable cards={cards} changeOrder={changeOrder} isOwner={isOwner} />
         </>
       ) : (
         <>
@@ -97,7 +111,7 @@ export const DeckPage = () => {
           {isOwner && (
             <>
               <Button onClick={onOpenChange}>Add New Card</Button>
-              <AddCardModal onOpenChange={onOpenChange} open={open} />
+              {open && <CardModal onOpenChange={onOpenChange} open={open} />}
             </>
           )}
         </>

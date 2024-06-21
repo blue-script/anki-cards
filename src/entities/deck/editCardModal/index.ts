@@ -1,1 +1,0 @@
-export { EditCardModal } from './editCardModal'

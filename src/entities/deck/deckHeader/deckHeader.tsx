@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { ArrowBackOutline } from '@/assets/icons'
-import { AddCardModal } from '@/entities'
+import { CardModal } from '@/entities/deck/cardModal/cardModal'
 import { DropDownDeck } from '@/entities/dropDownDeck/dropDownDeck'
 import { Button, Typography } from '@/shared'
 
@@ -50,12 +50,17 @@ type FriendContentProps = {
 }
 
 const FriendContent = ({ deckName }: FriendContentProps) => {
+  const navigate = useNavigate()
+  const onLearnDeck = () => {
+    navigate('learn')
+  }
+
   return (
     <div className={s.ownerContainer}>
       <div className={s.owner}>
         <Typography option={'h1'}>{deckName}</Typography>
       </div>
-      <Button>Learn to Deck</Button>
+      <Button onClick={onLearnDeck}>Learn to Deck</Button>
     </div>
   )
 }
@@ -78,7 +83,7 @@ const OwnerContent = ({ cardsLength, deckId, deckName, onOpenChange, open }: Own
       {cardsLength > 0 && (
         <>
           <Button onClick={onOpenChange}>Add New Card</Button>
-          <AddCardModal onOpenChange={onOpenChange} open={open} />
+          {open && <CardModal onOpenChange={onOpenChange} open={open} />}
         </>
       )}
     </div>

@@ -6,6 +6,7 @@ import {
   createBrowserRouter,
 } from 'react-router-dom'
 
+import { MyProfile } from '@/features/profile/myProfile'
 import { DeckPage } from '@/pages/deck/deckPage'
 import { DecksPage } from '@/pages/decksPage/decksPage'
 import { Learn } from '@/pages/learn/learn'
@@ -38,8 +39,8 @@ const privateRoutes: RouteObject[] = [
     path: '/decks/:deckId/learn',
   },
   {
-    element: <Learn />,
-    path: '/decksPage/:deckId/learn',
+    element: <MyProfile />,
+    path: '/my_profile',
   },
 ]
 

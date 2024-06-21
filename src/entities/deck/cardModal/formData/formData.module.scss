@@ -1,0 +1,43 @@
+.imageContainer {
+  position: relative;
+  margin-top: 12px;
+}
+
+.img {
+  max-height: 120px;
+  border-radius: 2px;
+}
+
+.topMargin {
+  margin-top: 24px;
+}
+
+.deleteImage {
+  all: unset;
+
+  cursor: pointer;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 24px;
+  height: 24px;
+
+  background-color: var(--color-danger-700);
+  border-radius: 4px;
+
+  &:focus-visible,
+  &:hover {
+    background-color: var(--color-danger-300);
+    border-radius: 4px;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-info-900);
+  }
+}

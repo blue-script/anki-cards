@@ -60,3 +60,13 @@
   font-weight: var(--font-weight-bold);
   color: var(--color-accent-500);
 }
+
+.testInfo {
+  display: flex;
+  flex-direction: column;
+
+  margin-top: -10px;
+  margin-bottom: 10px;
+
+  line-height: 12px;
+}
