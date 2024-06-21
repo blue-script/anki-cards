@@ -14,6 +14,7 @@ const refreshTokenResponseSchema = z.object({
 })
 
 const mutex = new Mutex()
+
 const baseQuery = fetchBaseQuery({
   baseUrl: 'https://api.flashcards.andrii.es',
   prepareHeaders: headers => {
@@ -34,7 +35,14 @@ export const baseQueryWithReauth: BaseQueryFn<
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   await mutex.waitForUnlock()
-  let result = await baseQuery(args, api, extraOptions)
+
+  let result: any
+
+  try {
+    result = await baseQuery(args, api, extraOptions)
+  } catch (error) {
+    result = { error }
+  }
 
   if (result.error && result.error.status === 401) {
     if (!mutex.isLocked()) {
@@ -43,37 +51,57 @@ export const baseQueryWithReauth: BaseQueryFn<
       try {
         const refreshToken = localStorage.getItem('refreshToken')
 
-        const refreshResult = await baseQuery(
-          {
-            headers: {
-              Authorization: `Bearer ${refreshToken}`,
+        if (refreshToken) {
+          const refreshResult = await baseQuery(
+            {
+              headers: {
+                Authorization: `Bearer ${refreshToken}`,
+              },
+              method: 'POST',
+              url: '/v2/auth/refresh-token',
             },
-            method: 'POST',
-            url: '/v2/auth/refresh-token',
-          },
-          api,
-          extraOptions
-        )
+            api,
+            extraOptions
+          )
 
-        if (refreshResult.data) {
-          const refreshResultParsed = refreshTokenResponseSchema.parse(refreshResult.data)
+          if (refreshResult.data) {
+            const refreshResultParsed = refreshTokenResponseSchema.parse(refreshResult.data)
 
-          localStorage.setItem('accessToken', refreshResultParsed.accessToken.trim())
-          localStorage.setItem('refreshToken', refreshResultParsed.refreshToken.trim())
+            localStorage.setItem('accessToken', refreshResultParsed.accessToken.trim())
+            localStorage.setItem('refreshToken', refreshResultParsed.refreshToken.trim())
 
-          // retry the initial query
-          result = await baseQuery(args, api, extraOptions)
+            // Retry the initial query with the new token
+            result = await baseQuery(args, api, extraOptions)
+          } else {
+            // If refresh failed, navigate to login
+            localStorage.removeItem('accessToken')
+            localStorage.removeItem('refreshToken')
+            await router.navigate('/login')
+          }
         } else {
+          // No refresh token available, navigate to login
           await router.navigate('/login')
         }
+      } catch (error) {
+        // Suppress error logging
+        result = { error }
+        await router.navigate('/login')
       } finally {
         release()
       }
     } else {
       await mutex.waitForUnlock()
-      result = await baseQuery(args, api, extraOptions)
+      try {
+        result = await baseQuery(args, api, extraOptions)
+      } catch (error) {
+        result = { error }
+      }
     }
   }
 
-  return result
+  if (result.error) {
+    return { error: result.error }
+  }
+
+  return { data: result.data }
 }

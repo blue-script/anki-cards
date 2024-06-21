@@ -29,17 +29,10 @@ export const authService = flashcardsApi.injectEndpoints({
       }),
     }),
     logout: builder.mutation<LogoutResponse, void>({
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        const { data } = await queryFulfilled
-
-        if (!data) {
-          return
-        }
-
+      async onQueryStarted(_, { dispatch }) {
         localStorage.removeItem('accessToken')
         localStorage.removeItem('refreshToken')
 
-        dispatch(authService.util.resetApiState())
         dispatch(authService.util.invalidateTags(['Me']))
       },
       query: () => ({ method: 'POST', url: 'v2/auth/logout' }),
