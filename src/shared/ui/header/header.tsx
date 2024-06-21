@@ -36,8 +36,8 @@ export const Header = ({ data }: HeaderProps) => {
         </Button>
       )}
 
-      {data === undefined && <Button variant={'primary'}>Sign in</Button>}
-      {data?.id && (
+      {!isAuthenticated && <Button variant={'primary'}>Sign in</Button>}
+      {isAuthenticated && (
         <Profile
           avatar={data?.avatar ?? defaultAvatar}
           email={data?.email as string}
@@ -63,9 +63,14 @@ export const Profile = ({ avatar, email, name, setIsAuthenticated }: ProfileProp
 
   const navigate = useNavigate()
   const handleLogout = async () => {
-    await logout()
-    setIsAuthenticated(false)
-    navigate('/login')
+    try {
+      await logout()
+    } catch (e) {
+      console.warn(e)
+    } finally {
+      setIsAuthenticated(false)
+      navigate('/login')
+    }
   }
 
   const handleProfile = () => {
