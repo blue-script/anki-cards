@@ -96,7 +96,7 @@ export const Profile = ({ avatar, email, name, setIsAuthenticated }: ProfileProp
           <Dropdown.Separator />
           <Dropdown.Item>
             <PersonOutline />
-            <Button onClick={handleProfile} variant={'link'}>
+            <Button className={s.profileBtn} onClick={handleProfile} variant={'link'}>
               <Typography as={'span'} option={'caption'}>
                 My Profile
               </Typography>

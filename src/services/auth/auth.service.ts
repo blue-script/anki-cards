@@ -10,8 +10,6 @@ import { flashcardsApi } from '@/services/flashcardsApi'
 export const authService = flashcardsApi.injectEndpoints({
   endpoints: builder => ({
     login: builder.mutation<LoginResponse, LoginArgs>({
-      //invalidatesTags: ['Me'],
-      //async onQueryStarted(arg: LoginArgs, { queryFulfilled }) {
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         const { data } = await queryFulfilled
 
@@ -54,7 +52,7 @@ export const authService = flashcardsApi.injectEndpoints({
       invalidatesTags: ['Me'],
       query: body => ({
         body,
-        method: 'POST',
+        method: 'PATCH',
         url: 'v1/auth/me',
       }),
     }),
