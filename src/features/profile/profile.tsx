@@ -17,7 +17,7 @@ export type Props = {
   onNameChange: (newName: string) => void
 }
 
-export const Profile = ({ avatar, email, name, onLogout, onNameChange }: Props) => {
+export const Profile = ({ avatar, email, name, onLogout }: Props) => {
   const [bodyStatus, setBodyStatus] = useState<boolean>(false)
   const [meEdit] = useMeEditMutation()
 
@@ -26,8 +26,11 @@ export const Profile = ({ avatar, email, name, onLogout, onNameChange }: Props) 
   }
 
   const onAvatarChange = (newAvatar: File | string) => {
-    console.log('onAvatarChange')
     meEdit({ avatar: newAvatar })
+  }
+
+  const onNameChange = (newName: string) => {
+    meEdit({ name: newName })
   }
 
   return (
