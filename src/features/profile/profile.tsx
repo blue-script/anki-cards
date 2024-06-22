@@ -1,6 +1,5 @@
 import { useState } from 'react'
 
-import { useMeEditMutation } from '@/services/auth/auth.service'
 import { Card, Typography } from '@/shared'
 
 import s from './profile.module.scss'
@@ -12,25 +11,16 @@ export type Props = {
   avatar: string
   email: string
   name: string
-  onAvatarChange: (newAvatar: string) => void
+  onAvatarChange: (newAvatar: File | string) => void
   onLogout: () => void
   onNameChange: (newName: string) => void
 }
 
-export const Profile = ({ avatar, email, name, onLogout }: Props) => {
+export const Profile = ({ avatar, email, name, onAvatarChange, onLogout, onNameChange }: Props) => {
   const [bodyStatus, setBodyStatus] = useState<boolean>(false)
-  const [meEdit] = useMeEditMutation()
 
   const setBodyStatusHandler = () => {
     setBodyStatus(prev => !prev)
-  }
-
-  const onAvatarChange = (newAvatar: File | string) => {
-    meEdit({ avatar: newAvatar })
-  }
-
-  const onNameChange = (newName: string) => {
-    meEdit({ name: newName })
   }
 
   return (

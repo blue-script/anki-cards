@@ -44,8 +44,6 @@ export const authService = flashcardsApi.injectEndpoints({
     meEdit: builder.mutation<User, UpdateMeArgs>({
       invalidatesTags: ['Me'],
       query: body => {
-        console.log(body.avatar)
-
         const formData = new FormData()
 
         if (body.name) {
@@ -54,7 +52,6 @@ export const authService = flashcardsApi.injectEndpoints({
 
         if (body.avatar) {
           formData.append('avatar', body.avatar)
-          console.log(formData.get('avatar'))
         }
 
         return {
