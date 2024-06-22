@@ -27,18 +27,17 @@ export const MyProfile = () => {
   const handleNameChange = async (newName: string) => {
     if (data) {
       try {
-        await editMe({ avatar: data.avatar, name: newName })
-        //navigate('/my_profile')
+        await editMe({ name: newName })
       } catch (error) {
         console.error('Failed to update profile:', error)
       }
     }
   }
 
-  const handleAvatarChange = async (base64Avatar: string) => {
+  const handleAvatarChange = async (newAvatar: File | string) => {
     if (data) {
       try {
-        await editMe({ avatar: base64Avatar, name: data.name })
+        await editMe({ avatar: newAvatar })
       } catch (error) {
         console.error('Failed to update profile:', error)
       }

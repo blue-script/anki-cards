@@ -11,13 +11,14 @@ export type Props = {
   avatar: string
   email: string
   name: string
-  onAvatarChange: (newAvatar: string) => void
+  onAvatarChange: (newAvatar: File | string) => void
   onLogout: () => void
   onNameChange: (newName: string) => void
 }
 
 export const Profile = ({ avatar, email, name, onAvatarChange, onLogout, onNameChange }: Props) => {
   const [bodyStatus, setBodyStatus] = useState<boolean>(false)
+
   const setBodyStatusHandler = () => {
     setBodyStatus(prev => !prev)
   }

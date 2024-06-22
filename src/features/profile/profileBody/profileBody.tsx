@@ -33,6 +33,7 @@ export const ProfileBody = ({
 
   const changeNameHandler = (data: FormValues) => {
     onNameChange(data.name)
+    changeBodyStatusHandler()
   }
 
   const { control, handleSubmit } = useProfileBody({ name: name })
@@ -61,7 +62,7 @@ export const ProfileBody = ({
         className={s.newName}
         control={control}
         fullWidth
-        label={'Nickmame'}
+        label={'Nickname'}
         name={'name'}
       />
 

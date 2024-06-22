@@ -26,6 +26,6 @@ export type LogoutResponse = {
 }
 
 export type UpdateMeArgs = {
-  avatar: null | string
-  name: string
+  avatar?: File | null | string
+  name?: string
 }
