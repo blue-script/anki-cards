@@ -1,24 +1,16 @@
-import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 
 import { Edit2, MoreVerticalOutline, PlayCircleOutline, Trash } from '@/assets/icons'
-import { EditDeckModal } from '@/entities'
-import { useDeleteDeckMutation, useGetDeckByIdQuery } from '@/services/decks/decks.service'
+import { useDeleteDeckMutation } from '@/services/decks/decks.service'
 import { Dropdown, Typography } from '@/shared'
 
-type Props = { deckId: string }
+type Props = { deckId: string; handleOpenModal: () => void }
 
-export const DropDownDeck = ({ deckId }: Props) => {
-  const { data: deckData } = useGetDeckByIdQuery({ id: deckId ?? '' })
+export const DropDownDeck = ({ deckId, handleOpenModal }: Props) => {
   const navigate = useNavigate()
 
   const [deleteDeck] = useDeleteDeckMutation()
-  const [openEditDeckModal, setOpenEditNewDeckModal] = useState<boolean>(false)
-
-  const handleOpenModal = () => {
-    setOpenEditNewDeckModal(prev => !prev)
-  }
 
   const onDeleteDeck = () => {
     deleteDeck({ id: deckId })
@@ -52,17 +44,6 @@ export const DropDownDeck = ({ deckId }: Props) => {
           <Typography as={'span'} option={'caption'}>
             Edit
           </Typography>
-          {openEditDeckModal && (
-            <EditDeckModal
-              cover={deckData?.cover}
-              deckId={deckId}
-              isPrivate={deckData?.isPrivate || true}
-              name={deckData?.name || ''}
-              open={openEditDeckModal}
-              setOpen={setOpenEditNewDeckModal}
-              title={'Edit Deck'}
-            />
-          )}
         </Dropdown.Item>
         <Dropdown.Separator />
         <Dropdown.Item onClick={onDeleteDeck}>
