@@ -13,7 +13,7 @@ export interface Pagination {
 export interface Deck {
   author: Author
   cardsCount: number
-  cover?: string
+  cover?: null | string
   created: string
   id: string
   isPrivate: boolean
@@ -43,16 +43,13 @@ export type GetMinMaxCardsResponse = {
   min: number
 }
 
-export interface CreateDeckArgs {
-  cover?: string
+export type CreateDeckArgs = {
+  cover?: File | null
   isPrivate?: boolean
   name: string
 }
 
-export type UpdateDeckArgs = {
-  body: FormData
-  deckId: string
-}
+export type UpdateDeckArgs = { deckId: Deck['id'] } & Partial<CreateDeckArgs>
 
 export type DeleteDeckArgs = { id: string }
 

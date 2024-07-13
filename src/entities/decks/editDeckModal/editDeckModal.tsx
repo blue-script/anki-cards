@@ -1,11 +1,12 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
-import { ImageOutline } from '@/assets/icons'
+import { Edit2Outline, ImageOutline, TrashOutline } from '@/assets/icons'
 import { FormValuesFromDeck, deckSchema } from '@/entities/decks/hook/schemas'
 import { useModalKeyEvents } from '@/entities/decks/hook/useModalKeyEvents'
 import { useUpdateDeckMutation } from '@/services/decks/decks.service'
+import { UpdateDeckArgs } from '@/services/decks/decks.types'
 import { Button, FormCheckbox, FormTextField, Modal } from '@/shared'
 import { CountButton } from '@/shared/ui/modal/footer/footer'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -13,7 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import s from './editDeckModal.module.scss'
 
 type Props = {
-  cover: string | undefined
+  cover?: null | string
   deckId: string
   isPrivate: boolean
   name: string
@@ -24,23 +25,24 @@ type Props = {
 
 export const EditDeckModal = ({ cover, deckId, isPrivate, name, open, setOpen, title }: Props) => {
   const [updateDeck] = useUpdateDeckMutation()
-  const { control, handleSubmit, reset, setValue, watch } = useForm<FormValuesFromDeck>({
-    defaultValues: { cover: undefined, isPrivate, name },
+  const { control, handleSubmit, reset, setValue } = useForm<FormValuesFromDeck>({
+    defaultValues: { cover, isPrivate, name },
     resolver: zodResolver(deckSchema),
   })
 
-  const [previewImage, setPreviewImage] = useState<string | undefined>(cover)
+  const [previewImage, setPreviewImage] = useState<null | string>('')
+  const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    setValue('name', name || '')
+    setValue('name', name)
     setValue('isPrivate', isPrivate)
-    setPreviewImage(cover)
+    if (cover) {
+      setPreviewImage(cover)
+    }
   }, [name, isPrivate, cover, setValue])
 
-  const imagePath = watch('cover')
-
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
+    const file = event.target.files?.[0] ?? null
 
     if (file) {
       setValue('cover', file)
@@ -48,33 +50,43 @@ export const EditDeckModal = ({ cover, deckId, isPrivate, name, open, setOpen, t
     }
   }
 
-  const handleUploadClick = () => {
-    const fileInput = document.getElementById('fileInput') as HTMLInputElement
-
-    if (fileInput) {
-      fileInput.click()
+  const handleUploadImage = () => {
+    if (inputRef.current) {
+      inputRef.current.click()
     }
   }
-
-  const editFormClickHandler = async (data: FormValuesFromDeck) => {
-    const formData = new FormData()
-
-    if (data.cover instanceof File) {
-      formData.append('cover', data.cover)
+  const handleRemoveImage = () => {
+    setValue('cover', null)
+    if (previewImage != null) {
+      URL.revokeObjectURL(previewImage)
+    } // Revoke the previous previewImage URL
+    setPreviewImage(null)
+    if (inputRef.current) {
+      inputRef.current.value = ''
     }
-    formData.append('name', data.name)
-    formData.append('isPrivate', String(data.isPrivate))
-
+  }
+  const editFormClickHandler = async (data: FormValuesFromDeck) => {
     try {
-      await updateDeck({ body: formData, deckId }).unwrap()
+      await updateDeck({ deckId, ...data } as unknown as UpdateDeckArgs).unwrap()
       reset()
       setOpen(false)
-      setPreviewImage(undefined) // Reset preview image after successful update
+      if (previewImage != null) {
+        URL.revokeObjectURL(previewImage)
+      } // Revoke the previewImage URL after successful update
+      setPreviewImage(null) // Reset preview image after successful update
       toast.success('Deck edit successfully!')
     } catch (error) {
       toast.error(`Failed to edit deck`)
     }
   }
+
+  useEffect(() => {
+    return () => {
+      if (previewImage) {
+        URL.revokeObjectURL(previewImage) // Revoke the previewImage URL when the component unmounts
+      }
+    }
+  }, [previewImage])
 
   useModalKeyEvents({
     onEnter: handleSubmit(editFormClickHandler),
@@ -94,16 +106,35 @@ export const EditDeckModal = ({ cover, deckId, isPrivate, name, open, setOpen, t
         />
         <input
           accept={'image/*'}
-          id={'fileInput'}
           onChange={handleFileChange}
+          ref={inputRef}
           style={{ display: 'none' }}
           type={'file'}
         />
-        <Button className={s.uploadBtn} fullWidth onClick={handleUploadClick} variant={'secondary'}>
-          <ImageOutline />
-          {imagePath && imagePath.name}
-          {!imagePath && previewImage ? 'Change Image' : 'Upload Image'}
+        <Button className={s.uploadBtn} fullWidth onClick={handleUploadImage} variant={'secondary'}>
+          {previewImage ? (
+            <>
+              <Edit2Outline />
+              Change Image
+            </>
+          ) : (
+            <>
+              <ImageOutline />
+              Upload Image
+            </>
+          )}
         </Button>
+        {previewImage && (
+          <Button
+            className={s.uploadBtn}
+            fullWidth
+            onClick={handleRemoveImage}
+            variant={'secondary'}
+          >
+            <TrashOutline />
+            Remove Image
+          </Button>
+        )}
         {previewImage && (
           <img alt={'Current cover'} className={s.currentCover} src={previewImage} />
         )}

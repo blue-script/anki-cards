@@ -1,8 +1,8 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
-import { ImageOutline } from '@/assets/icons'
+import { Edit2Outline, ImageOutline } from '@/assets/icons'
 import { FormValuesFromDeck, deckSchema } from '@/entities/decks/hook/schemas'
 import { useModalKeyEvents } from '@/entities/decks/hook/useModalKeyEvents'
 import { useCreateDeckMutation } from '@/services/decks/decks.service'
@@ -23,28 +23,42 @@ type Props = {
 export const AddNewDeckModal = ({ open, resetOrderBy, setOpen, title }: Props) => {
   const [createDeck] = useCreateDeckMutation()
   const { control, handleSubmit, reset, setValue, watch } = useForm<FormValuesFromDeck>({
-    defaultValues: { cover: undefined, isPrivate: true, name: '' },
+    defaultValues: { cover: null, isPrivate: true, name: '' },
     resolver: zodResolver(deckSchema),
   })
 
   const [previewImage, setPreviewImage] = useState<string | undefined>(undefined)
+  const inputRef = useRef<HTMLInputElement>(null)
 
-  const imagePath = watch('cover')
+  const imagePath: File | null | string = watch('cover')
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
+  useEffect(() => {
+    // Clean up the object URL when component unmounts or previewImage changes
+    return () => {
+      if (previewImage) {
+        URL.revokeObjectURL(previewImage)
+      }
+    }
+  }, [previewImage])
+
+  const handleFileAdd = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0] ?? null
 
     if (file) {
       setValue('cover', file)
-      setPreviewImage(URL.createObjectURL(file))
+      const newPreview = URL.createObjectURL(file)
+
+      // Revoke the old object URL if it exists
+      if (previewImage) {
+        URL.revokeObjectURL(previewImage)
+      }
+      setPreviewImage(newPreview)
     }
   }
 
-  const handleUploadClick = () => {
-    const fileInput = document.getElementById('fileInput') as HTMLInputElement
-
-    if (fileInput) {
-      fileInput.click()
+  const handleUploadImage = () => {
+    if (inputRef.current) {
+      inputRef.current.click()
     }
   }
 
@@ -52,18 +66,15 @@ export const AddNewDeckModal = ({ open, resetOrderBy, setOpen, title }: Props) =
     if (resetOrderBy) {
       resetOrderBy()
     }
-    const formData = new FormData()
-
-    if (data.cover instanceof File) {
-      formData.append('cover', data.cover)
-    }
-    formData.append('name', data.name)
-    formData.append('isPrivate', String(data.isPrivate))
 
     try {
-      await createDeck(formData as unknown as CreateDeckArgs).unwrap()
+      await createDeck(data as unknown as CreateDeckArgs).unwrap()
       reset()
       setOpen(false)
+      // Revoke the object URL after the form is successfully submitted
+      if (previewImage) {
+        URL.revokeObjectURL(previewImage)
+      }
       setPreviewImage(undefined) // Reset preview image after successful update
       toast.success('Deck added successfully!')
     } catch (error) {
@@ -89,14 +100,23 @@ export const AddNewDeckModal = ({ open, resetOrderBy, setOpen, title }: Props) =
         />
         <input
           accept={'image/*'}
-          id={'fileInput'}
-          onChange={handleFileChange}
+          onChange={handleFileAdd}
+          ref={inputRef}
           style={{ display: 'none' }}
           type={'file'}
         />
-        <Button className={s.uploadBtn} fullWidth onClick={handleUploadClick} variant={'secondary'}>
-          <ImageOutline />
-          {imagePath ? imagePath.name : 'Upload Image'}
+        <Button className={s.uploadBtn} fullWidth onClick={handleUploadImage} variant={'secondary'}>
+          {imagePath ? (
+            <>
+              <Edit2Outline />
+              Change Image
+            </>
+          ) : (
+            <>
+              <ImageOutline />
+              Upload Image
+            </>
+          )}
         </Button>
         {previewImage && (
           <img alt={'Current cover'} className={s.currentCover} src={previewImage} />
