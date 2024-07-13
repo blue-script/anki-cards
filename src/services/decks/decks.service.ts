@@ -42,11 +42,25 @@ export const decksService = flashcardsApi.injectEndpoints({
             console.warn(e)
           }
         },
-        query: args => ({
-          body: args,
-          method: 'POST',
-          url: `v1/decks`,
-        }),
+        query: ({ cover, isPrivate, name }) => {
+          const formData = new FormData()
+
+          formData.append('name', name)
+          if (isPrivate) {
+            formData.append('isPrivate', String(isPrivate))
+          }
+          if (cover) {
+            formData.append('cover', cover)
+          } else if (cover === null) {
+            formData.append('cover', '')
+          }
+
+          return {
+            body: formData,
+            method: 'POST',
+            url: `v1/decks`,
+          }
+        },
       }),
       deleteDeck: builder.mutation<void, DeleteDeckArgs>({
         invalidatesTags: ['Decks'],
@@ -82,7 +96,7 @@ export const decksService = flashcardsApi.injectEndpoints({
       }),
       updateDeck: builder.mutation<Deck, UpdateDeckArgs>({
         invalidatesTags: ['Decks'],
-        async onQueryStarted({ deckId, ...args }, { dispatch, getState, queryFulfilled }) {
+        async onQueryStarted({ cover, deckId, ...args }, { dispatch, getState, queryFulfilled }) {
           const patchResult: any[] = []
 
           const invalidateBy = decksService.util.selectInvalidatedBy(getState(), [
@@ -112,11 +126,27 @@ export const decksService = flashcardsApi.injectEndpoints({
             })
           }
         },
-        query: ({ body, deckId }) => ({
-          body,
-          method: 'PATCH',
-          url: `v1/decks/${deckId}`,
-        }),
+        query: ({ deckId, ...body }) => {
+          const formData = new FormData()
+
+          if (body.cover) {
+            formData.append('cover', body.cover)
+          } else if (body.cover === null) {
+            formData.append('cover', '')
+          }
+          if (body.name) {
+            formData.append('name', body.name)
+          }
+          if (body.isPrivate) {
+            formData.append('isPrivate', String(body.isPrivate))
+          }
+
+          return {
+            body: formData,
+            method: 'PATCH',
+            url: `v1/decks/${deckId}`,
+          }
+        },
       }),
       updateRandomCard: builder.mutation<RandomCardResponse, UpdateGradeArgs>({
         invalidatesTags: ['Cards'],

@@ -21,7 +21,7 @@ type Props = {
   decks: Deck[] | undefined
   headerColumns?: Column[]
   onDeleteClick: (id: string, name: string) => void
-  onEditClick: (id: string, name: string, cover: string | undefined, isPrivate: boolean) => void
+  onEditClick: (id: string) => void
   onIconClick: (sort: string) => void
 }
 type Column = {
@@ -60,13 +60,6 @@ export const DecksTable = ({
       onDeleteClick(id, name)
     },
     [onDeleteClick]
-  )
-
-  const handleEditClick = useCallback(
-    (id: string, name: string, cover: string | undefined, isPrivate: boolean) => {
-      onEditClick(id, name, cover, isPrivate)
-    },
-    [onEditClick]
   )
 
   return (
@@ -118,9 +111,7 @@ export const DecksTable = ({
                   <>
                     <Button
                       className={s.button}
-                      onClick={() =>
-                        handleEditClick(deck.id, deck.name, deck.cover, deck.isPrivate)
-                      }
+                      onClick={() => onEditClick(deck.id)}
                       type={'button'}
                     >
                       <Edit2Outline />
